@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。然后输入(不要用这个，用下面的)：1$ git reset --hard HEAD^ 这句话的意思是将自己最近的一次提交撤销，回到push之前的">
+<meta name="description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。">
 <meta name="keywords" content="其他">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SourceTree超前一个版本，落后N个版本">
-<meta property="og:url" content="http://yoursite.com/2017/11/30/1/index.html">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/11/30/1/index.html">
 <meta property="og:site_name" content="ParadiseDuo的博客">
-<meta property="og:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。然后输入(不要用这个，用下面的)：1$ git reset --hard HEAD^ 这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代">
+<meta property="og:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-04T04:44:31.000Z">
+<meta property="og:updated_time" content="2017-12-04T05:46:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SourceTree超前一个版本，落后N个版本">
-<meta name="twitter:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。然后输入(不要用这个，用下面的)：1$ git reset --hard HEAD^ 这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代">
+<meta name="twitter:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -74,7 +74,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: 
+        search: true
     }
 </script>
 
@@ -106,6 +106,13 @@
 
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -307,6 +314,7 @@
       
           
         <p>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
+<p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br><a id="more"></a><br>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
 <p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br>然后输入(不要用这个，用下面的)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure></p>
 <p>这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代码。。<br>如果不想让commit消失，可以改一下参数。用这个参数可以保证你提交的代码原封不动的保存下来。前提是你本地的工作台是干净的。如果不是请把所有代码都暂存。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD^</span><br></pre></td></tr></table></figure></p>
 <p>执行这句话之后重新拉取一遍代码就可以了，push的都会撤销回来。</p>
@@ -331,10 +339,10 @@
         <p><span>本文标题:</span><a href="/2017/11/30/1/">SourceTree超前一个版本，落后N个版本</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">由韶铎</a></p>
         <p><span>发布时间:</span>2017-11-30, 12:38:23</p>
-        <p><span>最后更新:</span>2017-12-04, 12:44:31</p>
+        <p><span>最后更新:</span>2017-12-04, 13:46:11</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/11/30/1/" title="SourceTree超前一个版本，落后N个版本">http://yoursite.com/2017/11/30/1/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/11/30/1/　　作者: 由韶铎" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/30/1/" title="SourceTree超前一个版本，落后N个版本">https://youshaoduo.github.io/2017/11/30/1/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/11/30/1/　　作者: 由韶铎" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
