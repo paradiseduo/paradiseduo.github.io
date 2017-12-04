@@ -15,17 +15,18 @@
 
 
 
-<meta name="description" content="用的Hexo以及Yelee主题。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于我的Blog">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。然后输入(不要用这个，用下面的)：1$ git reset --hard HEAD^ 这句话的意思是将自己最近的一次提交撤销，回到push之前的">
+<meta name="keywords" content="其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SourceTree超前一个版本，落后N个版本">
+<meta property="og:url" content="http://yoursite.com/2017/11/30/1/index.html">
 <meta property="og:site_name" content="ParadiseDuo的博客">
-<meta property="og:description" content="用的Hexo以及Yelee主题。">
+<meta property="og:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。然后输入(不要用这个，用下面的)：1$ git reset --hard HEAD^ 这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-01T08:52:18.000Z">
+<meta property="og:updated_time" content="2017-12-04T04:44:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于我的Blog">
-<meta name="twitter:description" content="用的Hexo以及Yelee主题。">
+<meta name="twitter:title" content="SourceTree超前一个版本，落后N个版本">
+<meta name="twitter:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。然后输入(不要用这个，用下面的)：1$ git reset --hard HEAD^ 这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -57,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>关于我的Blog | ParadiseDuo的博客</title>
+<title>SourceTree超前一个版本，落后N个版本 | ParadiseDuo的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -67,7 +68,7 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -265,11 +266,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-1" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/about/index.html" class="article-date">
-      <time datetime="2017-11-30T03:43:49.000Z" itemprop="datePublished">2017-11-30</time>
+      <a href="/2017/11/30/1/" class="article-date">
+      <time datetime="2017-11-30T04:38:23.000Z" itemprop="datePublished">2017-11-30</time>
 </a>
 
 
@@ -284,7 +285,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      关于我的Blog
+      SourceTree超前一个版本，落后N个版本
     </h1>
   
 
@@ -294,6 +295,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -301,36 +306,80 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta { display: none; }
-    #container .article .article-title { padding-right: 0; }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover { border-left: none; }
-    .article-title { font-size: 1.6em }
-    .article-entry hr { margin: 0;}
-    .article-meta,
-    #container .article-info-post.article-info { display: none;}
-    #container .article .article-title { padding: 0; }
-</style>
+        <p>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
+<p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br>然后输入(不要用这个，用下面的)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure></p>
+<p>这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代码。。<br>如果不想让commit消失，可以改一下参数。用这个参数可以保证你提交的代码原封不动的保存下来。前提是你本地的工作台是干净的。如果不是请把所有代码都暂存。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD^</span><br></pre></td></tr></table></figure></p>
+<p>执行这句话之后重新拉取一遍代码就可以了，push的都会撤销回来。</p>
+<p>如果想一次回退多个push，可以这样：(例子是撤销最近三次的提交)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD~3</span><br></pre></td></tr></table></figure></p>
+<p>如果想回退到某个指定版本，在终端中输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft 1234567</span><br></pre></td></tr></table></figure></p>
+<p>1234567是要回退到的版本号，根据具体情况而定，这里只是举例子。<br>版本号可以不写全，前几位就可以了，Git会自动去找。当然也不能只写前一两位，因为Git可能会找到多个版本号，就无法确定是哪一个了。</p>
+<p>版本号可以不写全，前几位就可以了，Git会自动去找。当然也不能只写前一两位，因为Git可能会找到多个版本号，就无法确定是哪一个了。</p>
+<p>最后总结一下：</p>
+<ul>
+<li>HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset –hard commit_id。</li>
+<li>穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。</li>
+<li>要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。</li>
+</ul>
 
-
-          
-        <h2 id="用的Hexo以及Yelee主题。"><a href="#用的Hexo以及Yelee主题。" class="headerlink" title="用的Hexo以及Yelee主题。"></a>用的Hexo以及Yelee主题。</h2>
       
     </div>
     
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/11/30/1/">SourceTree超前一个版本，落后N个版本</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">由韶铎</a></p>
+        <p><span>发布时间:</span>2017-11-30, 12:38:23</p>
+        <p><span>最后更新:</span>2017-12-04, 12:44:31</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/30/1/" title="SourceTree超前一个版本，落后N个版本">http://yoursite.com/2017/11/30/1/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/11/30/1/　　作者: 由韶铎" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/11/29/hello-world/">
+                    Hello World
+                </a>
+            </div>
+        
+    </nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
 
 
 
@@ -348,7 +397,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"关于我的Blog　| ParadiseDuo的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"SourceTree超前一个版本，落后N个版本　| ParadiseDuo的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -383,6 +432,24 @@ gitment.render('git')
 
   
 
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/11/29/hello-world/" title="下一篇: Hello World">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/30/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/29/hello-world/">Hello World</a></li></ul>
 
 
 
