@@ -3,6 +3,80 @@
   
     
     <entry>
+      <title><![CDATA[设置Git区分文件名大小写]]></title>
+      <url>/2017/12/01/5/</url>
+      <content type="html"><![CDATA[<p>git 默认不区分文件名大小写。<br><a id="more"></a><br>git 默认不区分文件名大小写。</p>
+<p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.</p>
+<p>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
+<p>控制台输入git status 也不显示任何信息</p>
+<p>那么就配置git 使其对文件名大小写敏感，直接在终端中输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config core.ignorecase false</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[加密和签名的区别]]></title>
+      <url>/2017/12/01/4/</url>
+      <content type="html"><![CDATA[<p>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。<br><a id="more"></a><br>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。</p>
+<p>举个例子，就拿A给B发送经过签名加密信息来说：<br>1、A对信息签名的作用是确认这个信息是A发出的，不是别人发出的；<br>2、加密是对内容进行机密性保护，主要是保证信息内容不会被其他人获取，只有B可以获取。也就是保证整个过程的端到端的唯一确定性，这个信息是A发出的（不是别人），且是发给B的，只有B才被获得具体内容（别人就算截获信息也不能获得具体内容）。</p>
+<p>这只是大概说了作用，具体说来，涉及到密钥相关的东西。密钥有公钥和私钥之分。</p>
+<p>那么这里一共有两组四个密钥：<br>A的公钥（PUB_A），A的私钥（PRI_A）；B的公钥（PUB_B），B的私钥（PRI_B）。</p>
+<p>公钥一般用来加密，私钥用来签名。</p>
+<p>通常公钥是公开出去的，但是私钥只能自己私密持有。<br>公钥和私钥唯一对应，用某个公钥签名过得内容只能用对应的私钥才能解签验证；同样用某个私钥加密的内容只能用对应的公钥才能解密。</p>
+<p>这时A向B发送信息的整个签名和加密的过程如下：<br>1、A先用自己的私钥（PRI_A）对信息（一般是信息的摘要）进行签名。<br>2、A接着使用B的公钥（PUB_B）对信息内容和签名信息进行加密。</p>
+<p>这样当B接收到A的信息后，获取信息内容的步骤如下：<br>1、B用自己的私钥（PRI_B）解密A用B的公钥（PUB_B）加密的内容；<br>2、得到解密后的明文后用A的公钥（PUB_A）解签A用A自己的私钥（PRI_A）的签名。</p>
+<p>从而整个过程就保证了开始说的端到端的唯一确认。<br>A的签名只有A的公钥才能解签，这样B就能确认这个信息是A发来的。<br>A的加密只有B的私钥才能解密，这样A就能确认这份信息只能被B读取。</p>
+<p>这个过程可以这么个故事来概括:<br>B的银行卡落到A的家里了，A要给B邮寄银行卡，提前和B说了我要给你寄银行卡(B拿到A的公钥)，<br>A在寄银行卡的时候要求快递员在B收到东西时说出是谁寄的(A用自己的私钥进行签名)，只有说对了才给B(B用A的公钥验证签名)。</p>
+<p>这张银行卡对于快递员来说是加密的(快递员既不知道银行卡是谁的，也不知道银行卡密码)，但是对于A来说，A知道银行卡是谁的(相当于B的公钥)，而对于B来说，B有银行卡的密码(B的私钥)。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Mac 设置Launchpad 的列数和行数]]></title>
+      <url>/2017/12/01/3/</url>
+      <content type="html"><![CDATA[<p>这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。<br><a id="more"></a></p>
+<p>打开终端。</p>
+<ol>
+<li><p>设置 Launchpad 的列数，对应于每一行 App 的个数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.dock springboard-columns -int 列数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置 Launchpad 的行数，对应于每一列 App 的个数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.dock springboard-rows -int 行数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重置 Launchpad</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.dock ResetLaunchPad -bool TRUE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重置 Dock</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">killall Dock</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hexo中的Yelee主题，首页不显示文章摘要]]></title>
       <url>/2017/12/01/2/</url>
       <content type="html"><![CDATA[<p>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。<br><a id="more"></a><br>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。</p>
@@ -47,23 +121,6 @@
             <tag> 其他 </tag>
             
         </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Hello World]]></title>
-      <url>/2017/11/29/hello-world/</url>
-      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.<br><a id="more"></a><br>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-      
         
     </entry>
     

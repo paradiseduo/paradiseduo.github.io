@@ -15,13 +15,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="ParadiseDuo的日记本">
-<meta property="og:url" content="https://youshaoduo.github.io/archives/2017/12/index.html">
+<meta name="description" content="最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。">
+<meta name="keywords" content="其他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="加密和签名的区别">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/12/01/4/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-05T03:05:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ParadiseDuo的日记本">
+<meta name="twitter:title" content="加密和签名的区别">
+<meta name="twitter:description" content="最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -53,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Archives: 2017/12 | ParadiseDuo的日记本</title>
+<title>加密和签名的区别 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -63,8 +68,8 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
-        isArchive: true,
+        isPost: true,
+        isArchive: false,
         isTag: false,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
@@ -272,155 +277,202 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-4" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2017/12/01/4/" class="article-date">
+      <time datetime="2017-12-01T03:58:10.000Z" itemprop="datePublished">2017-12-01</time>
+</a>
+
+
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      加密和签名的区别
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/01/5/" class="archive-article-date">
-      <time datetime="2017-12-01T04:58:13.000Z" itemprop="datePublished">12-01</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/01/5/">设置Git区分文件名大小写</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
+    <div class="article-entry" itemprop="articleBody">
+      
           
+        <p>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。<br><a id="more"></a><br>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。</p>
+<p>举个例子，就拿A给B发送经过签名加密信息来说：<br>1、A对信息签名的作用是确认这个信息是A发出的，不是别人发出的；<br>2、加密是对内容进行机密性保护，主要是保证信息内容不会被其他人获取，只有B可以获取。也就是保证整个过程的端到端的唯一确定性，这个信息是A发出的（不是别人），且是发给B的，只有B才被获得具体内容（别人就算截获信息也不能获得具体内容）。</p>
+<p>这只是大概说了作用，具体说来，涉及到密钥相关的东西。密钥有公钥和私钥之分。</p>
+<p>那么这里一共有两组四个密钥：<br>A的公钥（PUB_A），A的私钥（PRI_A）；B的公钥（PUB_B），B的私钥（PRI_B）。</p>
+<p>公钥一般用来加密，私钥用来签名。</p>
+<p>通常公钥是公开出去的，但是私钥只能自己私密持有。<br>公钥和私钥唯一对应，用某个公钥签名过得内容只能用对应的私钥才能解签验证；同样用某个私钥加密的内容只能用对应的公钥才能解密。</p>
+<p>这时A向B发送信息的整个签名和加密的过程如下：<br>1、A先用自己的私钥（PRI_A）对信息（一般是信息的摘要）进行签名。<br>2、A接着使用B的公钥（PUB_B）对信息内容和签名信息进行加密。</p>
+<p>这样当B接收到A的信息后，获取信息内容的步骤如下：<br>1、B用自己的私钥（PRI_B）解密A用B的公钥（PUB_B）加密的内容；<br>2、得到解密后的明文后用A的公钥（PUB_A）解签A用A自己的私钥（PRI_A）的签名。</p>
+<p>从而整个过程就保证了开始说的端到端的唯一确认。<br>A的签名只有A的公钥才能解签，这样B就能确认这个信息是A发来的。<br>A的加密只有B的私钥才能解密，这样A就能确认这份信息只能被B读取。</p>
+<p>这个过程可以这么个故事来概括:<br>B的银行卡落到A的家里了，A要给B邮寄银行卡，提前和B说了我要给你寄银行卡(B拿到A的公钥)，<br>A在寄银行卡的时候要求快递员在B收到东西时说出是谁寄的(A用自己的私钥进行签名)，只有说对了才给B(B用A的公钥验证签名)。</p>
+<p>这张银行卡对于快递员来说是加密的(快递员既不知道银行卡是谁的，也不知道银行卡密码)，但是对于A来说，A知道银行卡是谁的(相当于B的公钥)，而对于B来说，B有银行卡的密码(B的私钥)。</p>
 
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/12/01/4/">加密和签名的区别</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2017-12-01, 11:58:10</p>
+        <p><span>最后更新:</span>2017-12-05, 11:05:05</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/01/4/" title="加密和签名的区别">https://youshaoduo.github.io/2017/12/01/4/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/01/4/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
     </div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/12/01/5/">
+                    设置Git区分文件名大小写
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/12/01/3/">
+                    Mac 设置Launchpad 的列数和行数
+                </a>
+            </div>
+        
+    </nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/01/4/" class="archive-article-date">
-      <time datetime="2017-12-01T03:58:10.000Z" itemprop="datePublished">12-01</time>
-</a>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
 
 
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
         </div>
-         
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"加密和签名的区别　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/01/4/">加密和签名的区别</a>
-    </h1>
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
   
 
-        <div class="article-info info-on-archive">
-          
 
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/12/01/5/" title="上一篇: 设置Git区分文件名大小写">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/12/01/3/" title="下一篇: Mac 设置Launchpad 的列数和行数">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
     </div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/01/3/" class="archive-article-date">
-      <time datetime="2017-12-01T02:55:32.000Z" itemprop="datePublished">12-01</time>
-</a>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/30/1/">SourceTree超前一个版本，落后N个版本</a></li></ul>
 
 
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/01/3/">Mac 设置Launchpad 的列数和行数</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/01/2/" class="archive-article-date">
-      <time datetime="2017-12-01T02:36:58.000Z" itemprop="datePublished">12-01</time>
-</a>
 
 
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/01/2/">Hexo中的Yelee主题，首页不显示文章摘要</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
