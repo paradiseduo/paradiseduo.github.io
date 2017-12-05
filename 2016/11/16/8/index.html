@@ -14,17 +14,19 @@
 <meta name="author" content="ParadiseDuo" />
 
 
-    
-    
 
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="ParadiseDuo的日记本">
-<meta property="og:url" content="https://youshaoduo.github.io/index.html">
+<meta name="description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
+<meta name="keywords" content="Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift3 单例模式">
+<meta property="og:url" content="https://youshaoduo.github.io/2016/11/16/8/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-05T09:05:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ParadiseDuo的日记本">
+<meta name="twitter:title" content="Swift3 单例模式">
+<meta name="twitter:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -52,13 +54,11 @@
 <link rel="stylesheet" href="/css/style.css">
 
 
-    <style> .article { opacity: 0;} </style>
-
 
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>ParadiseDuo的日记本</title>
+<title>Swift3 单例模式 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -67,8 +67,8 @@
     var yiliaConfig = {
         fancybox: true,
         animate: true,
-        isHome: true,
-        isPost: false,
+        isHome: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -277,405 +277,7 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-12" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/12/05/12/" class="article-date">
-      <time datetime="2017-12-05T09:09:47.000Z" itemprop="datePublished">2017-12-05</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/12/05/12/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-2" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/12/04/2/" class="article-date">
-      <time datetime="2017-12-04T06:36:58.000Z" itemprop="datePublished">2017-12-04</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/12/04/2/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-3" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/11/13/3/" class="article-date">
-      <time datetime="2017-11-13T08:55:32.000Z" itemprop="datePublished">2017-11-13</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/11/13/3/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-4" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/11/08/4/" class="article-date">
-      <time datetime="2017-11-08T03:58:10.000Z" itemprop="datePublished">2017-11-08</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/08/4/">加密和签名的区别</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/11/08/4/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-11" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/05/11/" class="article-date">
-      <time datetime="2017-01-05T06:38:44.000Z" itemprop="datePublished">2017-01-05</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>一直弹出的时候，你随便输入密码，输三次，它会出现让你重设密码，然后点击重设，会出现网页，然后直接按home键就可以 ，前提是必须要连上网。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/01/05/11/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-6" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/22/6/" class="article-date">
-      <time datetime="2016-11-22T06:51:43.000Z" itemprop="datePublished">2016-11-22</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>有时在使用Git的时候会发现有些文件明明在目录里，但是Git却没有自动添加到版本跟踪里面，查看仓库的忽略列表也没有，那么有很大可能是在Git的全局忽略列表里。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/22/6/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-8" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-8" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2016/11/16/8/" class="article-date">
@@ -693,257 +295,193 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/16/8/">Swift3 单例模式</a>
+    <h1 class="article-title" itemprop="name">
+      Swift3 单例模式
     </h1>
   
 
       </header>
       
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
+      <div class="article-info article-info-post">
+        
 
-      
+        
     <div class="article-tag tagcloud">
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2016/11/16/8/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-5" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/16/5/" class="article-date">
-      <time datetime="2016-11-16T02:58:13.000Z" itemprop="datePublished">2016-11-16</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/16/5/">设置Git区分文件名大小写</a>
-    </h1>
-  
-
-      </header>
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p>git 默认不区分文件名大小写。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
+        <p>单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。<br><a id="more"></a><br>常见的有这么几种方法</p>
+<ol>
+<li>第一种<br>最简单也是最常用的，这里的所有单例init方法一定要定义成private的，不然外部依然可以使用init方法初始化变量。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final class Single: NSObject &#123;</span><br><span class="line">    static let shared = Single()</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>final关键字的作用是这个类或方法不希望被继承和重写</p>
+<ol>
+<li>第二种<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public extension DispatchQueue &#123;</span><br><span class="line">    private static var onceToken = [String]()</span><br><span class="line">    public class func once(_ token: String, _ block:@escaping () -&gt; Void) &#123;</span><br><span class="line">        objc_sync_enter(self)</span><br><span class="line">        defer &#123;</span><br><span class="line">            objc_sync_exit(self)</span><br><span class="line">        &#125;</span><br><span class="line">        if onceToken.contains(token) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        onceToken.append(token)</span><br><span class="line">        block()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Single2: NSObject &#123;</span><br><span class="line">    static func shared() -&gt; Single2 &#123;</span><br><span class="line">        struct Singleton &#123;</span><br><span class="line">            static var single = Single2()</span><br><span class="line">        &#125;</span><br><span class="line">        DispatchQueue.once(&quot;YouShaoduo&quot;) &#123;</span><br><span class="line">            Singleton.single = shared()</span><br><span class="line">        &#125;</span><br><span class="line">        return Singleton.single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>第二种完全是OC风格的单例，但是由于Swift3中废弃了原来的dispatch_once_t，所以需要先给DispatchQueue添加一个extension，实现原先的dispatch_once_t效果</p>
+<ol>
+<li><p>第三种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private let single = Single3()</span><br><span class="line">final class Single3: NSObject &#123;</span><br><span class="line">    static var shared: Single3 &#123;</span><br><span class="line">        return single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fileprivate override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第四种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">final class Single4: NSObject &#123;</span><br><span class="line">    static var shared: Single4 &#123;</span><br><span class="line">        struct Static &#123;</span><br><span class="line">            static let instance: Single4 = Single4()</span><br><span class="line">        &#125;</span><br><span class="line">        return Static.instance</span><br><span class="line">    &#125;</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这种方法的实现原理是在方法内定义静态变量</p>
 
       
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/16/5/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
     </div>
     
   </div>
   
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-10" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/16/10/" class="article-date">
-      <time datetime="2016-11-16T02:35:13.000Z" itemprop="datePublished">2016-11-16</time>
-</a>
-
-
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/16/8/">Swift3 单例模式</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2016-11-16, 12:51:50</p>
+        <p><span>最后更新:</span>2017-12-05, 17:05:07</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/16/8/" title="Swift3 单例模式">https://youshaoduo.github.io/2016/11/16/8/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/11/16/8/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
     </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+
+
+
+    <nav id="article-nav">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/16/10/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-9" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/02/9/" class="article-date">
-      <time datetime="2016-11-02T10:32:27.000Z" itemprop="datePublished">2016-11-02</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/11/22/6/">
+                    Mac下如何查看Git的全局忽略列表
+                </a>
+            </div>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/11/02/9/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/16/5/">
+                    设置Git区分文件名大小写
+                </a>
+            </div>
+        
     </nav>
+
   
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Swift3 单例模式　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+  
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
+  
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/22/6/" title="上一篇: Mac下如何查看Git的全局忽略列表">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/16/5/" title="下一篇: 设置Git区分文件名大小写">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/8/">Swift3 单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">

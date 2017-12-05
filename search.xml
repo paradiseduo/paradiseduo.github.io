@@ -3,13 +3,10 @@
   
     
     <entry>
-      <title><![CDATA[设置Git区分文件名大小写]]></title>
-      <url>/2017/12/01/5/</url>
-      <content type="html"><![CDATA[<p>git 默认不区分文件名大小写。<br><a id="more"></a><br>git 默认不区分文件名大小写。</p>
-<p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.</p>
-<p>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
-<p>控制台输入git status 也不显示任何信息</p>
-<p>那么就配置git 使其对文件名大小写敏感，直接在终端中输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config core.ignorecase false</span><br></pre></td></tr></table></figure></p>
+      <title><![CDATA[Xcode8,Xcode9 查看模拟器沙盒目录的方法]]></title>
+      <url>/2017/12/05/12/</url>
+      <content type="html"><![CDATA[<p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><a id="more"></a><br>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSLog(@&quot;%@&quot;, paths[0]);</span><br></pre></td></tr></table></figure></p>
+<p>打开Finder，点前往<br>把打印出来的path复制到输入框中按回车即可。</p>
 ]]></content>
       
         
@@ -22,19 +19,13 @@
     </entry>
     
     <entry>
-      <title><![CDATA[加密和签名的区别]]></title>
-      <url>/2017/12/01/4/</url>
-      <content type="html"><![CDATA[<p>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。<br><a id="more"></a><br>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。</p>
-<p>举个例子，就拿A给B发送经过签名加密信息来说：<br>1、A对信息签名的作用是确认这个信息是A发出的，不是别人发出的；<br>2、加密是对内容进行机密性保护，主要是保证信息内容不会被其他人获取，只有B可以获取。也就是保证整个过程的端到端的唯一确定性，这个信息是A发出的（不是别人），且是发给B的，只有B才被获得具体内容（别人就算截获信息也不能获得具体内容）。</p>
-<p>这只是大概说了作用，具体说来，涉及到密钥相关的东西。密钥有公钥和私钥之分。</p>
-<p>那么这里一共有两组四个密钥：<br>A的公钥（PUB_A），A的私钥（PRI_A）；B的公钥（PUB_B），B的私钥（PRI_B）。</p>
-<p>公钥一般用来加密，私钥用来签名。</p>
-<p>通常公钥是公开出去的，但是私钥只能自己私密持有。<br>公钥和私钥唯一对应，用某个公钥签名过得内容只能用对应的私钥才能解签验证；同样用某个私钥加密的内容只能用对应的公钥才能解密。</p>
-<p>这时A向B发送信息的整个签名和加密的过程如下：<br>1、A先用自己的私钥（PRI_A）对信息（一般是信息的摘要）进行签名。<br>2、A接着使用B的公钥（PUB_B）对信息内容和签名信息进行加密。</p>
-<p>这样当B接收到A的信息后，获取信息内容的步骤如下：<br>1、B用自己的私钥（PRI_B）解密A用B的公钥（PUB_B）加密的内容；<br>2、得到解密后的明文后用A的公钥（PUB_A）解签A用A自己的私钥（PRI_A）的签名。</p>
-<p>从而整个过程就保证了开始说的端到端的唯一确认。<br>A的签名只有A的公钥才能解签，这样B就能确认这个信息是A发来的。<br>A的加密只有B的私钥才能解密，这样A就能确认这份信息只能被B读取。</p>
-<p>这个过程可以这么个故事来概括:<br>B的银行卡落到A的家里了，A要给B邮寄银行卡，提前和B说了我要给你寄银行卡(B拿到A的公钥)，<br>A在寄银行卡的时候要求快递员在B收到东西时说出是谁寄的(A用自己的私钥进行签名)，只有说对了才给B(B用A的公钥验证签名)。</p>
-<p>这张银行卡对于快递员来说是加密的(快递员既不知道银行卡是谁的，也不知道银行卡密码)，但是对于A来说，A知道银行卡是谁的(相当于B的公钥)，而对于B来说，B有银行卡的密码(B的私钥)。</p>
+      <title><![CDATA[Hexo中的Yelee主题，首页不显示文章摘要]]></title>
+      <url>/2017/12/04/2/</url>
+      <content type="html"><![CDATA[<p>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。<br><a id="more"></a><br>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。</p>
+<p>我找了一下，发现是themes/yelee/layout/_partial/head.ejs中的这段代码的search: &lt;%= theme.search.on %&gt;定义有问题。</p>
+<p>具体代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var yiliaConfig = &#123;</span><br><span class="line">    fancybox: &lt;%=theme.fancybox%&gt;,</span><br><span class="line">    animate: &lt;%=theme.animate%&gt;,</span><br><span class="line">    isHome: &lt;%=is_home()%&gt;,</span><br><span class="line">    isPost: &lt;%=is_post()%&gt;,</span><br><span class="line">    isArchive: &lt;%=is_archive()%&gt;,</span><br><span class="line">    isTag: &lt;%=is_tag()%&gt;,</span><br><span class="line">    isCategory: &lt;%=is_category()%&gt;,</span><br><span class="line">    fancybox_js: <span class="string">"&lt;%- theme.CDN.fancybox_js %&gt;"</span>,</span><br><span class="line">    scrollreveal: <span class="string">"&lt;%- theme.CDN.scrollreveal %&gt;"</span>,</span><br><span class="line">    search: &lt;%= theme.search.on %&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意看这里最后一个search，里面用的是on，而在yelee主题的_config.xml里默认设置是search:onload:false，这里写的是onload而不是on，导致Uncaught ReferenceError: yiliaConfig is not defined。</p>
+<p>解决方法是把两边的变量名改成一样就可以了，比如yelee主题的_config.xml里面的search:onload false改成search:on false，这样就正常运行了。</p>
 ]]></content>
       
         
@@ -48,7 +39,7 @@
     
     <entry>
       <title><![CDATA[Mac 设置Launchpad 的列数和行数]]></title>
-      <url>/2017/12/01/3/</url>
+      <url>/2017/11/13/3/</url>
       <content type="html"><![CDATA[<p>这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。<br><a id="more"></a></p>
 <p>打开终端。</p>
 <ol>
@@ -77,13 +68,19 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Hexo中的Yelee主题，首页不显示文章摘要]]></title>
-      <url>/2017/12/01/2/</url>
-      <content type="html"><![CDATA[<p>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。<br><a id="more"></a><br>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。</p>
-<p>我找了一下，发现是themes/yelee/layout/_partial/head.ejs中的这段代码的search: &lt;%= theme.search.on %&gt;定义有问题。</p>
-<p>具体代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var yiliaConfig = &#123;</span><br><span class="line">    fancybox: &lt;%=theme.fancybox%&gt;,</span><br><span class="line">    animate: &lt;%=theme.animate%&gt;,</span><br><span class="line">    isHome: &lt;%=is_home()%&gt;,</span><br><span class="line">    isPost: &lt;%=is_post()%&gt;,</span><br><span class="line">    isArchive: &lt;%=is_archive()%&gt;,</span><br><span class="line">    isTag: &lt;%=is_tag()%&gt;,</span><br><span class="line">    isCategory: &lt;%=is_category()%&gt;,</span><br><span class="line">    fancybox_js: <span class="string">"&lt;%- theme.CDN.fancybox_js %&gt;"</span>,</span><br><span class="line">    scrollreveal: <span class="string">"&lt;%- theme.CDN.scrollreveal %&gt;"</span>,</span><br><span class="line">    search: &lt;%= theme.search.on %&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意看这里最后一个search，里面用的是on，而在yelee主题的_config.xml里默认设置是search:onload:false，这里写的是onload而不是on，导致Uncaught ReferenceError: yiliaConfig is not defined。</p>
-<p>解决方法是把两边的变量名改成一样就可以了，比如yelee主题的_config.xml里面的search:onload false改成search:on false，这样就正常运行了。</p>
+      <title><![CDATA[加密和签名的区别]]></title>
+      <url>/2017/11/08/4/</url>
+      <content type="html"><![CDATA[<p>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。<br><a id="more"></a><br>最近在研究RSA，对其中的签名和加密的概念不是很理解，从网上搜了搜，在这里总结一下。</p>
+<p>举个例子，就拿A给B发送经过签名加密信息来说：<br>1、A对信息签名的作用是确认这个信息是A发出的，不是别人发出的；<br>2、加密是对内容进行机密性保护，主要是保证信息内容不会被其他人获取，只有B可以获取。也就是保证整个过程的端到端的唯一确定性，这个信息是A发出的（不是别人），且是发给B的，只有B才被获得具体内容（别人就算截获信息也不能获得具体内容）。</p>
+<p>这只是大概说了作用，具体说来，涉及到密钥相关的东西。密钥有公钥和私钥之分。</p>
+<p>那么这里一共有两组四个密钥：<br>A的公钥（PUB_A），A的私钥（PRI_A）；B的公钥（PUB_B），B的私钥（PRI_B）。</p>
+<p>公钥一般用来加密，私钥用来签名。</p>
+<p>通常公钥是公开出去的，但是私钥只能自己私密持有。<br>公钥和私钥唯一对应，用某个公钥签名过得内容只能用对应的私钥才能解签验证；同样用某个私钥加密的内容只能用对应的公钥才能解密。</p>
+<p>这时A向B发送信息的整个签名和加密的过程如下：<br>1、A先用自己的私钥（PRI_A）对信息（一般是信息的摘要）进行签名。<br>2、A接着使用B的公钥（PUB_B）对信息内容和签名信息进行加密。</p>
+<p>这样当B接收到A的信息后，获取信息内容的步骤如下：<br>1、B用自己的私钥（PRI_B）解密A用B的公钥（PUB_B）加密的内容；<br>2、得到解密后的明文后用A的公钥（PUB_A）解签A用A自己的私钥（PRI_A）的签名。</p>
+<p>从而整个过程就保证了开始说的端到端的唯一确认。<br>A的签名只有A的公钥才能解签，这样B就能确认这个信息是A发来的。<br>A的加密只有B的私钥才能解密，这样A就能确认这份信息只能被B读取。</p>
+<p>这个过程可以这么个故事来概括:<br>B的银行卡落到A的家里了，A要给B邮寄银行卡，提前和B说了我要给你寄银行卡(B拿到A的公钥)，<br>A在寄银行卡的时候要求快递员在B收到东西时说出是谁寄的(A用自己的私钥进行签名)，只有说对了才给B(B用A的公钥验证签名)。</p>
+<p>这张银行卡对于快递员来说是加密的(快递员既不知道银行卡是谁的，也不知道银行卡密码)，但是对于A来说，A知道银行卡是谁的(相当于B的公钥)，而对于B来说，B有银行卡的密码(B的私钥)。</p>
 ]]></content>
       
         
@@ -96,8 +93,140 @@
     </entry>
     
     <entry>
+      <title><![CDATA[iOS 一直弹出登录iCloud的解决方法]]></title>
+      <url>/2017/01/05/11/</url>
+      <content type="html"><![CDATA[<p>一直弹出的时候，你随便输入密码，输三次，它会出现让你重设密码，然后点击重设，会出现网页，然后直接按home键就可以 ，前提是必须要连上网。<br><a id="more"></a><br>一直弹出的时候，你随便输入密码，输三次，它会出现让你重设密码，然后点击重设，会出现网页，然后直接按home键就可以 ，前提是必须要连上网。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Mac下如何查看Git的全局忽略列表]]></title>
+      <url>/2016/11/22/6/</url>
+      <content type="html"><![CDATA[<p>有时在使用Git的时候会发现有些文件明明在目录里，但是Git却没有自动添加到版本跟踪里面，查看仓库的忽略列表也没有，那么有很大可能是在Git的全局忽略列表里。<br><a id="more"></a><br>有时在使用Git的时候会发现有些文件明明在目录里，但是Git却没有自动添加到版本跟踪里面，查看仓库的忽略列表也没有，那么有很大可能是在Git的全局忽略列表里。</p>
+<p>打开Finder(如果连这个都不知道的话，还是用回Windows吧)<br>在显示器的顶部菜单选择前往-&gt;前往文件夹<br>输入~/.gitignore_global</p>
+<p>右键用记事本打开即可</p>
+<p>如果不显示，请允许Mac显示所有隐藏文件！！<br>打开终端，输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true       此命令显示隐藏文件</span><br><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool false      此命令关闭显示隐藏文件</span><br></pre></td></tr></table></figure></p>
+<p>命令运行之后需要重新加载Finder：快捷键option+command+esc，选中Finder，重新启动即可<br>重启电脑也可以。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Swift3 单例模式]]></title>
+      <url>/2016/11/16/8/</url>
+      <content type="html"><![CDATA[<p>单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。<br><a id="more"></a><br>常见的有这么几种方法</p>
+<ol>
+<li>第一种<br>最简单也是最常用的，这里的所有单例init方法一定要定义成private的，不然外部依然可以使用init方法初始化变量。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final class Single: NSObject &#123;</span><br><span class="line">    static let shared = Single()</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>final关键字的作用是这个类或方法不希望被继承和重写</p>
+<ol>
+<li>第二种<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public extension DispatchQueue &#123;</span><br><span class="line">    private static var onceToken = [String]()</span><br><span class="line">    public class func once(_ token: String, _ block:@escaping () -&gt; Void) &#123;</span><br><span class="line">        objc_sync_enter(self)</span><br><span class="line">        defer &#123;</span><br><span class="line">            objc_sync_exit(self)</span><br><span class="line">        &#125;</span><br><span class="line">        if onceToken.contains(token) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        onceToken.append(token)</span><br><span class="line">        block()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Single2: NSObject &#123;</span><br><span class="line">    static func shared() -&gt; Single2 &#123;</span><br><span class="line">        struct Singleton &#123;</span><br><span class="line">            static var single = Single2()</span><br><span class="line">        &#125;</span><br><span class="line">        DispatchQueue.once(&quot;YouShaoduo&quot;) &#123;</span><br><span class="line">            Singleton.single = shared()</span><br><span class="line">        &#125;</span><br><span class="line">        return Singleton.single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>第二种完全是OC风格的单例，但是由于Swift3中废弃了原来的dispatch_once_t，所以需要先给DispatchQueue添加一个extension，实现原先的dispatch_once_t效果</p>
+<ol>
+<li><p>第三种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private let single = Single3()</span><br><span class="line">final class Single3: NSObject &#123;</span><br><span class="line">    static var shared: Single3 &#123;</span><br><span class="line">        return single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fileprivate override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第四种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">final class Single4: NSObject &#123;</span><br><span class="line">    static var shared: Single4 &#123;</span><br><span class="line">        struct Static &#123;</span><br><span class="line">            static let instance: Single4 = Single4()</span><br><span class="line">        &#125;</span><br><span class="line">        return Static.instance</span><br><span class="line">    &#125;</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这种方法的实现原理是在方法内定义静态变量</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Swift </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[设置Git区分文件名大小写]]></title>
+      <url>/2016/11/16/5/</url>
+      <content type="html"><![CDATA[<p>git 默认不区分文件名大小写。<br><a id="more"></a><br>git 默认不区分文件名大小写。</p>
+<p>当你创建一个文件后,叫 readme.md 写入内容后 提交到线上代码仓库.</p>
+<p>然后你在本地修改文件名为 Readme.md 接着你去提交,发现代码没有变化.</p>
+<p>控制台输入git status 也不显示任何信息</p>
+<p>那么就配置git 使其对文件名大小写敏感，直接在终端中输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config core.ignorecase false</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[SourceTree(Git)不识别新添加的文件]]></title>
+      <url>/2016/11/16/10/</url>
+      <content type="html"><![CDATA[<p>今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。<br><a id="more"></a><br>今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。<br>找了好久没找到，无奈只能自己试验了。</p>
+<p>工作目录中，新建一个文件，比如一个.h和.m文件。</p>
+<p>但是，git无法识别这些文件。</p>
+<p>用git status命令，返回目录是clean的。表明没有任何修改。说明git没有识别到这些新增加的文件。也说明这个问题是git内部的问题，跟用什么版本控制工具没关系（不是sourcetree的锅）</p>
+<p>首先，找到了原因，那么强制给他加一下，用终端到文件目录下，然后输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add 1.m</span><br></pre></td></tr></table></figure></p>
+<p>返回无法添加，说1.m已经处于.gitignore中。但是iganore中明明没有忽略这些m文件。</p>
+<p>那就更狠一点，输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add -f 1.m</span><br></pre></td></tr></table></figure></p>
+<p>这样就可以将1.m添加到git的版本控制中。</p>
+<p>如果直接git add -f 1.m</p>
+<p>报错，无法找到文件1.m</p>
+<p>那么就将1.m的完整路径输入即可。</p>
+<p>建议先看一下全局忽略列表里有没有，查看Git全局忽略列表的方法在我的另一篇文章中有，请自行查阅。。。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Swift 中的for循环，正序与逆序(倒序)]]></title>
+      <url>/2016/11/02/9/</url>
+      <content type="html"><![CDATA[<p>看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。<br><a id="more"></a><br>看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i in (0...10).reversed() &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>用这个就可以倒序for循环了</p>
+<p>还有另一种比较优雅而且装X的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i in stride(from: 3, through: 0, by: -1) &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Swift 的 stride 函数返回一个任意可变步长 类型值的序列。可变步长类型是可以设置偏移量的一维标量。<br>他有两个变种，<br>from，to，最后一个值将会严格小(大)于to的值<br>stride(from:3, to:0, by:-1) 表示3，2，1</p>
+<p>from，through，最后一个值将会小(大)于等于through的值<br>stride(from:3, through:0, by:-1) 表示3，2，1，0</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Swift </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[SourceTree超前一个版本，落后N个版本]]></title>
-      <url>/2017/11/30/1/</url>
+      <url>/2016/10/08/1/</url>
       <content type="html"><![CDATA[<p>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
 <p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br><a id="more"></a><br>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
 <p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br>然后输入(不要用这个，用下面的)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure></p>
@@ -119,6 +248,26 @@
         <tags>
             
             <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS获取当前版本号 Bundle ID等信息的方法]]></title>
+      <url>/2016/08/23/7/</url>
+      <content type="html"><![CDATA[<p>很多地方都会用到获取当前App的版本号。<br><a id="more"></a><br>1：获取bundle Id信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[NSBundle mainBundle] bundleIdentifier];</span><br></pre></td></tr></table></figure></p>
+<p>2：获取版本号：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[[NSBundle mainBundle]infoDictionary] objectForKey:@&quot;CFBundleShortVersionString&quot;];</span><br></pre></td></tr></table></figure></p>
+<p>3：获取build号：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[[NSBundle mainBundle]infoDictionary] objectForKey:@&quot;CFBundleVersion&quot;];</span><br></pre></td></tr></table></figure></p>
+<p>4：获取App显示名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[[NSBundle mainBundle]infoDictionary] objectForKey:@&quot;CFBundleDisplayName&quot;];</span><br></pre></td></tr></table></figure></p>
+<p>其实 [[NSBundle mainBundle]infoDictionary] 获得的是一个字典，里边放着Info.plist文件中的各种信息，根据不同的键去即可，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">CFBundleDevelopmentRegion</span><br><span class="line"></span><br><span class="line">CFBundleDisplayName</span><br><span class="line"></span><br><span class="line">CFBundleExecutable</span><br><span class="line"></span><br><span class="line">CFBundleExecutablePath</span><br><span class="line"></span><br><span class="line">CFBundleIdentifier</span><br><span class="line"></span><br><span class="line">CFBundleInfoDictionaryVersion = &quot;6.0&quot;;</span><br><span class="line"></span><br><span class="line">CFBundleInfoPlistURL</span><br><span class="line"></span><br><span class="line">CFBundleName</span><br><span class="line"></span><br><span class="line">CFBundlePackageType</span><br><span class="line"></span><br><span class="line">CFBundleShortVersionString</span><br><span class="line"></span><br><span class="line">CFBundleSignature</span><br><span class="line"></span><br><span class="line">CFBundleSupportedPlatforms</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOS </tag>
             
         </tags>
         
