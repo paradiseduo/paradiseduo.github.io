@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。">
+<meta name="description" content="堆和栈是数据结构中最常见的两种结构。">
 <meta name="keywords" content="其他">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SourceTree(Git)不识别新添加的文件">
-<meta property="og:url" content="https://youshaoduo.github.io/2016/11/16/10/index.html">
+<meta property="og:title" content="关于数据结构和内存中堆和栈，你可能还不知道的几个区别">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/03/16/15/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。">
+<meta property="og:description" content="堆和栈是数据结构中最常见的两种结构。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:09:27.000Z">
+<meta property="og:updated_time" content="2017-12-06T10:28:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SourceTree(Git)不识别新添加的文件">
-<meta name="twitter:description" content="今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。">
+<meta name="twitter:title" content="关于数据结构和内存中堆和栈，你可能还不知道的几个区别">
+<meta name="twitter:description" content="堆和栈是数据结构中最常见的两种结构。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>SourceTree(Git)不识别新添加的文件 | ParadiseDuo的日记本</title>
+<title>关于数据结构和内存中堆和栈，你可能还不知道的几个区别 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-10" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-15" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/16/10/" class="article-date">
-      <time datetime="2016-11-16T02:35:13.000Z" itemprop="datePublished">2016-11-16</time>
+      <a href="/2017/03/16/15/" class="article-date">
+      <time datetime="2017-03-16T02:21:02.000Z" itemprop="datePublished">2017-03-16</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      SourceTree(Git)不识别新添加的文件
+      关于数据结构和内存中堆和栈，你可能还不知道的几个区别
     </h1>
   
 
@@ -319,18 +319,24 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。<br><a id="more"></a><br>今天在做项目的时候新建了一个viewController，但是sourceTree只显示新增了.h文件，在网上找了许多方法发现没有用，比如那个删掉.git隐藏文件的，删掉就SB了。<br>找了好久没找到，无奈只能自己试验了。</p>
-<p>工作目录中，新建一个文件，比如一个.h和.m文件。</p>
-<p>但是，git无法识别这些文件。</p>
-<p>用git status命令，返回目录是clean的。表明没有任何修改。说明git没有识别到这些新增加的文件。也说明这个问题是git内部的问题，跟用什么版本控制工具没关系（不是sourcetree的锅）</p>
-<p>首先，找到了原因，那么强制给他加一下，用终端到文件目录下，然后输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add 1.m</span><br></pre></td></tr></table></figure></p>
-<p>返回无法添加，说1.m已经处于.gitignore中。但是iganore中明明没有忽略这些m文件。</p>
-<p>那就更狠一点，输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add -f 1.m</span><br></pre></td></tr></table></figure></p>
-<p>这样就可以将1.m添加到git的版本控制中。</p>
-<p>如果直接git add -f 1.m</p>
-<p>报错，无法找到文件1.m</p>
-<p>那么就将1.m的完整路径输入即可。</p>
-<p>建议先看一下全局忽略列表里有没有，查看Git全局忽略列表的方法在我的另一篇文章中有，请自行查阅。。。</p>
+        <p>堆和栈是数据结构中最常见的两种结构。<br><a id="more"></a></p>
+<ol>
+<li><p>数据结构中的堆和栈<br>堆和栈在数据结构中是两种不同的数据结构。 两者都是数据项按序排列的数据结构。<br>栈：像是装数据的桶或者箱子<br>栈是大家比较熟悉的一种数据结构，它是一种具有后进先出的数据结构，也就是说后存放的先取，先存放的后取，这就类似于我们要在取放在箱子底部的东西（放进去比较早的物体），我们首先要移开压在它上面的物体（放入比较晚的物体）。<br>堆：像是一颗倒立的大树<br>堆是一种经过排序的树形数据结构，每个节点都有一个值。通常我们所说的堆的数据结构是指二叉树。堆的特点是根节点的值最小（或最大），且根节点的两个树也是一个堆。由于堆的这个特性，常用来实现优先队列，堆的存取是随意的，这就如同我们在图书馆的书架上取书，虽然书的摆放是有顺序的，但是我们想取任意一本时不必像栈一样，先取出前面所有的书，书架这种机制不同于箱子，我们可以直接取出我们想要的书。</p>
+</li>
+<li><p>内存分配中的堆和栈<br>我们现在经常用的并不是数据结构中的堆和栈，之所以说了数据结构中的堆和栈是为了和后面将要说的堆区和栈区区别开来，请大家一定要注意。<br>下面说一下C语言程序内存分配中的堆和栈，这里有必要把内存分配也提一下，大家不要嫌弃本姑娘萝莉啰嗦啦，一般情况下 程序存放在Rom或Flash中，运行事需要拷贝到内存中执行，内存会分别存储不同的信息。</p>
+</li>
+</ol>
+<p>内存中的栈区处于相对较高的地址，以地址的增长方向为上的话，栈地址是向下增长的。<br>栈中分配局部变量空间，堆区是向上增长的用于分配程序员申请的内存空间。另外还有静态区是分配静态变量，全局变量空间的。只读区是分配常量和程序代码空间的；以及其他一些分区。</p>
+<p>来看一个很经典的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int a = 0;  全局初始化区</span><br><span class="line">char *p1;  全局未初始化区</span><br><span class="line">void main ()&#123;</span><br><span class="line">    int b; 栈</span><br><span class="line">    char  s[] = &quot;abc&quot;;栈</span><br><span class="line">    char *p2; 栈</span><br><span class="line">    char *p3 = &quot;123456&quot;; 123456\0 在常量区，p3 在栈区</span><br><span class="line">    static  int c = 0； 全局（静态）初始化区</span><br><span class="line">    p1 = (char *)malloc(10);堆</span><br><span class="line">    p2 = (char *)malloc (20);堆</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>内存分配中栈区和堆区的区别<br>0、申请方式和回收方式不同<br>不知道你是否有点明白了，堆和栈的第一个区别就是申请方式的不同：栈（英文名字;stack）是系统自动分配空间的<br>，例如我们定义了一个 char a ；系统会自动的在栈上为其开辟空间。而堆（英文名字:heap）则是程序员根据需要自己申请的空间，例如malloc(10); 开辟是个字节的空间。由于栈上的空间是自动分配自动回收的，所以栈上的数据的生存周期只是在函数的运行过程中，运行后就释放掉，不可以再访问。而堆上的数据只要程序员不释放空间，就一直可以访问到，不过缺点是一旦忘记释放会造成内存泄露。</li>
+</ol>
+<p>1、 申请后系统的响应<br>栈 ： 只要栈的剩余空间大于所申请的空间，系统将为程序提供内存，否则将报异常提示栈溢出。</p>
+<p>堆：首先应该知道操作系统有一个记录空闲内存地址的链表，当系统受到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆。<br>结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序，另外，对于大多数系统，会在这块内存空间中的首地址处记录本次分配的大小，这样，代码中的delete语句才能正确的释放本内存空间。另外，由于找到的堆结点的大小不一定正好等于申请的大小，系统会自动的将多余的那部分重新放入空闲链表中。也就是说堆会在申请后还要做一些后续的工作这就会引出申请效率的问题</p>
+<p>2、申请效率的比较<br>栈：  由系统自动分配，速度较快。但程序员是无法控制的。<br>堆：  是由new分配的内存，一般速度比较慢，而且容易产生内存碎片，不过用起来最方便。</p>
+<p>3、 申请大小的限制<br>栈： 在Windows下，栈是向低地址扩展的数据结构，是一块连续的内存的区域。这句话的意思是栈顶的地址和栈的最大容量是系统预先规定好的，在Windows下，栈的大小是2M（也有的说是1M，总之是一个编译时就确定的常数），如果申请的空间超过栈的剩余空间时，将提示overflow。因此，能从栈获得的空间较小。<br>堆：堆是向高地址扩展的数据结构，是不连续的内存区域。这是由于系统是用链表来存储空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址。堆的大小受限于计算机系统中有效的虚拟内存。由此可见，堆获得的空间比较灵活，也比较大。</p>
+<p>4、堆和栈中的内存内容<br>由于栈的大小限制，所以用子函数还是有物理意义的，而不仅仅是逻辑意义。<br>栈：在函数调用时，第一个进栈的是主函数中函数调用后的下一条指令（函数调用语句的吓一跳可执行语句）的地址，然后是函数的各个参数，在大多数的C编译器中，参数是有右往左入栈的，然后是函数中的局部变量。注意静态变量是不入栈的。当本次函数调用结束后，局部变量先出栈，然后是参数，最后栈顶指针指向最开始存的地址，也就是主函数中的下一条指令，程序由该点继续运行。<br>堆：一般是在堆的头部用一个字节存放堆的大小。堆中的具体内容由程序员安排。<br>5、 关于堆和栈一个比较形象的比喻<br>栈：使用栈就像我们去饭馆里吃饭，只管点菜（发出申请）、付钱、吃（使用），吃饱了就走，不必理会切菜，洗菜等准备工作和洗碗、刷锅等扫尾工作，他的好处就是快捷，但是自由度小。</p>
+<p>堆：使用堆就像是自己动手做喜欢的菜肴，比较麻烦，但是比较符合自己的口味，而且自由度大</p>
 
       
     </div>
@@ -339,13 +345,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/16/15/">关于数据结构和内存中堆和栈，你可能还不知道的几个区别</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2016-11-16, 10:35:13</p>
-        <p><span>最后更新:</span>2017-12-05, 17:09:27</p>
+        <p><span>发布时间:</span>2017-03-16, 10:21:02</p>
+        <p><span>最后更新:</span>2017-12-06, 18:28:29</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/11/16/10/" title="SourceTree(Git)不识别新添加的文件">https://youshaoduo.github.io/2016/11/16/10/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/11/16/10/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/16/15/" title="关于数据结构和内存中堆和栈，你可能还不知道的几个区别">https://youshaoduo.github.io/2017/03/16/15/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/03/16/15/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -358,15 +364,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2016/11/16/5/">
-                    设置Git区分文件名大小写
+                <a href="/2017/04/06/14/">
+                    你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2016/11/02/9/">
-                    Swift 中的for循环，正序与逆序(倒序)
+                <a href="/2017/01/05/11/">
+                    iOS 一直弹出登录iCloud的解决方法
                 </a>
             </div>
         
@@ -414,7 +420,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"SourceTree(Git)不识别新添加的文件　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"关于数据结构和内存中堆和栈，你可能还不知道的几个区别　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -454,7 +460,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/11/16/5/" title="上一篇: 设置Git区分文件名大小写">
+            <a href="/2017/04/06/14/" title="上一篇: 你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -462,7 +468,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/11/02/9/" title="下一篇: Swift 中的for循环，正序与逆序(倒序)">
+            <a href="/2017/01/05/11/" title="下一篇: iOS 一直弹出登录iCloud的解决方法">
                 <i class="fa fa-angle-right"></i>
             </a>
         

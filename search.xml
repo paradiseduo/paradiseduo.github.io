@@ -93,6 +93,59 @@
     </entry>
     
     <entry>
+      <title><![CDATA[你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！]]></title>
+      <url>/2017/04/06/14/</url>
+      <content type="html"><![CDATA[<p>其实这个运算符很容易被人忽略，他就是C语言中的位异或运算符^<br>位运算符家族中，最常用的，莫过于异或运算符。<br><a id="more"></a><br>其实这个运算符很容易被人忽略，他就是C语言中的位异或运算符^<br>位运算符家族中，最常用的，莫过于异或运算符。</p>
+<p>我们先看异或运算符的定义： 参与运算的两个值，如果两个相应位相同，则结果为0，否则为1。<br>即：0^0=0， 1^0=1， 0^1=1， 1^1=0</p>
+<p>例如：10100001^00010001=10110000<br>0^0=0,0^1=1    可理解为： 0异或任何数，其结果=任何数<br>1^0=1,1^1=0    可理解为： 1异或任何数，其结果=任何数取反<br>任何数异或自己，等于把自己置0</p>
+<p>通过按位异或运算，可以实现两个值的交换，而不必使用临时变量。例如交换两个整数a，b的值，可通过下列语句实现：<br>a=10100001,   b=00000110<br>a=a^b； 　　//a=10100111<br>b=b^a； 　　//b=10100001<br>a=a^b； 　　//a=00000110</p>
+<p>异或运算符的特点是：数a两次异或同一个数b（a=a^b^b）仍然为原值a.</p>
+<p>利用他的特点，我们可以解决一个常见的问题：<br>Single Number: 整数型数组中，每个元素均出现两次，除了一个元素例外，如何找出这个元素？能否设计一个线性时间的算法，且不需要额外的存储空间？</p>
+<p>其实O(n)的算法不容易一下子想到，先说说常规的解决思路，有如下两种：<br>1、对元素的出现次数进行统计，可进行n*n循环，判断元素是否只出现了一次。这样时间复杂度为O(n^2), 不需要额外空间。<br>2、先对元素进行排序，然后进行相邻两元素的对比，如a1和a2对比，a3和a4对比，如果不同，则前一个元素(a1、a3)就是所要查找的元素。<br>这两种解法的时间复杂度都比O(n)更高。但是，如果你运用了异或运算符的特点，那么这个问题就很容易解决了，算法复杂度为O(n)，且不需要额外空间，像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int singleNumber(int A[], int n) &#123;</span><br><span class="line">    int result = 0;</span><br><span class="line">    for (int i = 0; i&lt;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        result ^=A[i];</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关于数据结构和内存中堆和栈，你可能还不知道的几个区别]]></title>
+      <url>/2017/03/16/15/</url>
+      <content type="html"><![CDATA[<p>堆和栈是数据结构中最常见的两种结构。<br><a id="more"></a></p>
+<ol>
+<li><p>数据结构中的堆和栈<br>堆和栈在数据结构中是两种不同的数据结构。 两者都是数据项按序排列的数据结构。<br>栈：像是装数据的桶或者箱子<br>栈是大家比较熟悉的一种数据结构，它是一种具有后进先出的数据结构，也就是说后存放的先取，先存放的后取，这就类似于我们要在取放在箱子底部的东西（放进去比较早的物体），我们首先要移开压在它上面的物体（放入比较晚的物体）。<br>堆：像是一颗倒立的大树<br>堆是一种经过排序的树形数据结构，每个节点都有一个值。通常我们所说的堆的数据结构是指二叉树。堆的特点是根节点的值最小（或最大），且根节点的两个树也是一个堆。由于堆的这个特性，常用来实现优先队列，堆的存取是随意的，这就如同我们在图书馆的书架上取书，虽然书的摆放是有顺序的，但是我们想取任意一本时不必像栈一样，先取出前面所有的书，书架这种机制不同于箱子，我们可以直接取出我们想要的书。</p>
+</li>
+<li><p>内存分配中的堆和栈<br>我们现在经常用的并不是数据结构中的堆和栈，之所以说了数据结构中的堆和栈是为了和后面将要说的堆区和栈区区别开来，请大家一定要注意。<br>下面说一下C语言程序内存分配中的堆和栈，这里有必要把内存分配也提一下，大家不要嫌弃本姑娘萝莉啰嗦啦，一般情况下 程序存放在Rom或Flash中，运行事需要拷贝到内存中执行，内存会分别存储不同的信息。</p>
+</li>
+</ol>
+<p>内存中的栈区处于相对较高的地址，以地址的增长方向为上的话，栈地址是向下增长的。<br>栈中分配局部变量空间，堆区是向上增长的用于分配程序员申请的内存空间。另外还有静态区是分配静态变量，全局变量空间的。只读区是分配常量和程序代码空间的；以及其他一些分区。</p>
+<p>来看一个很经典的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int a = 0;  全局初始化区</span><br><span class="line">char *p1;  全局未初始化区</span><br><span class="line">void main ()&#123;</span><br><span class="line">    int b; 栈</span><br><span class="line">    char  s[] = &quot;abc&quot;;栈</span><br><span class="line">    char *p2; 栈</span><br><span class="line">    char *p3 = &quot;123456&quot;; 123456\0 在常量区，p3 在栈区</span><br><span class="line">    static  int c = 0； 全局（静态）初始化区</span><br><span class="line">    p1 = (char *)malloc(10);堆</span><br><span class="line">    p2 = (char *)malloc (20);堆</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>内存分配中栈区和堆区的区别<br>0、申请方式和回收方式不同<br>不知道你是否有点明白了，堆和栈的第一个区别就是申请方式的不同：栈（英文名字;stack）是系统自动分配空间的<br>，例如我们定义了一个 char a ；系统会自动的在栈上为其开辟空间。而堆（英文名字:heap）则是程序员根据需要自己申请的空间，例如malloc(10); 开辟是个字节的空间。由于栈上的空间是自动分配自动回收的，所以栈上的数据的生存周期只是在函数的运行过程中，运行后就释放掉，不可以再访问。而堆上的数据只要程序员不释放空间，就一直可以访问到，不过缺点是一旦忘记释放会造成内存泄露。</li>
+</ol>
+<p>1、 申请后系统的响应<br>栈 ： 只要栈的剩余空间大于所申请的空间，系统将为程序提供内存，否则将报异常提示栈溢出。</p>
+<p>堆：首先应该知道操作系统有一个记录空闲内存地址的链表，当系统受到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆。<br>结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序，另外，对于大多数系统，会在这块内存空间中的首地址处记录本次分配的大小，这样，代码中的delete语句才能正确的释放本内存空间。另外，由于找到的堆结点的大小不一定正好等于申请的大小，系统会自动的将多余的那部分重新放入空闲链表中。也就是说堆会在申请后还要做一些后续的工作这就会引出申请效率的问题</p>
+<p>2、申请效率的比较<br>栈：  由系统自动分配，速度较快。但程序员是无法控制的。<br>堆：  是由new分配的内存，一般速度比较慢，而且容易产生内存碎片，不过用起来最方便。</p>
+<p>3、 申请大小的限制<br>栈： 在Windows下，栈是向低地址扩展的数据结构，是一块连续的内存的区域。这句话的意思是栈顶的地址和栈的最大容量是系统预先规定好的，在Windows下，栈的大小是2M（也有的说是1M，总之是一个编译时就确定的常数），如果申请的空间超过栈的剩余空间时，将提示overflow。因此，能从栈获得的空间较小。<br>堆：堆是向高地址扩展的数据结构，是不连续的内存区域。这是由于系统是用链表来存储空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址。堆的大小受限于计算机系统中有效的虚拟内存。由此可见，堆获得的空间比较灵活，也比较大。</p>
+<p>4、堆和栈中的内存内容<br>由于栈的大小限制，所以用子函数还是有物理意义的，而不仅仅是逻辑意义。<br>栈：在函数调用时，第一个进栈的是主函数中函数调用后的下一条指令（函数调用语句的吓一跳可执行语句）的地址，然后是函数的各个参数，在大多数的C编译器中，参数是有右往左入栈的，然后是函数中的局部变量。注意静态变量是不入栈的。当本次函数调用结束后，局部变量先出栈，然后是参数，最后栈顶指针指向最开始存的地址，也就是主函数中的下一条指令，程序由该点继续运行。<br>堆：一般是在堆的头部用一个字节存放堆的大小。堆中的具体内容由程序员安排。<br>5、 关于堆和栈一个比较形象的比喻<br>栈：使用栈就像我们去饭馆里吃饭，只管点菜（发出申请）、付钱、吃（使用），吃饱了就走，不必理会切菜，洗菜等准备工作和洗碗、刷锅等扫尾工作，他的好处就是快捷，但是自由度小。</p>
+<p>堆：使用堆就像是自己动手做喜欢的菜肴，比较麻烦，但是比较符合自己的口味，而且自由度大</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[iOS 一直弹出登录iCloud的解决方法]]></title>
       <url>/2017/01/05/11/</url>
       <content type="html"><![CDATA[<p>一直弹出的时候，你随便输入密码，输三次，它会出现让你重设密码，然后点击重设，会出现网页，然后直接按home键就可以 ，前提是必须要连上网。<br><a id="more"></a><br>一直弹出的时候，你随便输入密码，输三次，它会出现让你重设密码，然后点击重设，会出现网页，然后直接按home键就可以 ，前提是必须要连上网。</p>
@@ -242,6 +295,21 @@
 <li>穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。</li>
 <li>要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。</li>
 </ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[NSProcessInfo类方法]]></title>
+      <url>/2016/08/26/13/</url>
+      <content type="html"><![CDATA[<p>NSProcessInfo类中的方法很有用。<br><a id="more"></a><br>let i =NSProcessInfo.processInfo()<br>print(i.systemUptime)          //返回系统的运行时长<br>print(i.processName)           //返回当前正在执行的进程名称<br>print(i.arguments)             //以NSString对象数组的形式返回当前进程的参数<br>print(i.environment)           //返回变量/值对词典，以描述当前的环境变量（比如PATH和HOME）及其值<br>print(i.processIdentifier)     //返回进程标识符，它是操作系统赋予进程的唯一数字，用于识别每个正在运行的进程<br>print(i.processorCount)        //返回线程数量<br>print(i.globallyUniqueString)  //每次调用这个方法时，都返回不同的单值字符串，可以用这个字符串生成单值临时文件名<br>print(i.hostName)              //返回主机系统的名称（在笔者的iOS系统中，返回的是iPhone）<br>print(i.operatingSystemVersion)//返回操作系统的版本<br>print(i.operatingSystemVersionString)//返回操作系统的版本以及build号</p>
 ]]></content>
       
         
