@@ -15,13 +15,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="ParadiseDuo的日记本">
-<meta property="og:url" content="https://youshaoduo.github.io/archives/2016/08/index.html">
+<meta name="description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应">
+<meta name="keywords" content="安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 安全模型浅析(一) ---- 安全启动">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/03/26/16/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应用同样会被拒绝。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-12T02:57:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ParadiseDuo的日记本">
+<meta name="twitter:title" content="iOS 安全模型浅析(一) ---- 安全启动">
+<meta name="twitter:description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应用同样会被拒绝。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -53,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Archives: 2016/8 | ParadiseDuo的日记本</title>
+<title>iOS 安全模型浅析(一) ---- 安全启动 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -63,8 +68,8 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
-        isArchive: true,
+        isPost: true,
+        isArchive: false,
         isTag: false,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
@@ -274,89 +279,197 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-16" class="article article-type-post" itemscope itemprop="blogPost">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/26/13/" class="archive-article-date">
-      <time datetime="2016-08-26T10:20:56.000Z" itemprop="datePublished">08-26</time>
+    <div class="article-meta">
+      <a href="/2017/03/26/16/" class="article-date">
+      <time datetime="2017-03-26T02:48:00.000Z" itemprop="datePublished">2017-03-26</time>
 </a>
 
 
-        </div>
-         
+    </div>
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/26/13/">NSProcessInfo类方法</a>
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 安全模型浅析(一) ---- 安全启动
     </h1>
   
 
-        <div class="article-info info-on-archive">
-          
+      </header>
+      
+      <div class="article-info article-info-post">
+        
 
-          
+        
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
     </div>
 
-        </div>
         <div class="clearfix"></div>
-    </header>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应用同样会被拒绝。<br><a id="more"></a><br>就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的<a href="https://developer.apple.com/app-store/review/guidelines/" target="_blank" rel="noopener">指导手册</a>，但是很多遵循了执导的应用同样会被拒绝。</p>
+<p>当然，什么是恶意程序是由苹果来定义的，苹果使用AppStore来控制或限制iOS平台上的应用程序的功能，这就意味着如果要实现某个特定的功能，唯一的手段就是要将设备越狱或者骗过应用商店的审查。比如通过某些特殊的操作(摇动手机XX次，出现一个控制按钮)开启隐藏功能。</p>
+<p>官方的应用审查永远无法抓到那些钻空子的恶意软件，所以需要另外一套高效的机制来阻止恶意程序破坏操作系统的安全。在接下来的时间里，我会不定期的更新博客，介绍iOS的一些基本安全组件是如何阻止恶意攻击和保护数据的。</p>
+<h2 id="首先介绍iOS的安全启动机制："><a href="#首先介绍iOS的安全启动机制：" class="headerlink" title="首先介绍iOS的安全启动机制："></a>首先介绍iOS的安全启动机制：</h2><p>当启动一台iOS设备时，系统首先会从只读的ROM中读取初始化指令，也就是系统的引导程序(事实上所有的操作系统启动时都要经过这一步，只是过程略有不同)。这个引导ROM包含苹果官方权威认证的公钥，他会验证底层启动加载器(LLB)的签名，一旦通过验证后就启动系统。LLB会所一些基础工作，然后验证第二级引导程序iBoot。iBoot启动后，设备就可以进入恢复模式或启动内核。在iBoot验证完内核签名的合法性之后，整个启动程序开始步入正轨：加载驱动程序、检测设备、启动系统守护进程。</p>
+<p>这个信任链会确保所有的系统组件都有苹果官方写入、签名、分发，不能来自第三方机构，特别是那些恶意攻击者或者是给设备越狱的黑客。应用程序启动时也会用信任链去审查签名。所有的应用都必须直接或间接地由苹果签名(这就是为什么要申请开发者账号，生成开发和发布证书以及申请App ID的原因。很多开发者也经历过安装测试APP时提示你信任开发者证书，这些都是验证组件的功劳)。</p>
+<p>越狱的工作原理正是攻击这一信任链。所有的越狱工具的作者都需要找到这一信任链上的漏洞，从而禁止掉信任链中负责验证的组件。破解引导ROM通常是最可取的办法，因为该组件不会因为苹果今后的软件更新而改变。</p>
+
+      
+    </div>
+    
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2016/08/23/7/" class="archive-article-date">
-      <time datetime="2016-08-23T04:51:46.000Z" itemprop="datePublished">08-23</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2017-03-26, 10:48:00</p>
+        <p><span>最后更新:</span>2017-12-12, 10:57:49</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/26/16/" title="iOS 安全模型浅析(一) ---- 安全启动">https://youshaoduo.github.io/2017/03/26/16/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/03/26/16/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
     </div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/26/17/">
+                    iOS 安全模型浅析(二) ---- 沙盒机制
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/16/15/">
+                    关于数据结构和内存中堆和栈，你可能还不知道的几个区别
+                </a>
+            </div>
+        
+    </nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#首先介绍iOS的安全启动机制："><span class="toc-number">1.</span> <span class="toc-text">首先介绍iOS的安全启动机制：</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"iOS 安全模型浅析(一) ---- 安全启动　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
 
     
 
+
+
+  
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
+  
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/26/17/" title="上一篇: iOS 安全模型浅析(二) ---- 沙盒机制">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/16/15/" title="下一篇: 关于数据结构和内存中堆和栈，你可能还不知道的几个区别">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/14/">你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/15/">关于数据结构和内存中堆和栈，你可能还不知道的几个区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/8/">Swift3 单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/13/">NSProcessInfo类方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">

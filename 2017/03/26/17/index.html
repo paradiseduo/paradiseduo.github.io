@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
-<meta name="keywords" content="Swift">
+<meta name="description" content="苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。">
+<meta name="keywords" content="安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Swift3 单例模式">
-<meta property="og:url" content="https://youshaoduo.github.io/2016/11/16/8/index.html">
+<meta property="og:title" content="iOS 安全模型浅析(二) ---- 沙盒机制">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/03/26/17/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
+<meta property="og:description" content="苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:05:07.000Z">
+<meta property="og:updated_time" content="2017-12-12T03:02:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Swift3 单例模式">
-<meta name="twitter:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
+<meta name="twitter:title" content="iOS 安全模型浅析(二) ---- 沙盒机制">
+<meta name="twitter:description" content="苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Swift3 单例模式 | ParadiseDuo的日记本</title>
+<title>iOS 安全模型浅析(二) ---- 沙盒机制 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-8" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-17" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/16/8/" class="article-date">
-      <time datetime="2016-11-16T04:51:50.000Z" itemprop="datePublished">2016-11-16</time>
+      <a href="/2017/03/26/17/" class="article-date">
+      <time datetime="2017-03-26T12:08:04.000Z" itemprop="datePublished">2017-03-26</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Swift3 单例模式
+      iOS 安全模型浅析(二) ---- 沙盒机制
     </h1>
   
 
@@ -309,7 +309,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,26 +319,14 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。<br><a id="more"></a><br>常见的有这么几种方法</p>
-<ol>
-<li>第一种<br>最简单也是最常用的，这里的所有单例init方法一定要定义成private的，不然外部依然可以使用init方法初始化变量。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final class Single: NSObject &#123;</span><br><span class="line">    static let shared = Single()</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>final关键字的作用是这个类或方法不希望被继承和重写</p>
-<ol>
-<li>第二种<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public extension DispatchQueue &#123;</span><br><span class="line">    private static var onceToken = [String]()</span><br><span class="line">    public class func once(_ token: String, _ block:@escaping () -&gt; Void) &#123;</span><br><span class="line">        objc_sync_enter(self)</span><br><span class="line">        defer &#123;</span><br><span class="line">            objc_sync_exit(self)</span><br><span class="line">        &#125;</span><br><span class="line">        if onceToken.contains(token) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        onceToken.append(token)</span><br><span class="line">        block()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Single2: NSObject &#123;</span><br><span class="line">    static func shared() -&gt; Single2 &#123;</span><br><span class="line">        struct Singleton &#123;</span><br><span class="line">            static var single = Single2()</span><br><span class="line">        &#125;</span><br><span class="line">        DispatchQueue.once(&quot;YouShaoduo&quot;) &#123;</span><br><span class="line">            Singleton.single = shared()</span><br><span class="line">        &#125;</span><br><span class="line">        return Singleton.single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>第二种完全是OC风格的单例，但是由于Swift3中废弃了原来的dispatch_once_t，所以需要先给DispatchQueue添加一个extension，实现原先的dispatch_once_t效果</p>
-<ol>
-<li><p>第三种</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private let single = Single3()</span><br><span class="line">final class Single3: NSObject &#123;</span><br><span class="line">    static var shared: Single3 &#123;</span><br><span class="line">        return single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fileprivate override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第四种</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">final class Single4: NSObject &#123;</span><br><span class="line">    static var shared: Single4 &#123;</span><br><span class="line">        struct Static &#123;</span><br><span class="line">            static let instance: Single4 = Single4()</span><br><span class="line">        &#125;</span><br><span class="line">        return Static.instance</span><br><span class="line">    &#125;</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这种方法的实现原理是在方法内定义静态变量</p>
+        <p>苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。<br><a id="more"></a><br>苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。</p>
+<p>沙盒机制历史上被称作安全带，是一种基于FreeBSD系统(是一种类UNIX操作系统，是由经过BSD、386BSD和4.4BSD发展而来的Unix的一个重要分支)TrustedBSD框架的强制访问控制(MAC)机制，他的主要推动者是罗伯特沃森。这里我只是简单介绍一下，详细的信息以及介绍可以看这里<a href="http://shouce.jb51.net/freebsd-arch-handbook/mac.html" target="_blank" rel="noopener">TrustedBSD MAC框架介绍</a>，这份文档写得十分详尽，感兴趣的读者可以看看。</p>
+<p>言归正题，沙盒机制采用一种类似于Lisp的配置语言来描述那些资源系统可以访问，哪些禁止访问。这些资源包括文件、系统服务、网络连接、内存资源等。MAC机制不同于传统的访问控制机制(比如自主访问控制DAC)，他不允许主体(比如用户进程)操作对象(文件、套接字等)。DAC最常见的形式就是Unix系统上的用户、组和其它权限，所有这些都可以被授予读、写或执行的权限。在DAC系统中，用户如果拥有了一个对象的所有权，也就拥有了该对象的修改权限。例如，你有一个文件，你可以将其设置为全局可读或可写，这显然是破坏了访问机制。</p>
+<p>MAC是一个广义的术语，在沙盒中意味着应用程序被关进了一个虚拟的容器。该容器遵循一系列的特定规则，即哪些系统资源可以被访问，比如网络资源、文件读写、进程克隆等。在OS X中你可以部分控制应用程序的沙盒功能，但是在iOS中，所有的第三方应用都要遵循唯一的限制策略。</p>
+<p>在文件访问方面，一般只能访问应用程序的包目录。应用程序可以读写存储在该位置的文件。不过这一基本规则存在少许的例外。例如，在某些iOS版本中，图片一般存储在目录/private/var/mobile/Media/Photos/ 中。尽管它在应用程序的包目录之外，但第三方应用还是可以直接访问，这样应用程序就无需获得用户许可就能访问系统相册，在之前的iOS版本中，如果想要阻止应用程序滥用权力，就只能将希望寄托在苹果审核的身上。但是在最新的iOS10系统里，所有访问操作都必须经过授权，而且在应用开发时必须将要使用到的权限(如相册、相机、麦克风)写入plist文件中，不然应用程序在使用到这些API时会崩溃，而且审核应用时一定会被拒绝。</p>
+<p>安卓的访问控制机制与MAC不同。安卓实现了一个更加传统的DAC模型，应用程序都有自己的用户ID和属于该ID的文件夹，其权限管理严格按照传统的Unix文件权限管理运作。虽然两种机制工作起来都没有问题，但是MAC的扩展性总体来说还是要更强一些。例如，除了应用目录隔离，MAC机制还可以限制网络访问或守护系统进程的操作。</p>
+<h2 id="术语解析-详情请点文中链接查看-："><a href="#术语解析-详情请点文中链接查看-：" class="headerlink" title="术语解析(详情请点文中链接查看)："></a>术语解析(详情请点文中链接查看)：</h2><p>FreeBSD： 以一个内核安全扩展性框架(TrustedBSD MAC 框架)的方式，为若干强制访问控制策略(也称“集权式访问控制策略”) 提供试验性支持。MAC 框架是一个插入式的访问控制框架，允许新的安全策略更方便地融入内核：安全策略可以静态链入内核,也可以 在引导时加载,甚至在运行时动态加载。该框架所提供的标准化接口,使得运行在其上的安全策略模块能对系统对象的安全属性进行诸如标记等一系列操作。 MAC 框架的存在，简化了这些操作在策略模块中的实现，从而显著降低了新安全策略模块的开发难度。</p>
+<p>TrustedBSD：MAC 框架提供的机制,允许在其上运行的内核模块在内核编译或者运行时，对内核的访问控制模型进行扩展。 新的系统安全策略作为一个内核模块实现,并被链接到内核中；如果系统中同时存在多个安全策略模块，则它们的决策结果将以某种确定的方式组合。 为了给简化新安全策略的开发，MAC 向上提供了大量用于访问控制的基础设施，特别是对临时的或者持久的、策略无关的对象安全标记的支持。</p>
 
       
     </div>
@@ -347,13 +335,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/11/16/8/">Swift3 单例模式</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2016-11-16, 12:51:50</p>
-        <p><span>最后更新:</span>2017-12-05, 17:05:07</p>
+        <p><span>发布时间:</span>2017-03-26, 20:08:04</p>
+        <p><span>最后更新:</span>2017-12-12, 11:02:53</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/11/16/8/" title="Swift3 单例模式">https://youshaoduo.github.io/2016/11/16/8/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/11/16/8/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/26/17/" title="iOS 安全模型浅析(二) ---- 沙盒机制">https://youshaoduo.github.io/2017/03/26/17/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/03/26/17/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -366,15 +354,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2016/11/22/6/">
-                    Mac下如何查看Git的全局忽略列表
+                <a href="/2017/04/06/14/">
+                    你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2016/11/16/5/">
-                    设置Git区分文件名大小写
+                <a href="/2017/03/26/16/">
+                    iOS 安全模型浅析(一) ---- 安全启动
                 </a>
             </div>
         
@@ -386,7 +374,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#术语解析-详情请点文中链接查看-："><span class="toc-number">1.</span> <span class="toc-text">术语解析(详情请点文中链接查看)：</span></a></li></ol>
         
     </div>
     <style>
@@ -422,7 +410,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Swift3 单例模式　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iOS 安全模型浅析(二) ---- 沙盒机制　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -462,7 +450,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/11/22/6/" title="上一篇: Mac下如何查看Git的全局忽略列表">
+            <a href="/2017/04/06/14/" title="上一篇: 你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -470,7 +458,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/11/16/5/" title="下一篇: 设置Git区分文件名大小写">
+            <a href="/2017/03/26/16/" title="下一篇: iOS 安全模型浅析(一) ---- 安全启动">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
-<meta name="keywords" content="Swift">
+<meta name="description" content="iOS提供全盘加密，还为开发者提供了数据保护的API，用于进一步保护自己的文件。这两个机制可以实现远程抹除设备数据，在设备丢失的情况下保护用户数据免于泄露。">
+<meta name="keywords" content="安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Swift3 单例模式">
-<meta property="og:url" content="https://youshaoduo.github.io/2016/11/16/8/index.html">
+<meta property="og:title" content="iOS 安全模型浅析(三) ---- 数据保护和全盘加密">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/04/09/18/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
+<meta property="og:description" content="iOS提供全盘加密，还为开发者提供了数据保护的API，用于进一步保护自己的文件。这两个机制可以实现远程抹除设备数据，在设备丢失的情况下保护用户数据免于泄露。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:05:07.000Z">
+<meta property="og:updated_time" content="2017-12-12T02:59:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Swift3 单例模式">
-<meta name="twitter:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
+<meta name="twitter:title" content="iOS 安全模型浅析(三) ---- 数据保护和全盘加密">
+<meta name="twitter:description" content="iOS提供全盘加密，还为开发者提供了数据保护的API，用于进一步保护自己的文件。这两个机制可以实现远程抹除设备数据，在设备丢失的情况下保护用户数据免于泄露。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Swift3 单例模式 | ParadiseDuo的日记本</title>
+<title>iOS 安全模型浅析(三) ---- 数据保护和全盘加密 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-8" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-18" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/11/16/8/" class="article-date">
-      <time datetime="2016-11-16T04:51:50.000Z" itemprop="datePublished">2016-11-16</time>
+      <a href="/2017/04/09/18/" class="article-date">
+      <time datetime="2017-04-09T15:48:07.000Z" itemprop="datePublished">2017-04-09</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Swift3 单例模式
+      iOS 安全模型浅析(三) ---- 数据保护和全盘加密
     </h1>
   
 
@@ -309,7 +309,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,26 +319,23 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。<br><a id="more"></a><br>常见的有这么几种方法</p>
-<ol>
-<li>第一种<br>最简单也是最常用的，这里的所有单例init方法一定要定义成private的，不然外部依然可以使用init方法初始化变量。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final class Single: NSObject &#123;</span><br><span class="line">    static let shared = Single()</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>final关键字的作用是这个类或方法不希望被继承和重写</p>
-<ol>
-<li>第二种<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public extension DispatchQueue &#123;</span><br><span class="line">    private static var onceToken = [String]()</span><br><span class="line">    public class func once(_ token: String, _ block:@escaping () -&gt; Void) &#123;</span><br><span class="line">        objc_sync_enter(self)</span><br><span class="line">        defer &#123;</span><br><span class="line">            objc_sync_exit(self)</span><br><span class="line">        &#125;</span><br><span class="line">        if onceToken.contains(token) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        onceToken.append(token)</span><br><span class="line">        block()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Single2: NSObject &#123;</span><br><span class="line">    static func shared() -&gt; Single2 &#123;</span><br><span class="line">        struct Singleton &#123;</span><br><span class="line">            static var single = Single2()</span><br><span class="line">        &#125;</span><br><span class="line">        DispatchQueue.once(&quot;YouShaoduo&quot;) &#123;</span><br><span class="line">            Singleton.single = shared()</span><br><span class="line">        &#125;</span><br><span class="line">        return Singleton.single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>第二种完全是OC风格的单例，但是由于Swift3中废弃了原来的dispatch_once_t，所以需要先给DispatchQueue添加一个extension，实现原先的dispatch_once_t效果</p>
-<ol>
-<li><p>第三种</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private let single = Single3()</span><br><span class="line">final class Single3: NSObject &#123;</span><br><span class="line">    static var shared: Single3 &#123;</span><br><span class="line">        return single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fileprivate override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第四种</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">final class Single4: NSObject &#123;</span><br><span class="line">    static var shared: Single4 &#123;</span><br><span class="line">        struct Static &#123;</span><br><span class="line">            static let instance: Single4 = Single4()</span><br><span class="line">        &#125;</span><br><span class="line">        return Static.instance</span><br><span class="line">    &#125;</span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这种方法的实现原理是在方法内定义静态变量</p>
+        <p>iOS提供全盘加密，还为开发者提供了数据保护的API，用于进一步保护自己的文件。这两个机制可以实现远程抹除设备数据，在设备丢失的情况下保护用户数据免于泄露。<br><a id="more"></a><br>iOS提供全盘加密，还为开发者提供了数据保护的API，用于进一步保护自己的文件。这两个机制可以实现远程抹除设备数据，在设备丢失的情况下保护用户数据免于泄露。</p>
+<p>全盘加密其实解决了一个历史问题：用户数据会随设备一起被窃取。在笔记本或者台式机的环境下，如果想窃取数据，要么需要将硬盘转移到一个新机器上，要么引导一个操作系统来读取设备中的数据。文件系统加密并不能防止从一个正在运行的设备上窃取数据的行为。如果一个应用可以从磁盘中读取任意一个文件，那么文件系统加密其实是没有任何作用的，因为对于系统内核来说，任何尝试读取这些文件的进程都是透明解密的。相比于那些读文件的调用行为，文件系统加密工作在更底层。一旦攻击者攻破了系统验证，那他就能无障碍的读取任何文件。</p>
+<p>iOS设备通常是全天运行设计，他们的内部存储器不容易被拆卸。如果一个攻击者想要不通过验证就从设备中读取敏感信息，他必须把设备完全拆解，然后将闪存存储器连接到一个自定义的接口上来读取数据。不过从设备中获取数据有更为简单的方法，而不用拆手机(毕竟拆手机这种事情一般人也做不来)：代码执行漏洞、越狱等。</p>
+<p>iOS的全盘文件系统加密对于安全删除文件和远程设备擦除。传统的安全擦除文件的方法不适用于iOS设备，因为iOS设备主要使用固态硬盘(SSD)作为存储。固态硬盘的原理这里不再赘述，相信大家也都了解一些。SSD采用了减少磨损的机制，因此覆盖文件的操作无法保证真正覆盖硬盘中的旧数据。但是这不意味着我们对此束手无策，解决方法是确保文件被一个安全位置上的密钥加密，这样请求销毁数据的时候，可以直接丢弃密钥。iOS设备中使用的加密密钥是分层级的，只需要简单地丢弃一个加密密钥就能彻底销毁底层的数据，甚至是销毁整个文件系统(不得不说当时设计这个规则的人是真厉害)。</p>
+<h2 id="加密密钥的层级："><a href="#加密密钥的层级：" class="headerlink" title="加密密钥的层级："></a>加密密钥的层级：</h2><p>分层级的加密密钥其实是说用密钥来加密其他密钥，这样苹果就能更精确的控制数据什么时候可用。</p>
+<p>它们的层级关系是这样的：</p>
+<p>设备密钥+用户密码-&gt;层级密钥</p>
+<p>设备密钥-&gt;文件系统密钥-&gt;层级密钥</p>
+<p>层级密钥-&gt;文件密钥</p>
+<p>文件密钥(File Key)针对每个文件单独生成，存储在文件的元数据中。不同级别的文件需要使用不同强度的加密密钥。</p>
+<p>层级密钥(Class Key)的作用是专门为那些特殊数据提供不同级别的保护。在早先的iOS版本中，默认的保护等级是NSFileProtectionNone；但是从iOS5开始，默认的保护等级变成了NSFileProtectionCompleteUntilFirstUserAuthentication。</p>
+<p>文件系统密钥(Filesystem Key)是一种全局加密密钥，当元数据被层级密钥加密后，我们使用文件系统密钥来加密涉及文件安全的元数据。</p>
+<p>设备密钥(Device Key)通常被称为UID密钥，每台设备唯一，只能通过硬件的AES引擎访问，操作系统无法直接获取。这是系统的主密钥，他用来加密文件系统密钥和层级密钥。如果用户启用了用户密码(User Passcode)，他将与设备密钥结合起来加密层级密钥。</p>
+<p>一旦设置了用户密码，这个密钥等级也允许开发者自己决定本地存储的数据该如何被保护，包括：在设备锁定时能否被访问、数据能否备份到其它设备等。</p>
+<h2 id="钥匙串API"><a href="#钥匙串API" class="headerlink" title="钥匙串API"></a>钥匙串API</h2><p>iOS提供了钥匙串API来存储少量机密信息。开发者可以用来存储密码、机密密钥以及那些不能被其他应用访问的敏感信息。调用钥匙串API主要通过securityd守护进程来完成，即从SQLite数据库中提取数据。开发者可以指定在什么情况下允许应用读取密钥，这和数据保护的API类似。</p>
+<h2 id="数据保护API"><a href="#数据保护API" class="headerlink" title="数据保护API"></a>数据保护API</h2><p>数据保护API利用文件系统加密、钥匙串和用户密码，提供了一个额外的针对文件的保护层，开发者可以根据需求调用。这限制了某些进程在系统层面读取文件。这个API最常用的场景就是当设备锁定时确保数据不可用。</p>
+<p>数据保护的强度在很大程度上取决于iOS的版本。随着版本更新，默认的数据保护等级会发生变化。在新创建的iOS应用程序中，数据保护默认对所有应用程序开启，这种状态在启动设备后的第一次解锁前都生效。你可以在项目的Capabilities里找到Data Protection这个选项。</p>
 
       
     </div>
@@ -347,13 +344,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/11/16/8/">Swift3 单例模式</a></p>
+        <p><span>本文标题:</span><a href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2016-11-16, 12:51:50</p>
-        <p><span>最后更新:</span>2017-12-05, 17:05:07</p>
+        <p><span>发布时间:</span>2017-04-09, 23:48:07</p>
+        <p><span>最后更新:</span>2017-12-12, 10:59:47</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/11/16/8/" title="Swift3 单例模式">https://youshaoduo.github.io/2016/11/16/8/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/11/16/8/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/09/18/" title="iOS 安全模型浅析(三) ---- 数据保护和全盘加密">https://youshaoduo.github.io/2017/04/09/18/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/04/09/18/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -366,15 +363,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2016/11/22/6/">
-                    Mac下如何查看Git的全局忽略列表
+                <a href="/2017/05/01/19/">
+                    iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2016/11/16/5/">
-                    设置Git区分文件名大小写
+                <a href="/2017/04/06/14/">
+                    你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！
                 </a>
             </div>
         
@@ -386,7 +383,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#加密密钥的层级："><span class="toc-number">1.</span> <span class="toc-text">加密密钥的层级：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#钥匙串API"><span class="toc-number">2.</span> <span class="toc-text">钥匙串API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据保护API"><span class="toc-number">3.</span> <span class="toc-text">数据保护API</span></a></li></ol>
         
     </div>
     <style>
@@ -422,7 +419,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Swift3 单例模式　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iOS 安全模型浅析(三) ---- 数据保护和全盘加密　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -462,7 +459,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/11/22/6/" title="上一篇: Mac下如何查看Git的全局忽略列表">
+            <a href="/2017/05/01/19/" title="上一篇: iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -470,7 +467,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/11/16/5/" title="下一篇: 设置Git区分文件名大小写">
+            <a href="/2017/04/06/14/" title="下一篇: 你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！">
                 <i class="fa fa-angle-right"></i>
             </a>
         
