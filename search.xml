@@ -3,6 +3,37 @@
   
     
     <entry>
+      <title><![CDATA[Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD]]></title>
+      <url>/2017/12/06/21/</url>
+      <content type="html"><![CDATA[<p>TLD即Tracking Learning Detection，Zdenek Kalal大神在其<a href="http://info.ee.surrey.ac.uk/Personal/Z.Kalal/tld.html" target="_blank" rel="noopener">主页上给出的代码</a>，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。<br><a id="more"></a><br>TLD即Tracking Learning Detection，Zdenek Kalal大神在其主页上给出的代码，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。</p>
+<p>先说一下，我电脑的程序配置:WIN7x64+VS2015pro+MATLAB2016b+OpenCV3.2，一开始，这个程序在我电脑上始终没有跑起来，我通过在网上找到各种资料进行拼凑，却仍然不能正常运行，以至于一度想要将软件配置成几年前的版本（因为网上有前辈用WIN7+VS2005+MATLAB2011a+OpenCV2.2运行起来了，我的部分资料也是借鉴他的）。</p>
+<p>鉴于所有的配置都是几年前的老套路，而OPENCV也已经更新到3.2（今天刚看了下cv的官网，8月初更新到了3.3。。。。。。）。我决定自己总结一篇最新的配置方法。</p>
+<p>跑TLD程序，首先应该运行compile.m程序，然后再运行run_TLD.m，在任何机器上，首先得保证matlab的mex命令设置正确，其可通过：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mex –setup</span><br></pre></td></tr></table></figure></p>
+<p>配置好所用VS的编译环境，相关教程不少，之前因为我已经配置过了，此处就省略此步骤。之后打开compile.m<br>源代码中有如下两行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include = &apos; -Ic:\OpenCV2.2\include\opencv\ -Ic:\OpenCV2.2\include\&apos;;</span><br><span class="line">libpath = &apos;c:\OpenCV2.2\lib\&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>需要改为自己的opencv路径，我的电脑上opencv路径为：<br><img src="/2017/12/06/21/20170829113954171.png"></p>
+<p>当然这些只是针对windows pc改的，若换成其它系统环境，则在相应的地方更改。<br>注意，此处有一个问题：我有段时间一直编译不通过其实就是因为lib后面没加’\’，网上的大神都没加。。。<br><img src="/2017/12/06/21/20170829113839057.png"><br>少掉这个“\”会出现如下情况：<br><img src="/2017/12/06/21/20170829114108233.jpeg"></p>
+<p><a href="https://github.com/zk00006/OpenTLD/wiki/Installation" target="_blank" rel="noopener">根据作者的说法</a> ：若用VS2010会有不同：<br>You will need some extension toolboxes for Matlab, see below.</p>
+<p>1) Install OpenCV2.2: compile OpenCV, set system PATH variable to link to OpenCV DLLs</p>
+<p>2) Setup mex compiler in Matlab: run: mex -setup, select Visual Studio 2010 compiler from the list</p>
+<p>3) Compilation of mex files: check paths in ‘compile.m’ file, run ‘compile.m’</p>
+<p>3.1) If you are using Matlab 2011a, in TLD source, comment out the following lines in lk.cpp, fern.cpp, and bb_overlap.cpp (Otherwise, you will get an error about int being undefined which is a no-no in 2010):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifdef _CHAR16_T</span><br><span class="line">#define CHAR16_T</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<p>4) run ‘run_TLD.m’, TLD should track a motorbike<br>即如红色部分所示，你需要把<br>lk.cpp, fern.cpp, and bb_overlap.cpp 这几个文件中的这几行代码注释掉。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifdef _CHAR16_T</span><br><span class="line">#define CHAR16_T</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<p>但是我在VS2015pro上没有注释掉这几行。结果并没有什么影响，最后还是可以运行的。</p>
+<p>按照网上的步骤进行修改后，我又遇到了一个比较恶心的问题，在运行compile.m时，提示我说：<br><img src="/2017/12/06/21/20170829114329806.png"></p>
+<p>what??min和max不是在Cpp中有定义的吗？之后看网上的前辈说将#include <stdafx.h>加入头文件可以解决此问题，于是加入后出现：<br><img src="/2017/12/06/21/20170829114414527.png"></stdafx.h></p>
+<p>好吧，彻底被打败了。（我一直在想为什么matlab调用的是VS进行编译竟然还找不到VS的头文件库。有知道的大神告诉我一下），既然调用头文件不能用的话，那就自己写一个定义吧：<br><img src="/2017/12/06/21/20170829114522568.jpeg"><br>之后再运行compile.m，无报错.</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 计算机视觉 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Xcode8,Xcode9 查看模拟器沙盒目录的方法]]></title>
       <url>/2017/12/05/12/</url>
       <content type="html"><![CDATA[<p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><a id="more"></a><br>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSLog(@&quot;%@&quot;, paths[0]);</span><br></pre></td></tr></table></figure></p>
