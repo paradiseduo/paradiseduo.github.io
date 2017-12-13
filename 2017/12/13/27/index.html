@@ -15,18 +15,21 @@
 
 
 
-<meta name="description" content="iOS用两套标准机制来预防代码执行攻击：地址空间结构随机化(ASLR)和XN bit(eXecute Never的缩写，标记该段内存区域不包含可执行代码)。">
-<meta name="keywords" content="安全">
+<meta name="description" content="上一篇一篇文章介绍了影响页面布局的几个属性，如今iOS 11出来后变化挺大的，在这里重新梳理下。">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/05/01/19/index.html">
+<meta property="og:title" content="iOS 11适配：contentInsetAdjustmentBehavior解析">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/12/13/27/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="iOS用两套标准机制来预防代码执行攻击：地址空间结构随机化(ASLR)和XN bit(eXecute Never的缩写，标记该段内存区域不包含可执行代码)。">
+<meta property="og:description" content="上一篇一篇文章介绍了影响页面布局的几个属性，如今iOS 11出来后变化挺大的，在这里重新梳理下。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-12T03:00:51.000Z">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/13/27/1970468-e93887c3ec1be77e.jpg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/13/27/1970468-86b43da6709859fe.png">
+<meta property="og:updated_time" content="2017-12-13T07:54:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测">
-<meta name="twitter:description" content="iOS用两套标准机制来预防代码执行攻击：地址空间结构随机化(ASLR)和XN bit(eXecute Never的缩写，标记该段内存区域不包含可执行代码)。">
+<meta name="twitter:title" content="iOS 11适配：contentInsetAdjustmentBehavior解析">
+<meta name="twitter:description" content="上一篇一篇文章介绍了影响页面布局的几个属性，如今iOS 11出来后变化挺大的，在这里重新梳理下。">
+<meta name="twitter:image" content="https://youshaoduo.github.io/2017/12/13/27/1970468-e93887c3ec1be77e.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +61,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测 | ParadiseDuo的日记本</title>
+<title>iOS 11适配：contentInsetAdjustmentBehavior解析 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +282,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-19" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-27" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/05/01/19/" class="article-date">
-      <time datetime="2017-05-01T08:36:11.000Z" itemprop="datePublished">2017-05-01</time>
+      <a href="/2017/12/13/27/" class="article-date">
+      <time datetime="2017-12-13T07:46:24.000Z" itemprop="datePublished">2017-12-13</time>
 </a>
 
 
@@ -298,7 +301,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测
+      iOS 11适配：contentInsetAdjustmentBehavior解析
     </h1>
   
 
@@ -309,7 +312,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,19 +322,32 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>iOS用两套标准机制来预防代码执行攻击：地址空间结构随机化(ASLR)和XN bit(eXecute Never的缩写，标记该段内存区域不包含可执行代码)。<br><a id="more"></a></p>
-<h2 id="防御代码漏洞："><a href="#防御代码漏洞：" class="headerlink" title="防御代码漏洞："></a>防御代码漏洞：</h2><p>iOS用两套标准机制来预防代码执行攻击：地址空间结构随机化(ASLR)和XN bit(eXecute Never的缩写，标记该段内存区域不包含可执行代码)。每次执行程序时，ASLR都会随机分配内存、数据、堆和栈的内存位置。共享库需要在多个进程中使用，因此共享库的内存地址只在每次系统重启时随机设置，而不是每次执行程序时。函数和哭的内存地址很难预测，这就预防了缓冲区溢出攻击(return-to-libc)，这种攻击依赖于基本库函数的已知地址。</p>
-<p>XN bit一般对于非ARM平台的NX(No-eXecute) bit，允许操作系统将某段内存标记为不可执行，这是由CPU来控制的，学过计算机组成原理的同学都知道，每个CPU指令都有专门的地址存放。在iOS中，这个机制默认应用在程序的堆和栈上。这就意味着，哪怕攻击者可以将恶意代码注入程序的堆和栈，他们也无法重定向应用程序来执行攻击代码。</p>
-<p>每个程序都有一段既能写又能执行的内存，前提是他必须经过苹果的官方签名授权系统的签名。Safari中的JavaScript即时(JIT)编译器会用到这段内存。你平时在应用程序中经常使用的WebView并不具备访问相同功能的权利，这样就可以避免代码执行攻击。苹果一直禁止第三方的JIT，好处是更安全，而坏处也很明显，就是iOS平台上的Chrome等其他浏览器无法做到像Safari那样好用，因为他们只能使用WebView。</p>
-<h2 id="越狱检测："><a href="#越狱检测：" class="headerlink" title="越狱检测："></a>越狱检测：</h2><p>越狱的本质就是通过一系列步骤来禁用掉苹果的签名机制，从而允许设备运行未经苹果官方审核的应用。越狱还允许你使用那一些便利的开发和测试工具，当然这些工具永远不会通过AppStore的审核。越狱的用户有能力做正常情况下其他iOS用户做不到的事。越狱还有一个至关重要的能力，就是黑箱测试应用程序。</p>
-<p>和大多数人想的不一样，越狱不一定要禁用掉iOS的沙盒机制，他只是允许你在沙盒外安装应用程序。安装在移动用户主目录下的应用程序(即从AppStore下载的)仍然受到沙盒的限制。第三方的iOS应用程序需要安装在越狱设备中权限更高的/Applications目录下，与苹果股票应用安装在一起(就是那些你删不掉的系统应用).</p>
-<p>越狱检测很早就有，不过没啥用。他的目的是检测设备是否存在不受信任、未经签名的第三方应用程序，从而判断设备是否处在高风险环境中。公平地说，第三方程序库中不乏恶意软件和行为不端的应用程序(像XX万能钥匙。。大家应该很清楚为什么能直接连上别人家的网)，但总体来说，越狱检测不值得你浪费时间去做，因为他无法阻止一个坚定地攻击者。</p>
-<p>有一段时间苹果官方推出过越狱检测的API，但很快就在后续的iOS版本中删掉了。具体原因众说纷纭，但是即使没有此API，开发者也找到了一些越狱检测的方法，大家知道就行了，没必要在这里费太多精力。</p>
-<p>1.创建一个新进程，例如调用fork()、vfork()、popen()等方法。这是明显会被沙盒机制所禁止的事情。当然，大部分越狱系统上沙河依然是有效的，所以这种检测毫无意义。无论你设备是否越狱，总是可以从AppStore下载应用的。</p>
-<p>2.读取沙盒外部的文件，开发者通常想要尝试访问一些二进制代码，这些二进制代码通常对应于ssh、bash，还有一些位于Cydia.app目录和Cydia经常使用的apt仓库等位置。但是这些检测很容易被绕过，并且Xcon6之类的工具也能帮助用户绕过这些自动检查。</p>
-<p>3.不要使用太直白的方法名，比如isJailbroken，否则攻击者可以轻易定位并禁掉越狱检测。根据渗透测试同事多年的工作经验来看，像那种不改默认密码或者密码一猜就中的服务器数据库，简直是弱智写的。。还有这些很容易知道是做什么用函数。</p>
-<p>还有些更复杂的技术，比如苹果的iBooks应用会尝试运行随着应用打包的未签名代码，而精明的开发者同样会尝试使用_dyld_image_count()和_dyld_get_image_name()来检查载入动态库(dynamiclibrartes, dylibs)的数量和他们的名字，并使用_dyld_get_image_header()来检查他们在内存中的位置。想要绕过这些检测通常需要给应用程序打一个二进制补丁。</p>
-<p>想必读者都注意到了，我不是很喜欢搞越狱检测。就像二进制混淆技术和DRM一样，越狱检测被攻击者绕过时只会显得你更加愚蠢。毕竟对于攻击者来说，一些粗略的越狱检测只能拖慢自己前进的脚步几个小时而已。你要知道，对手的爱好就是破解程序，他们通常有大把的时间用来暴力破解，几个小时的时间对于他们而言并没有什么实际意义。我曾经看别人开发过一个二进制混淆程序，然后找渗透测试的同事帮忙测试，仅仅一个工作日就被搞清了算法。</p>
+        <p>上一篇一篇文章介绍了影响页面布局的几个属性，如今iOS 11出来后变化挺大的，在这里重新梳理下。<br><a id="more"></a><br>可以看到在iOS 11中，UIViewController的automaticallyAdjustsScrollViewInsets属性被弃用了，系统推荐我们使用UIScrollView的contentInsetAdjustmentBehavior属性替代之。关于这个属性，系统提供了四种行为模式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UIScrollViewContentInsetAdjustmentAutomatic</span><br><span class="line">UIScrollViewContentInsetAdjustmentScrollableAxes</span><br><span class="line">UIScrollViewContentInsetAdjustmentNever</span><br><span class="line">UIScrollViewContentInsetAdjustmentAlways</span><br></pre></td></tr></table></figure></p>
+<p>第3、4种看起来比较清晰，要么不调整，要么”一直”调整。但估计不少朋友看到第1、2种会一脸懵逼，包括第4种里“一直”这个词。在这解释之前我们先分析下为什么automaticallyAdjustsScrollViewInsets会被弃用。</p>
+<p>在我看来原因可能之前使用automaticallyAdjustsScrollViewInsets的方案太单调粗暴了。当处于 ①(文末末尾)情况时的scrollView，系统会自动修改其contentInset属性，举个例子:如果存在状态栏和导航栏，则contentInset的top值则会被修改为64，内容自动下移64。当底部存在系统UITabBar时，则bottom值修改为49，即下方额外增加49的滚动距离。</p>
+<p>我们知道iOS 11后引入了安全区的概念safeAreaInsets。</p>
+<img src="/2017/12/13/27/1970468-e93887c3ec1be77e.jpg">
+<p>以不带UITabBar的iPhone X为例：NavigationController的rootViewController.view（以下用self代称该rootViewController）,其safeAreaInsets为{88, 0, 34, 0}，在contentInsetAdjustmentBehavior属性出现之前，系统是根据①情况进行的调整。而现在，系统将会根据ScrollView视图大小(包括其类族UITableView等)是否超过了安全区来进行调整，需要注意的有两点：</p>
+<ol>
+<li><p>这个”调整”不再是直接修改scrollView.contentSize，而是scrollView.adjustedContentInset</p>
+</li>
+<li><p>调整的值将根据具体超出多少值来确定，但最大值不能超过安全区的相应EdgeInsets方向的值。以self.view的safeAreaInsets为{88, 0, 34, 0}为例。此时添加一个tableView，其高度为self.view.short_height + 25，那么tableView.adjustedContentInset的bottom则为25。但如果超出高度为134，bottom最高也只会是34，这样就会由于表格高度超过屏幕100，而出现”拉不到底部”的情况。</p>
+</li>
+</ol>
+<p>第二点的效果相比以前的automaticallyAdjustsScrollViewInsets方案，可以说智能很多，因为当处于①情况时，哪怕你的scrollView的布局位置根本就没被导航栏挡住，它都会给你调整64。然后你就发现莫名起妙内容就被下移了。</p>
+<img src="/2017/12/13/27/1970468-86b43da6709859fe.png">
+<p>接下来我们再说回contentInsetAdjustmentBehavior属性的这四个值：</p>
+<p>首先是UIScrollViewContentInsetAdjustmentNever，如名所示：就算你的ScrollView超出了safeAreaInsets，系统不会对你的scrollView.adjustedContentInset做任何事情，即不作任何调整；</p>
+<p>UIScrollViewContentInsetAdjustmentAlways: 只要超了安全区，就调整相应的超出值，调整的最大值不会超过安全区相应EdgeInsets方向的最大值，如刚刚上述第2点；</p>
+<p>UIScrollViewContentInsetAdjustmentScrollableAxes：系统会根据ScrollView的滚动方向来进行判断，假设我只是一个横向滚动的ScrollView，那即便我的布局起点和高度值超过了self.view的安全区，那么系统也不会调整scrollView.adjustedContentInset对应的top与bottom方向值，只可垂直方向滚动同理，直接设置scrollView.scrollEnabled = NO也同理；</p>
+<p>UIScrollViewContentInsetAdjustmentAutomatic：系统默认值。文档上是这样说的：</p>
+<blockquote>
+<p>Similar to .scrollableAxes, but for backward compatibility will also adjust the top &amp; bottom contentInset when the scroll view is owned by a view controller with automaticallyAdjustsScrollViewInsets = YES inside a navigation controller,</p>
+</blockquote>
+<p>其实文档已经说的很清楚了，它与UIScrollViewContentInsetAdjustmentScrollableAxes行为相似，但是为了兼容以前①这种情况，即使scrollView是不可滚动，也会根据safeAreaInsets超出范围进行调整。（具体效果可以试着自己上手调试，这里就不贴代码和示意图了）。</p>
+<p>关于刚才说的注意点二，我想补充的是，当出现表格过高(比如超出了100)而导致”拉不到底部”的情况时，你可以选择额外设置tableView.contentInset属性，bottom方向设为100，或者选择修改self.additionalSafeAreaInsets的属性。前者影响tableView.adjustedContentInset值，后者影响self.view.safeAreaInsets。你会发现刚好是两数之和，事实上adjustedContentInset的值正是由contentSize加上contentInsetAdjustmentBehavior所调整的值。而self.view.safeAreaInsets会在原来的基础上，加上你的additionalSafeAreaInsets。由于我们很少直接修改contentSize，所以基本上tableView.adjustedContentInset都是系统的调整值。</p>
+<p>其实，苹果可能本意是方便开发者，但事实上如果你对这些属性的来龙去脉不太了解清楚的话，确实是挺不方便的。。。因此可能现在很多的人做法都是一开始就设置之前的automaticallyAdjustsScrollViewInsets为NO，设置新的contentInsetAdjustmentBehavior为UIScrollViewContentInsetAdjustmentNever。就我个人看来，如果你需要实现类似系统默认那种表格穿透半透明导航栏或者底部半透明TabBar的效果时，这个属性使用起来就很舒服，直接tableView.frame = self.view.bouds 或者make.edges.equal.to(self.view)就好了。而无需再设置额外的contentSize。如果不需要类似的穿透，那可以选择直接将其禁止。</p>
+<p>① scroll view is owned by a view controller with automaticallyAdjustsScrollViewInsets = YES inside a navigation controller<br>PS：并且该scollView是第一个被添加的子视图</p>
 
       
     </div>
@@ -340,13 +356,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a></p>
+        <p><span>本文标题:</span><a href="/2017/12/13/27/">iOS 11适配：contentInsetAdjustmentBehavior解析</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-05-01, 16:36:11</p>
-        <p><span>最后更新:</span>2017-12-12, 11:00:51</p>
+        <p><span>发布时间:</span>2017-12-13, 15:46:24</p>
+        <p><span>最后更新:</span>2017-12-13, 15:54:23</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/05/01/19/" title="iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测">https://youshaoduo.github.io/2017/05/01/19/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/05/01/19/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/13/27/" title="iOS 11适配：contentInsetAdjustmentBehavior解析">https://youshaoduo.github.io/2017/12/13/27/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/13/27/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -358,16 +374,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/05/02/20/">
-                    iOS 安全模型浅析(五) ---- 挑战AppStore审核
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/04/09/18/">
-                    iOS 安全模型浅析(三) ---- 数据保护和全盘加密
+                <a href="/2017/12/13/23/">
+                    Swift中class func与static func的区别
                 </a>
             </div>
         
@@ -379,7 +389,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#防御代码漏洞："><span class="toc-number">1.</span> <span class="toc-text">防御代码漏洞：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#越狱检测："><span class="toc-number">2.</span> <span class="toc-text">越狱检测：</span></a></li></ol>
+            
         
     </div>
     <style>
@@ -415,7 +425,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iOS 11适配：contentInsetAdjustmentBehavior解析　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -455,15 +465,13 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/05/02/20/" title="上一篇: iOS 安全模型浅析(五) ---- 挑战AppStore审核">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/04/09/18/" title="下一篇: iOS 安全模型浅析(三) ---- 数据保护和全盘加密">
+            <a href="/2017/12/13/23/" title="下一篇: Swift中class func与static func的区别">
                 <i class="fa fa-angle-right"></i>
             </a>
         

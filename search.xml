@@ -3,6 +3,129 @@
   
     
     <entry>
+      <title><![CDATA[iOS 11适配：contentInsetAdjustmentBehavior解析]]></title>
+      <url>/2017/12/13/27/</url>
+      <content type="html"><![CDATA[<p>上一篇一篇文章介绍了影响页面布局的几个属性，如今iOS 11出来后变化挺大的，在这里重新梳理下。<br><a id="more"></a><br>可以看到在iOS 11中，UIViewController的automaticallyAdjustsScrollViewInsets属性被弃用了，系统推荐我们使用UIScrollView的contentInsetAdjustmentBehavior属性替代之。关于这个属性，系统提供了四种行为模式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UIScrollViewContentInsetAdjustmentAutomatic</span><br><span class="line">UIScrollViewContentInsetAdjustmentScrollableAxes</span><br><span class="line">UIScrollViewContentInsetAdjustmentNever</span><br><span class="line">UIScrollViewContentInsetAdjustmentAlways</span><br></pre></td></tr></table></figure></p>
+<p>第3、4种看起来比较清晰，要么不调整，要么”一直”调整。但估计不少朋友看到第1、2种会一脸懵逼，包括第4种里“一直”这个词。在这解释之前我们先分析下为什么automaticallyAdjustsScrollViewInsets会被弃用。</p>
+<p>在我看来原因可能之前使用automaticallyAdjustsScrollViewInsets的方案太单调粗暴了。当处于 ①(文末末尾)情况时的scrollView，系统会自动修改其contentInset属性，举个例子:如果存在状态栏和导航栏，则contentInset的top值则会被修改为64，内容自动下移64。当底部存在系统UITabBar时，则bottom值修改为49，即下方额外增加49的滚动距离。</p>
+<p>我们知道iOS 11后引入了安全区的概念safeAreaInsets。</p>
+<img src="/2017/12/13/27/1970468-e93887c3ec1be77e.jpg">
+<p>以不带UITabBar的iPhone X为例：NavigationController的rootViewController.view（以下用self代称该rootViewController）,其safeAreaInsets为{88, 0, 34, 0}，在contentInsetAdjustmentBehavior属性出现之前，系统是根据①情况进行的调整。而现在，系统将会根据ScrollView视图大小(包括其类族UITableView等)是否超过了安全区来进行调整，需要注意的有两点：</p>
+<ol>
+<li><p>这个”调整”不再是直接修改scrollView.contentSize，而是scrollView.adjustedContentInset</p>
+</li>
+<li><p>调整的值将根据具体超出多少值来确定，但最大值不能超过安全区的相应EdgeInsets方向的值。以self.view的safeAreaInsets为{88, 0, 34, 0}为例。此时添加一个tableView，其高度为self.view.short_height + 25，那么tableView.adjustedContentInset的bottom则为25。但如果超出高度为134，bottom最高也只会是34，这样就会由于表格高度超过屏幕100，而出现”拉不到底部”的情况。</p>
+</li>
+</ol>
+<p>第二点的效果相比以前的automaticallyAdjustsScrollViewInsets方案，可以说智能很多，因为当处于①情况时，哪怕你的scrollView的布局位置根本就没被导航栏挡住，它都会给你调整64。然后你就发现莫名起妙内容就被下移了。</p>
+<img src="/2017/12/13/27/1970468-86b43da6709859fe.png">
+<p>接下来我们再说回contentInsetAdjustmentBehavior属性的这四个值：</p>
+<p>首先是UIScrollViewContentInsetAdjustmentNever，如名所示：就算你的ScrollView超出了safeAreaInsets，系统不会对你的scrollView.adjustedContentInset做任何事情，即不作任何调整；</p>
+<p>UIScrollViewContentInsetAdjustmentAlways: 只要超了安全区，就调整相应的超出值，调整的最大值不会超过安全区相应EdgeInsets方向的最大值，如刚刚上述第2点；</p>
+<p>UIScrollViewContentInsetAdjustmentScrollableAxes：系统会根据ScrollView的滚动方向来进行判断，假设我只是一个横向滚动的ScrollView，那即便我的布局起点和高度值超过了self.view的安全区，那么系统也不会调整scrollView.adjustedContentInset对应的top与bottom方向值，只可垂直方向滚动同理，直接设置scrollView.scrollEnabled = NO也同理；</p>
+<p>UIScrollViewContentInsetAdjustmentAutomatic：系统默认值。文档上是这样说的：</p>
+<blockquote>
+<p>Similar to .scrollableAxes, but for backward compatibility will also adjust the top &amp; bottom contentInset when the scroll view is owned by a view controller with automaticallyAdjustsScrollViewInsets = YES inside a navigation controller,</p>
+</blockquote>
+<p>其实文档已经说的很清楚了，它与UIScrollViewContentInsetAdjustmentScrollableAxes行为相似，但是为了兼容以前①这种情况，即使scrollView是不可滚动，也会根据safeAreaInsets超出范围进行调整。（具体效果可以试着自己上手调试，这里就不贴代码和示意图了）。</p>
+<p>关于刚才说的注意点二，我想补充的是，当出现表格过高(比如超出了100)而导致”拉不到底部”的情况时，你可以选择额外设置tableView.contentInset属性，bottom方向设为100，或者选择修改self.additionalSafeAreaInsets的属性。前者影响tableView.adjustedContentInset值，后者影响self.view.safeAreaInsets。你会发现刚好是两数之和，事实上adjustedContentInset的值正是由contentSize加上contentInsetAdjustmentBehavior所调整的值。而self.view.safeAreaInsets会在原来的基础上，加上你的additionalSafeAreaInsets。由于我们很少直接修改contentSize，所以基本上tableView.adjustedContentInset都是系统的调整值。</p>
+<p>其实，苹果可能本意是方便开发者，但事实上如果你对这些属性的来龙去脉不太了解清楚的话，确实是挺不方便的。。。因此可能现在很多的人做法都是一开始就设置之前的automaticallyAdjustsScrollViewInsets为NO，设置新的contentInsetAdjustmentBehavior为UIScrollViewContentInsetAdjustmentNever。就我个人看来，如果你需要实现类似系统默认那种表格穿透半透明导航栏或者底部半透明TabBar的效果时，这个属性使用起来就很舒服，直接tableView.frame = self.view.bouds 或者make.edges.equal.to(self.view)就好了。而无需再设置额外的contentSize。如果不需要类似的穿透，那可以选择直接将其禁止。</p>
+<p>① scroll view is owned by a view controller with automaticallyAdjustsScrollViewInsets = YES inside a navigation controller<br>PS：并且该scollView是第一个被添加的子视图</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Swift中class func与static func的区别]]></title>
+      <url>/2017/12/13/23/</url>
+      <content type="html"><![CDATA[<p>在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。<br><a id="more"></a><br>在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。<br>这里为了明确两者区别，可以做一个简单的实验：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class ClassA &#123;</span><br><span class="line">    class func func1() -&gt; String &#123;</span><br><span class="line">        return &quot;func1&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static func func2() -&gt; String &#123;</span><br><span class="line">        return &quot;func2&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class final func func3() -&gt; String &#123;</span><br><span class="line">        return &quot;func3&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ClassB : ClassA &#123;</span><br><span class="line">    override class func func1() -&gt; String &#123;</span><br><span class="line">        return &quot;func1 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ERROR: Cannot override static method</span><br><span class="line">    override static func func2() -&gt; String &#123;</span><br><span class="line">        return &quot;func2 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    // ERROR: Class method overrides a &apos;final` class method</span><br><span class="line">    override class func func3() -&gt; String &#123;</span><br><span class="line">        return &quot;func3 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过以上代码可以看出，其实在Swift中static func 相当于class final func。禁止这个方法被重写。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Swift </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[影响导航控制器中页面布局的几个属性]]></title>
+      <url>/2017/12/13/26/</url>
+      <content type="html"><![CDATA[<p>关于iOS的适配一直有许许多多的坑，今天来简单说一下最主要的几个影响布局的属性。<br><a id="more"></a><br>主要有这么几个属性。</p>
+<blockquote>
+<p>Property                                                                 Class<br>edgesForExtendedLayout                                     UIViewController<br>extendedLayoutIncludesOpaqueBars                   UIViewController<br>automaticallyAdjustsScrollViewInsets                   UIViewController<br>translucent                                                             NavigationBar</p>
+</blockquote>
+<ol>
+<li><p>edgesForExtendedLayout属性的系统默认值为UIRectEdgeAll：意味着当导航控制器的导航栏为半透明效果时，子控制器self.view布局的起始位置将从屏幕边缘左上角开始。</p>
+</li>
+<li><p>extendedLayoutIncludesOpaqueBars属性系统默认为NO，Opaque代表非透明，not Includes意味着导航栏不是半透明时，即便当前是UIRectEdgeAll，self.view的布局起始位置依旧是从导航栏下方开始。</p>
+</li>
+<li><p>translucent属性值会决定导航栏是否有半透明效果。translucent为NO，意味着导航栏为非透明，此时如上文所述，即便当前是UIRectEdgeAll，由于extendedLayoutIncludesOpaqueBars为默认NO，self.view的布局起始位置依旧是从导航栏下方开始。</p>
+</li>
+</ol>
+<p>需要特别注意的是：</p>
+<blockquote>
+<p>根据官方文档所述：translucent会受navigationBar的backgroudImage属性的影响。也就是说当你使用了一张自定义图片作为navigationBar的背景图时，translucent的值将由系统根据该图片是否颜色值透明，来推断translucent是YES还是NO。</p>
+</blockquote>
+<p>于是坑就来了：对于导航控制器中的各个childViewController，是共用同一个的navigationBar。当你在一个childViewController中自定义了navigationBar的背景图片，或是直接改变了translucent属性，此时再push或pop到另一个childViewController时，更改导航栏的半透明效果可能会影响到页面的布局起始位置，从而发生视图发生跳动，出现“意外”的上下偏移。</p>
+<p>举个例子：从一个设置了导航栏不透明的控制器A，pop回到一个原本设置了导航栏透明的控制器B时，B页面发生了下移。</p>
+<blockquote>
+<p>为避免该情况，应该将控制器B的extendedLayoutIncludesOpaqueBars设置为YES；或是当B页面viewWillAppear:时，再度将导航栏设置为半透明效果。</p>
+</blockquote>
+<ol>
+<li>至于automaticallyAdjustsScrollViewInsets属性，系统默认值为YES。意味着当导航控制器的childViewController.view的上层视图为scollView类簇时，则系统会自动为该scrollView的contentInset(内边距属性)的Top值增加额外的64，于是内容就会下移64。</li>
+</ol>
+<blockquote>
+<p>以tableView为例，当你使用默认的创建方式，也就是UIRectEdgeAll+导航栏半透明的情况下，首行cell的位置将处于导航栏下方，也就是屏幕坐标系的(0, 64)位置处，此时上滑将会形成穿透效果导航栏的效果。</p>
+</blockquote>
+<p>补充：当你的设计中出现导航栏穿透效果，自定义非透明的导航栏背景、导航栏完全透明等需求时，记得结合上述几点进行判断处理，避免发生预想之外的界面偏差。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS11 UITableView顶部多出一片空白区域]]></title>
+      <url>/2017/12/13/25/</url>
+      <content type="html"><![CDATA[<p>苹果向来都是出个bug让开发者填坑，这不弄了个iPhone X的异形屏幕，既要考虑顶部的齐刘海，又要考虑底部的home条。现在不光是iPhone X的屏幕问题，iOS 11的SDK也有好多改变，其中影响最大的莫过于UITableView的改动。<br><a id="more"></a><br>很多开发者发现了，用iOS 11的SDK运行程序后tableView变得自己都不认识了。</p>
+<p>首先是在iOS 11中，tableView关于footer的两个代理方法必须成对出现，不然就会有问题。这里以footer为例，header同理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section</span><br><span class="line">-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section</span><br></pre></td></tr></table></figure></p>
+<p>这两个方法只要出现一个，另一个就必须写上。不然footer的高度就无法控制了。。</p>
+<p>其次，很多人发现自己的tableView下移了64个像素。</p>
+<p>在iOS11之前，如果想要scrollView不偏移64p，则需设置automaticallyAdjustsScrollViewInsets=NO，但是这个属性在iOS11直接被遗弃了。。</p>
+<p>多出了一个新属性contentInsetAdjustmentBehavior，类型是UIScrollViewContentInsetAdjustmentBehavior。看起来这和iOS11搞的safeArea有关，这个先放一边，看看怎么适配(一种简单方案)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (@available(iOS 11.0, *)) &#123;</span><br><span class="line">    tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    // Fallback on earlier versions</span><br><span class="line">    self.automaticallyAdjustsScrollViewInsets = NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们来看一下这个新的属性：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIScrollViewContentInsetAdjustmentBehavior) &#123;</span><br><span class="line">    UIScrollViewContentInsetAdjustmentAutomatic, // Similar to .scrollableAxes, but will also adjust the top &amp; bottom contentInset when the scroll view is owned by a view controller with automaticallyAdjustsScrollViewContentInset = YES inside a navigation controller, regardless of whether the scroll view is scrollable</span><br><span class="line">    UIScrollViewContentInsetAdjustmentScrollableAxes, // Edges for scrollable axes are adjusted (i.e., contentSize.width/height &gt; frame.size.width/height or alwaysBounceHorizontal/Vertical = YES)</span><br><span class="line">    UIScrollViewContentInsetAdjustmentNever, // contentInset is not adjusted</span><br><span class="line">    UIScrollViewContentInsetAdjustmentAlways, // contentInset is always adjusted by the scroll view&apos;s safeAreaInsets</span><br><span class="line">&#125; API_AVAILABLE(ios(11.0),tvos(11.0));</span><br></pre></td></tr></table></figure></p>
+<p>关于这个属性我会在另一篇文章中详细解释一下。</p>
+<p>下面是一种大神的解决方案，是从网上找的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#define  adjustsScrollViewInsets_NO(scrollView,vc)\</span><br><span class="line">do &#123; \</span><br><span class="line">    _Pragma(&quot;clang diagnostic push&quot;) \</span><br><span class="line">    _Pragma(&quot;clang diagnostic ignored \&quot;-Warc-performSelector-leaks\&quot;&quot;) \</span><br><span class="line">    if ([UIScrollView instancesRespondToSelector:NSSelectorFromString(@&quot;setContentInsetAdjustmentBehavior:&quot;)]) &#123;\</span><br><span class="line">        [scrollView   performSelector:NSSelectorFromString(@&quot;setContentInsetAdjustmentBehavior:&quot;) withObject:@(2)];\</span><br><span class="line">    &#125; else &#123;\</span><br><span class="line">        vc.automaticallyAdjustsScrollViewInsets = NO;\</span><br><span class="line">    &#125;\</span><br><span class="line">    _Pragma(&quot;clang diagnostic pop&quot;) \</span><br><span class="line">&#125; while (0)</span><br></pre></td></tr></table></figure></p>
+<p>这种方法是利用了宏定义。但是在iOS 11的SDK中，我发现有的时候宏定义或者全局变量的值并不是我所期望的值，使用NSLog打印的值跟通过计算后得到的值匹配不上。我不确定这是Xcode9的bug还是其他什么原因，特别是计算frame的时候，明明单独打印这几个宏定义的值都对，但是把这几个宏定义进行计算，得到的结果却是错误的。。如果有人遇到了同样的问题，麻烦私信我一下。。一起探讨探讨。</p>
+<p>最后希望所有的产品经理都紧跟苹果步伐。抛弃旧的系统。。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD]]></title>
       <url>/2017/12/06/21/</url>
       <content type="html"><![CDATA[<p>TLD即Tracking Learning Detection，Zdenek Kalal大神在其<a href="http://info.ee.surrey.ac.uk/Personal/Z.Kalal/tld.html" target="_blank" rel="noopener">主页上给出的代码</a>，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。<br><a id="more"></a><br>TLD即Tracking Learning Detection，Zdenek Kalal大神在其主页上给出的代码，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。</p>
@@ -159,6 +282,23 @@
         <tags>
             
             <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变]]></title>
+      <url>/2017/10/26/24/</url>
+      <content type="html"><![CDATA[<p>在新的iOS 11的SDK中，这几个函数参数类型发生了改变<br><a id="more"></a><br>在新的iOS 11的SDK中，这几个函数参数类型发生了改变，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public func strtod(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Double</span><br><span class="line"></span><br><span class="line">public func strtof(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Float</span><br><span class="line"></span><br><span class="line">public func strtol(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int</span><br><span class="line"></span><br><span class="line">public func strtoll(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int64</span><br><span class="line"></span><br><span class="line">/* !__DARWIN_NO_LONG_LONG */</span><br><span class="line">public func strtoul(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt</span><br><span class="line"></span><br><span class="line">public func strtoull(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt64</span><br></pre></td></tr></table></figure></p>
+<p>从原来可以直接传的char*变成了一个UnsafePointer<int8>。那么我们用到函数的地方也要改变一下，具体代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let s = hex[hex.characters.index(hex.startIndex, offsetBy: start)..&lt;hex.characters.index(hex.startIndex, offsetBy: end)]</span><br><span class="line">return CGFloat(s.withCString&#123;strtoul($0, nil, 16)&#125;)</span><br></pre></td></tr></table></figure></int8></p>
+<p>这里的s是一个String类型，他有一个withCString方法。利用这个方法可以将字符串中的字符转换成UnsafePointer<int8>类型。</int8></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Swift </tag>
             
         </tags>
         
