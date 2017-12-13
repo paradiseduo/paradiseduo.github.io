@@ -15,18 +15,27 @@
 
 
 
-<meta name="description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
-<meta name="keywords" content="其他">
+<meta name="description" content="许多开发者想在PYTHON中配置OPENCV，但又不知道怎么做，最近一直在搞这一方面，也是混沌了好几天，最后终于有了些眉目，和大家分享一下">
+<meta name="keywords" content="计算机视觉">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Xcode8,Xcode9 查看模拟器沙盒目录的方法">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/12/05/12/index.html">
+<meta property="og:title" content="在Windows电脑上给Python配置OpenCV">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/12/01/22/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
+<meta property="og:description" content="许多开发者想在PYTHON中配置OPENCV，但又不知道怎么做，最近一直在搞这一方面，也是混沌了好几天，最后终于有了些眉目，和大家分享一下">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:11:52.000Z">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104620566.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104638243.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104653489.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104706145.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104724025.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104745068.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104756600.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104808741.jpeg">
+<meta property="og:updated_time" content="2017-12-13T06:44:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xcode8,Xcode9 查看模拟器沙盒目录的方法">
-<meta name="twitter:description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
+<meta name="twitter:title" content="在Windows电脑上给Python配置OpenCV">
+<meta name="twitter:description" content="许多开发者想在PYTHON中配置OPENCV，但又不知道怎么做，最近一直在搞这一方面，也是混沌了好几天，最后终于有了些眉目，和大家分享一下">
+<meta name="twitter:image" content="https://youshaoduo.github.io/2017/12/01/22/20170310104620566.jpeg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +67,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Xcode8,Xcode9 查看模拟器沙盒目录的方法 | ParadiseDuo的日记本</title>
+<title>在Windows电脑上给Python配置OpenCV | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +288,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-12" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-22" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/05/12/" class="article-date">
-      <time datetime="2017-12-05T09:09:47.000Z" itemprop="datePublished">2017-12-05</time>
+      <a href="/2017/12/01/22/" class="article-date">
+      <time datetime="2017-12-01T02:30:28.000Z" itemprop="datePublished">2017-12-01</time>
 </a>
 
 
@@ -298,7 +307,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Xcode8,Xcode9 查看模拟器沙盒目录的方法
+      在Windows电脑上给Python配置OpenCV
     </h1>
   
 
@@ -309,7 +318,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,8 +328,33 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><a id="more"></a><br>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSLog(@&quot;%@&quot;, paths[0]);</span><br></pre></td></tr></table></figure></p>
-<p>打开Finder，点前往<br>把打印出来的path复制到输入框中按回车即可。</p>
+        <p>许多开发者想在PYTHON中配置OPENCV，但又不知道怎么做，最近一直在搞这一方面，也是混沌了好几天，最后终于有了些眉目，和大家分享一下<br><a id="more"></a><br>许多开发者想在PYTHON中配置OPENCV，但又不知道怎么做，最近一直在搞这一方面，也是混沌了好几天，最后终于有了些眉目，和大家分享一下：</p>
+<h2 id="安装PYTHON"><a href="#安装PYTHON" class="headerlink" title="安装PYTHON"></a>安装PYTHON</h2><p>我用的是python3.5版本，官网就能下，跟着教程走，配置好PATH包就能在C字命令符中调用了，调用结果如下：<br><img src="/2017/12/01/22/20170310104620566.jpeg"><br>按回车后：<br><img src="/2017/12/01/22/20170310104638243.jpeg"></p>
+<h2 id="安装opencv之前要干的工作"><a href="#安装opencv之前要干的工作" class="headerlink" title="安装opencv之前要干的工作"></a>安装opencv之前要干的工作</h2><p>第二步开始，均是在C字命令符下操作！！！！！均是在C字命令符下操作！！！！！均是在C字命令符下操作！！！！！重要的事情说三遍</p>
+<p>安装opencv之前要干的工作：<br>C字命令符中输入：<br>python -m pip install -U pip<br>按回车，自动安装pip包<br>之后下载numpy和opencv的python3.5版本：</p>
+<p>这里给出几个网站：<br>Numpy：   <a href="https://pypi.python.org/pypi/numpy" target="_blank" rel="noopener">https://pypi.python.org/pypi/numpy</a></p>
+<img src="/2017/12/01/22/20170310104653489.jpeg">
+<p>看这些很乱看不懂对吧？其实很简单：</p>
+<p>最长的都是土豪专用OSX版本。</p>
+<p>处于中间不长不短的是Linux系统的。</p>
+<p>最短的都是windows32位的版本（这的位数指的是python的！！！！不是系统的！！！32位系统也是可以安装64位python的！！！）。嗯，剩下的amd64就是windows用64位版本的。</p>
+<p>之后cp27,34,35,36指的就是PYTHON的2.7  3.4  3.5  3.6版本，下载对应版本的就可以了。</p>
+<p>我下的是numpy-1.12.1rc1-cp35-none-win_amd64.whl (md5, pgp)</p>
+<p>Opencv：<a href="http://www.lfd.uci.edu/%7Egohlke/pythonlibs/#opencv" target="_blank" rel="noopener">http://www.lfd.uci.edu/%7Egohlke/pythonlibs/#opencv</a><br>进入之后会发现乱七八糟一大堆。。。</p>
+<img src="/2017/12/01/22/20170310104706145.jpeg">
+<p>看到红圈了吗。。。那就是opencv，点一下就到了下载opencv的地方了。。如下图：</p>
+<img src="/2017/12/01/22/20170310104724025.jpeg">
+<p>这里要下哪个就不用多说了，解释见上，命名方式都一样。<br>我用的是：opencv_python‑3.2.0+contrib‑cp35‑cp35m‑win_amd64.whl<br>至于多了个contrib，是多了些高级功能的包包，具体作用可以百度，问题不大。</p>
+<h2 id="Opencv安装包的问题"><a href="#Opencv安装包的问题" class="headerlink" title="Opencv安装包的问题"></a>Opencv安装包的问题</h2><p>下载完后，你会得到两个.whl包包：然后放置在C字命令符开始的目录下（这样就不用你自己再填写路径了！！！！）：<br>注意！！！<br>对于opencv安装包<br>改之前：opencv_python‑3.2.0+contrib‑cp35‑cp35m‑win_amd64.whl<br>一定要把cp35m改成none！！<br>改之后：opencv_python‑3.2.0+contrib‑cp35‑none‑win_amd64.whl</p>
+<p>如果不改的话不然会出现：<br>opencv_python-3.2.0+contrib-cp35-cp35m-win_amd64.whl is not a supported wheel on this platform.</p>
+<img src="/2017/12/01/22/20170310104745068.jpeg">
+<h2 id="安装Opencv"><a href="#安装Opencv" class="headerlink" title="安装Opencv"></a>安装Opencv</h2><p>安装，C字命令符中输入<br>pip3 install numpy-1.12.1rc1-cp35-none-win_amd64.whl<br>安装numpy<br>输入pip3 install opencv_python‑3.2.0+contrib‑cp35‑none‑win_amd64.whl</p>
+<img src="/2017/12/01/22/20170310104756600.jpeg">
+<p>忽略画叉的那些，下边这个就是安装成功后的样子。</p>
+<h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用~"></a>开始使用~</h2><p>打开python3.5.2 shell，不是像c字命令符的那个！！！！！<br>输入improt cv2回车</p>
+<img src="/2017/12/01/22/20170310104808741.jpeg">
+<p>无报错，安装成功</p>
+<p>最后吐槽一下这些网站。。写个漂亮点的CSS就这么难么。</p>
 
       
     </div>
@@ -329,13 +363,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></p>
+        <p><span>本文标题:</span><a href="/2017/12/01/22/">在Windows电脑上给Python配置OpenCV</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-12-05, 17:09:47</p>
-        <p><span>最后更新:</span>2017-12-05, 17:11:52</p>
+        <p><span>发布时间:</span>2017-12-01, 10:30:28</p>
+        <p><span>最后更新:</span>2017-12-13, 14:44:03</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/05/12/" title="Xcode8,Xcode9 查看模拟器沙盒目录的方法">https://youshaoduo.github.io/2017/12/05/12/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/05/12/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/01/22/" title="在Windows电脑上给Python配置OpenCV">https://youshaoduo.github.io/2017/12/01/22/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/01/22/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -348,15 +382,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/06/21/">
-                    Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD
+                <a href="/2017/12/04/2/">
+                    Hexo中的Yelee主题，首页不显示文章摘要
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/12/04/2/">
-                    Hexo中的Yelee主题，首页不显示文章摘要
+                <a href="/2017/11/13/3/">
+                    Mac 设置Launchpad 的列数和行数
                 </a>
             </div>
         
@@ -368,7 +402,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装PYTHON"><span class="toc-number">1.</span> <span class="toc-text">安装PYTHON</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装opencv之前要干的工作"><span class="toc-number">2.</span> <span class="toc-text">安装opencv之前要干的工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Opencv安装包的问题"><span class="toc-number">3.</span> <span class="toc-text">Opencv安装包的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Opencv"><span class="toc-number">4.</span> <span class="toc-text">安装Opencv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始使用"><span class="toc-number">5.</span> <span class="toc-text">开始使用~</span></a></li></ol>
         
     </div>
     <style>
@@ -404,7 +438,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Xcode8,Xcode9 查看模拟器沙盒目录的方法　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"在Windows电脑上给Python配置OpenCV　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -444,7 +478,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/06/21/" title="上一篇: Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD">
+            <a href="/2017/12/04/2/" title="上一篇: Hexo中的Yelee主题，首页不显示文章摘要">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -452,7 +486,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/04/2/" title="下一篇: Hexo中的Yelee主题，首页不显示文章摘要">
+            <a href="/2017/11/13/3/" title="下一篇: Mac 设置Launchpad 的列数和行数">
                 <i class="fa fa-angle-right"></i>
             </a>
         
