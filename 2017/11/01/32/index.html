@@ -15,18 +15,31 @@
 
 
 
-<meta name="description" content="在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。">
-<meta name="keywords" content="Swift">
+<meta name="description" content="首先提一点，我用的环境是VS2015+OpenCV3.2，在不同的环境下配制方法有出入，请对号入座。">
+<meta name="keywords" content="计算机视觉">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Swift中class func与static func的区别">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/12/13/23/index.html">
+<meta property="og:title" content="深度探索TLD的C++源码">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/11/01/32/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。">
+<meta property="og:description" content="首先提一点，我用的环境是VS2015+OpenCV3.2，在不同的环境下配制方法有出入，请对号入座。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-13T07:24:27.000Z">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101102925801.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103053722.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103219250.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103256523.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103314568.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103353732.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103537148.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103600584.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103624414.png">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103653092.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103731426.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101103830769.jpeg">
+<meta property="og:updated_time" content="2017-12-18T03:20:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Swift中class func与static func的区别">
-<meta name="twitter:description" content="在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。">
+<meta name="twitter:title" content="深度探索TLD的C++源码">
+<meta name="twitter:description" content="首先提一点，我用的环境是VS2015+OpenCV3.2，在不同的环境下配制方法有出入，请对号入座。">
+<meta name="twitter:image" content="https://youshaoduo.github.io/2017/11/01/32/20171101102925801.jpeg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +71,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Swift中class func与static func的区别 | ParadiseDuo的日记本</title>
+<title>深度探索TLD的C++源码 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +292,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-23" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-32" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/13/23/" class="article-date">
-      <time datetime="2017-12-13T07:22:29.000Z" itemprop="datePublished">2017-12-13</time>
+      <a href="/2017/11/01/32/" class="article-date">
+      <time datetime="2017-11-01T02:12:08.000Z" itemprop="datePublished">2017-11-01</time>
 </a>
 
 
@@ -298,7 +311,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Swift中class func与static func的区别
+      深度探索TLD的C++源码
     </h1>
   
 
@@ -309,7 +322,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,8 +332,26 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。<br><a id="more"></a><br>在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。<br>这里为了明确两者区别，可以做一个简单的实验：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class ClassA &#123;</span><br><span class="line">    class func func1() -&gt; String &#123;</span><br><span class="line">        return &quot;func1&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static func func2() -&gt; String &#123;</span><br><span class="line">        return &quot;func2&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class final func func3() -&gt; String &#123;</span><br><span class="line">        return &quot;func3&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ClassB : ClassA &#123;</span><br><span class="line">    override class func func1() -&gt; String &#123;</span><br><span class="line">        return &quot;func1 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ERROR: Cannot override static method</span><br><span class="line">    override static func func2() -&gt; String &#123;</span><br><span class="line">        return &quot;func2 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    // ERROR: Class method overrides a &apos;final` class method</span><br><span class="line">    override class func func3() -&gt; String &#123;</span><br><span class="line">        return &quot;func3 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过以上代码可以看出，其实在Swift中static func 相当于class final func。禁止这个方法被重写。</p>
+        <p>首先提一点，我用的环境是VS2015+OpenCV3.2，在不同的环境下配制方法有出入，请对号入座。<br><a id="more"></a></p>
+<h3 id="网上的TLD有两个版本，一个是Zdenek-Kalal自己使用matlab-vs混合编程实现的，另外一个是-arthurv利用c-和opencv实现的。"><a href="#网上的TLD有两个版本，一个是Zdenek-Kalal自己使用matlab-vs混合编程实现的，另外一个是-arthurv利用c-和opencv实现的。" class="headerlink" title="网上的TLD有两个版本，一个是Zdenek Kalal自己使用matlab+vs混合编程实现的，另外一个是 arthurv利用c++和opencv实现的。"></a>网上的TLD有两个版本，一个是Zdenek Kalal自己使用matlab+vs混合编程实现的，另外一个是 arthurv利用c++和opencv实现的。</h3><p>1.1、我利用的是arthurv版本的Tracking-Learning-Detection<br>连接：<a href="https://github.com/alantrrs/OpenTLD" target="_blank" rel="noopener">https://github.com/alantrrs/OpenTLD</a></p>
+<p>1.2、下载得到的C++代码如下所示<br>其中：<br>datasets是一些视频数据；<br>doc是程序的流程图进行说明；<br>include是头文件；<br>src是源文件；<br>parameters.yml是参数文件；<br>readme是程序运行说明。</p>
+<h3 id="我们只要用到datasets、include、src、parameters-yml"><a href="#我们只要用到datasets、include、src、parameters-yml" class="headerlink" title="我们只要用到datasets、include、src、parameters.yml;"></a>我们只要用到datasets、include、src、parameters.yml;</h3><p>下面讲述如何在VS2015下创建工程；</p>
+<p>2.1、创建一个空的solution(没有预编译的控制台程序)</p>
+<p>2.2、首先将include中的文件拷贝放到src的文件夹中；然后将src、datasets、parameters.yml放到solution的工程目录下，如下所示：<br><img src="/2017/11/01/32/20171101102925801.jpeg"></p>
+<p>2.3、编译项目，此时会冒出错误，下面为解决方法：<br>a．首先将头文件包含错误的全部由include<tld.h> 改成 include “TLD.h”;其他的头文件包含以此类推；解释一下：&lt;&gt;的引用是在整个文件目录，包括系统环境变量库里找，而“”是在当前文件目录里找。</tld.h></p>
+<p>b．关于在TLD.h中包含头文件#include <opencv2 legacy="" legacy.hpp="">的问题；由于原作者是在opencv2.4的版本下进行的编译，由于opencv3的各种版本相对于opencv2的版本已经改变了很多内容，openTLD跟踪算法所依赖的一些函数在opencv3中已经消失了，最重要的一点就是到了Opencv3.2中已经不包括legacy.hpp库，所以我们需要添加PatchGenerator.h和PatchGenerator.cpp两个文件，并在对应的地方include头文件（对应的删掉legacy.hpp），才能做到不缺失文件。<br>两个文件参考地址：<a href="http://blog.csdn.net/j10527/article/details/51305087" target="_blank" rel="noopener">http://blog.csdn.net/j10527/article/details/51305087</a></opencv2></p>
+<p>c．LKTracker.cpp中：需要添加如下几行，以防止调用不到定义函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;vector&quot;</span><br><span class="line">#include &quot;iostream&quot;</span><br><span class="line">using namespace std;</span><br></pre></td></tr></table></figure></p>
+<img src="/2017/11/01/32/20171101103053722.jpeg">
+<p>d．在TLD.h中，由于C++中的数组不能为变量，所以需要做如下修改：<br>将const int c = dbb.size();改为：<br>const int c = 100; 即定义为常数<br><img src="/2017/11/01/32/20171101103219250.jpeg"></p>
+<p>e.对应的，TLD::clusterBB函数中，vs不支持动态数组分配。其中的动态数组需要改成指针和动态分配内存，并且需要在结尾处释放内存。<br><img src="/2017/11/01/32/20171101103256523.jpeg"><br><img src="/2017/11/01/32/20171101103314568.jpeg"></p>
+<p>f．round、ceil和floor可能会出现错误，原因是round和ceil内部传入的参数必须是double或者float型，所以将这三个函数里面的数据改为float型，具体做法就是里面的整数后面加上小数点，比如2，就改为2.0。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int stepx = ceil(double((bb.width - 2.0 * margin_h)/max_pts));</span><br><span class="line">int stepy = ceil(double((bb.height - 2.0 * margin_v)/max_pts));</span><br></pre></td></tr></table></figure></p>
+<img src="/2017/11/01/32/20171101103353732.jpeg">
+<p>g.打开run_tld.cpp 将其中的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (strcmp(argv[i],&quot;-tl&quot;)==0)&#123;</span><br><span class="line">    tl = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (strcmp(argv[i],&quot;-no_tl&quot;)==0)&#123;</span><br><span class="line">    tl = false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<img src="/2017/11/01/32/20171101103537148.jpeg">
+<p>对于下图这个修改，我是试过的，但是会出现如下问题：所以tl=false没有变，具体是为什么会出问题我还没有查明。<br><img src="/2017/11/01/32/20171101103600584.jpeg"><br><img src="/2017/11/01/32/20171101103624414.png"><br><img src="/2017/11/01/32/20171101103653092.jpeg"></p>
+<p>h．最后，由于这个项目是里面是先产生一个可执行文件在cmd下来执行，并且需要采用cmd命令预先调用parameters.yml中的初始化参数。这样不方便我们调试；因此我们要修改程序一开始的参数解析函数：<br><img src="/2017/11/01/32/20171101103731426.jpeg"></p>
+<p>2.4 release完成后，在生成的文件夹中直接打开EXE文件，完美运行（仅对摄像头，测试视频未调用）<br><img src="/2017/11/01/32/20171101103830769.jpeg"></p>
 
       
     </div>
@@ -329,13 +360,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/13/23/">Swift中class func与static func的区别</a></p>
+        <p><span>本文标题:</span><a href="/2017/11/01/32/">深度探索TLD的C++源码</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-12-13, 15:22:29</p>
-        <p><span>最后更新:</span>2017-12-13, 15:24:27</p>
+        <p><span>发布时间:</span>2017-11-01, 10:12:08</p>
+        <p><span>最后更新:</span>2017-12-18, 11:20:25</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/13/23/" title="Swift中class func与static func的区别">https://youshaoduo.github.io/2017/12/13/23/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/13/23/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/01/32/" title="深度探索TLD的C++源码">https://youshaoduo.github.io/2017/11/01/32/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/11/01/32/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -348,15 +379,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/13/27/">
-                    iOS 11适配：contentInsetAdjustmentBehavior解析
+                <a href="/2017/11/02/29/">
+                    no rule to process file &#39;xxx.h&#39; of type sourcecode.c.h for architecture armv7
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/12/13/26/">
-                    影响导航控制器中页面布局的几个属性
+                <a href="/2017/10/26/24/">
+                    Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变
                 </a>
             </div>
         
@@ -368,7 +399,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#网上的TLD有两个版本，一个是Zdenek-Kalal自己使用matlab-vs混合编程实现的，另外一个是-arthurv利用c-和opencv实现的。"><span class="toc-number">1.</span> <span class="toc-text">网上的TLD有两个版本，一个是Zdenek Kalal自己使用matlab+vs混合编程实现的，另外一个是 arthurv利用c++和opencv实现的。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#我们只要用到datasets、include、src、parameters-yml"><span class="toc-number">2.</span> <span class="toc-text">我们只要用到datasets、include、src、parameters.yml;</span></a></li></ol>
         
     </div>
     <style>
@@ -404,7 +435,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Swift中class func与static func的区别　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"深度探索TLD的C++源码　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -444,7 +475,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/13/27/" title="上一篇: iOS 11适配：contentInsetAdjustmentBehavior解析">
+            <a href="/2017/11/02/29/" title="上一篇: no rule to process file &#39;xxx.h&#39; of type sourcecode.c.h for architecture armv7">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -452,7 +483,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/13/26/" title="下一篇: 影响导航控制器中页面布局的几个属性">
+            <a href="/2017/10/26/24/" title="下一篇: Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变">
                 <i class="fa fa-angle-right"></i>
             </a>
         

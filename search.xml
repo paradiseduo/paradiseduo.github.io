@@ -326,6 +326,40 @@
     </entry>
     
     <entry>
+      <title><![CDATA[深度探索TLD的C++源码]]></title>
+      <url>/2017/11/01/32/</url>
+      <content type="html"><![CDATA[<p>首先提一点，我用的环境是VS2015+OpenCV3.2，在不同的环境下配制方法有出入，请对号入座。<br><a id="more"></a></p>
+<h3 id="网上的TLD有两个版本，一个是Zdenek-Kalal自己使用matlab-vs混合编程实现的，另外一个是-arthurv利用c-和opencv实现的。"><a href="#网上的TLD有两个版本，一个是Zdenek-Kalal自己使用matlab-vs混合编程实现的，另外一个是-arthurv利用c-和opencv实现的。" class="headerlink" title="网上的TLD有两个版本，一个是Zdenek Kalal自己使用matlab+vs混合编程实现的，另外一个是 arthurv利用c++和opencv实现的。"></a>网上的TLD有两个版本，一个是Zdenek Kalal自己使用matlab+vs混合编程实现的，另外一个是 arthurv利用c++和opencv实现的。</h3><p>1.1、我利用的是arthurv版本的Tracking-Learning-Detection<br>连接：<a href="https://github.com/alantrrs/OpenTLD" target="_blank" rel="noopener">https://github.com/alantrrs/OpenTLD</a></p>
+<p>1.2、下载得到的C++代码如下所示<br>其中：<br>datasets是一些视频数据；<br>doc是程序的流程图进行说明；<br>include是头文件；<br>src是源文件；<br>parameters.yml是参数文件；<br>readme是程序运行说明。</p>
+<h3 id="我们只要用到datasets、include、src、parameters-yml"><a href="#我们只要用到datasets、include、src、parameters-yml" class="headerlink" title="我们只要用到datasets、include、src、parameters.yml;"></a>我们只要用到datasets、include、src、parameters.yml;</h3><p>下面讲述如何在VS2015下创建工程；</p>
+<p>2.1、创建一个空的solution(没有预编译的控制台程序)</p>
+<p>2.2、首先将include中的文件拷贝放到src的文件夹中；然后将src、datasets、parameters.yml放到solution的工程目录下，如下所示：<br><img src="/2017/11/01/32/20171101102925801.jpeg"></p>
+<p>2.3、编译项目，此时会冒出错误，下面为解决方法：<br>a．首先将头文件包含错误的全部由include<tld.h> 改成 include “TLD.h”;其他的头文件包含以此类推；解释一下：&lt;&gt;的引用是在整个文件目录，包括系统环境变量库里找，而“”是在当前文件目录里找。</tld.h></p>
+<p>b．关于在TLD.h中包含头文件#include <opencv2 legacy="" legacy.hpp="">的问题；由于原作者是在opencv2.4的版本下进行的编译，由于opencv3的各种版本相对于opencv2的版本已经改变了很多内容，openTLD跟踪算法所依赖的一些函数在opencv3中已经消失了，最重要的一点就是到了Opencv3.2中已经不包括legacy.hpp库，所以我们需要添加PatchGenerator.h和PatchGenerator.cpp两个文件，并在对应的地方include头文件（对应的删掉legacy.hpp），才能做到不缺失文件。<br>两个文件参考地址：<a href="http://blog.csdn.net/j10527/article/details/51305087" target="_blank" rel="noopener">http://blog.csdn.net/j10527/article/details/51305087</a></opencv2></p>
+<p>c．LKTracker.cpp中：需要添加如下几行，以防止调用不到定义函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;vector&quot;</span><br><span class="line">#include &quot;iostream&quot;</span><br><span class="line">using namespace std;</span><br></pre></td></tr></table></figure></p>
+<img src="/2017/11/01/32/20171101103053722.jpeg">
+<p>d．在TLD.h中，由于C++中的数组不能为变量，所以需要做如下修改：<br>将const int c = dbb.size();改为：<br>const int c = 100; 即定义为常数<br><img src="/2017/11/01/32/20171101103219250.jpeg"></p>
+<p>e.对应的，TLD::clusterBB函数中，vs不支持动态数组分配。其中的动态数组需要改成指针和动态分配内存，并且需要在结尾处释放内存。<br><img src="/2017/11/01/32/20171101103256523.jpeg"><br><img src="/2017/11/01/32/20171101103314568.jpeg"></p>
+<p>f．round、ceil和floor可能会出现错误，原因是round和ceil内部传入的参数必须是double或者float型，所以将这三个函数里面的数据改为float型，具体做法就是里面的整数后面加上小数点，比如2，就改为2.0。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int stepx = ceil(double((bb.width - 2.0 * margin_h)/max_pts));</span><br><span class="line">int stepy = ceil(double((bb.height - 2.0 * margin_v)/max_pts));</span><br></pre></td></tr></table></figure></p>
+<img src="/2017/11/01/32/20171101103353732.jpeg">
+<p>g.打开run_tld.cpp 将其中的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (strcmp(argv[i],&quot;-tl&quot;)==0)&#123;</span><br><span class="line">    tl = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (strcmp(argv[i],&quot;-no_tl&quot;)==0)&#123;</span><br><span class="line">    tl = false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<img src="/2017/11/01/32/20171101103537148.jpeg">
+<p>对于下图这个修改，我是试过的，但是会出现如下问题：所以tl=false没有变，具体是为什么会出问题我还没有查明。<br><img src="/2017/11/01/32/20171101103600584.jpeg"><br><img src="/2017/11/01/32/20171101103624414.png"><br><img src="/2017/11/01/32/20171101103653092.jpeg"></p>
+<p>h．最后，由于这个项目是里面是先产生一个可执行文件在cmd下来执行，并且需要采用cmd命令预先调用parameters.yml中的初始化参数。这样不方便我们调试；因此我们要修改程序一开始的参数解析函数：<br><img src="/2017/11/01/32/20171101103731426.jpeg"></p>
+<p>2.4 release完成后，在生成的文件夹中直接打开EXE文件，完美运行（仅对摄像头，测试视频未调用）<br><img src="/2017/11/01/32/20171101103830769.jpeg"></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 计算机视觉 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变]]></title>
       <url>/2017/10/26/24/</url>
       <content type="html"><![CDATA[<p>在新的iOS 11的SDK中，这几个函数参数类型发生了改变<br><a id="more"></a><br>在新的iOS 11的SDK中，这几个函数参数类型发生了改变，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public func strtod(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Double</span><br><span class="line"></span><br><span class="line">public func strtof(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Float</span><br><span class="line"></span><br><span class="line">public func strtol(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int</span><br><span class="line"></span><br><span class="line">public func strtoll(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int64</span><br><span class="line"></span><br><span class="line">/* !__DARWIN_NO_LONG_LONG */</span><br><span class="line">public func strtoul(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt</span><br><span class="line"></span><br><span class="line">public func strtoull(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt64</span><br></pre></td></tr></table></figure></p>
@@ -356,6 +390,24 @@
         <tags>
             
             <tag> iOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[MATLAB2016b 中运行color_tracker出错]]></title>
+      <url>/2017/08/28/33/</url>
+      <content type="html"><![CDATA[<p>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。<br><a id="more"></a><br>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错，具体错误如下：<br><img src="/2017/08/28/33/20170828151236654.jpeg"></p>
+<p>报错提示我Number值必须是双精度标量或空矩阵！！！<br>于是我在网上寻找相关的资料，发现并没有与之相关的错误出现（根本就没有figure中number的用法！！！），但是在寻找中我发现了某个网站贴出了详细的figure应用格式表：<br>在仔细查看后发现了如下一个应用：<br><img src="/2017/08/28/33/20170828151435869.jpeg"></p>
+<p>注意这个缺省值，不就是figure所需要的“空矩阵”吗？，于是我将对应出错的那一段改成了如下形式：把number用userdata进行了替换：<br><img src="/2017/08/28/33/20170828151637804.jpeg"><br>再次运行，完美解决。<br><img src="/2017/08/28/33/20170828151654822.jpeg"></p>
+<p>ps：虽然自己找到了可以解决运行的方法，但是可能会有点“野狐禅”的感觉，因为自己对matlab的应用还不够熟练，以后还是要多多学习，不过还是邓爷爷说得好，不管黑猫白猫，能抓到老鼠的就是好猫，所以只要能解决问题就行了~</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 计算机视觉 </tag>
             
         </tags>
         

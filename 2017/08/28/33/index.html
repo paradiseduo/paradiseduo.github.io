@@ -15,18 +15,23 @@
 
 
 
-<meta name="description" content="在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。">
-<meta name="keywords" content="Swift">
+<meta name="description" content="最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。">
+<meta name="keywords" content="计算机视觉">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Swift中class func与static func的区别">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/12/13/23/index.html">
+<meta property="og:title" content="MATLAB2016b 中运行color_tracker出错">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/08/28/33/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。">
+<meta property="og:description" content="最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-13T07:24:27.000Z">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151236654.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151435869.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151637804.jpeg">
+<meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151654822.jpeg">
+<meta property="og:updated_time" content="2017-12-18T03:27:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Swift中class func与static func的区别">
-<meta name="twitter:description" content="在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。">
+<meta name="twitter:title" content="MATLAB2016b 中运行color_tracker出错">
+<meta name="twitter:description" content="最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。">
+<meta name="twitter:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151236654.jpeg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +63,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Swift中class func与static func的区别 | ParadiseDuo的日记本</title>
+<title>MATLAB2016b 中运行color_tracker出错 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +284,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-23" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-33" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/13/23/" class="article-date">
-      <time datetime="2017-12-13T07:22:29.000Z" itemprop="datePublished">2017-12-13</time>
+      <a href="/2017/08/28/33/" class="article-date">
+      <time datetime="2017-08-28T07:22:05.000Z" itemprop="datePublished">2017-08-28</time>
 </a>
 
 
@@ -298,7 +303,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Swift中class func与static func的区别
+      MATLAB2016b 中运行color_tracker出错
     </h1>
   
 
@@ -309,7 +314,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,8 +324,10 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。<br><a id="more"></a><br>在开发过程中遇到了这么一个问题，有些人喜欢用class func来写静态方法，有些人则喜欢用static func来写静态方法。其实从翻译的角度来说，static func叫作静态方法更合适一些。<br>这里为了明确两者区别，可以做一个简单的实验：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class ClassA &#123;</span><br><span class="line">    class func func1() -&gt; String &#123;</span><br><span class="line">        return &quot;func1&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static func func2() -&gt; String &#123;</span><br><span class="line">        return &quot;func2&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class final func func3() -&gt; String &#123;</span><br><span class="line">        return &quot;func3&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ClassB : ClassA &#123;</span><br><span class="line">    override class func func1() -&gt; String &#123;</span><br><span class="line">        return &quot;func1 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ERROR: Cannot override static method</span><br><span class="line">    override static func func2() -&gt; String &#123;</span><br><span class="line">        return &quot;func2 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    // ERROR: Class method overrides a &apos;final` class method</span><br><span class="line">    override class func func3() -&gt; String &#123;</span><br><span class="line">        return &quot;func3 in ClassB&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过以上代码可以看出，其实在Swift中static func 相当于class final func。禁止这个方法被重写。</p>
+        <p>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。<br><a id="more"></a><br>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错，具体错误如下：<br><img src="/2017/08/28/33/20170828151236654.jpeg"></p>
+<p>报错提示我Number值必须是双精度标量或空矩阵！！！<br>于是我在网上寻找相关的资料，发现并没有与之相关的错误出现（根本就没有figure中number的用法！！！），但是在寻找中我发现了某个网站贴出了详细的figure应用格式表：<br>在仔细查看后发现了如下一个应用：<br><img src="/2017/08/28/33/20170828151435869.jpeg"></p>
+<p>注意这个缺省值，不就是figure所需要的“空矩阵”吗？，于是我将对应出错的那一段改成了如下形式：把number用userdata进行了替换：<br><img src="/2017/08/28/33/20170828151637804.jpeg"><br>再次运行，完美解决。<br><img src="/2017/08/28/33/20170828151654822.jpeg"></p>
+<p>ps：虽然自己找到了可以解决运行的方法，但是可能会有点“野狐禅”的感觉，因为自己对matlab的应用还不够熟练，以后还是要多多学习，不过还是邓爷爷说得好，不管黑猫白猫，能抓到老鼠的就是好猫，所以只要能解决问题就行了~</p>
 
       
     </div>
@@ -329,13 +336,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/13/23/">Swift中class func与static func的区别</a></p>
+        <p><span>本文标题:</span><a href="/2017/08/28/33/">MATLAB2016b 中运行color_tracker出错</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-12-13, 15:22:29</p>
-        <p><span>最后更新:</span>2017-12-13, 15:24:27</p>
+        <p><span>发布时间:</span>2017-08-28, 15:22:05</p>
+        <p><span>最后更新:</span>2017-12-18, 11:27:14</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/13/23/" title="Swift中class func与static func的区别">https://youshaoduo.github.io/2017/12/13/23/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/13/23/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/08/28/33/" title="MATLAB2016b 中运行color_tracker出错">https://youshaoduo.github.io/2017/08/28/33/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/08/28/33/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -348,15 +355,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/13/27/">
-                    iOS 11适配：contentInsetAdjustmentBehavior解析
+                <a href="/2017/09/04/30/">
+                    解决NSTimer在UITableView滑动中暂停问题
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/12/13/26/">
-                    影响导航控制器中页面布局的几个属性
+                <a href="/2017/05/02/20/">
+                    iOS 安全模型浅析(五) ---- 挑战AppStore审核
                 </a>
             </div>
         
@@ -404,7 +411,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Swift中class func与static func的区别　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"MATLAB2016b 中运行color_tracker出错　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -444,7 +451,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/13/27/" title="上一篇: iOS 11适配：contentInsetAdjustmentBehavior解析">
+            <a href="/2017/09/04/30/" title="上一篇: 解决NSTimer在UITableView滑动中暂停问题">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -452,7 +459,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/13/26/" title="下一篇: 影响导航控制器中页面布局的几个属性">
+            <a href="/2017/05/02/20/" title="下一篇: iOS 安全模型浅析(五) ---- 挑战AppStore审核">
                 <i class="fa fa-angle-right"></i>
             </a>
         
