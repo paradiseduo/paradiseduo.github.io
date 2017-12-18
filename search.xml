@@ -3,6 +3,30 @@
   
     
     <entry>
+      <title><![CDATA[iOS应用剖析 ---- 对plist文件进行处理]]></title>
+      <url>/2017/12/18/28/</url>
+      <content type="html"><![CDATA[<p>想要理解iOS应用所面临的某些问题，最好能熟知应用如何存储和操作私有目录下的各种数据，包括配置文件、资源文件、二进制我呢间以及文档。在这里你会发现各种信息的泄露方式，同时也能深入理解应用程序的核心。<br><a id="more"></a><br>要找出应用在本地存储的所有数据，最快的方法是查看~/Library/Developer/CoreSimulator/Devices目录。从Xcode6开始，只要在模拟器上运行过的应用，Xcode都会根据当前设备类型和系统版本建立一个文件夹并分配一个UUID。相关应用的数据也会被存储在这里。其中应用的二进制和资源文件(包括.nib文件和图形文件)都放置在<device id="">/data/Containers/Bundle/Application/<app bundleid="">目录下。而经常变化的动态数据则存储在~<device id="">/data/Containers/Data/Application/<app bundleid="">目录中。系统数据(如全局配置文件)将存储在其余的目录下。</app></device></app></device></p>
+<p>如果你的设备已经越狱，那么你可以使用SSH连接到设备，并研究一下它的目录结构。但是你也可以使用iExplorer这样的工具来查看和安装应用程序的目录结构，不论你越狱与否。</p>
+<h3 id="对plist文件进行处理："><a href="#对plist文件进行处理：" class="headerlink" title="对plist文件进行处理："></a>对plist文件进行处理：</h3><p>iOS将应用程序的配置数据存储在属性列表(plist)文件里，这些信息都是CoreFoundation数据类型，比如CFArray和CFString。从安全角度来说，你需要重点检查plist文件中不是纯文本的值，比如证书，他们有可能会被修改从而改变应用程序的行为。</p>
+<p>举个例子：默认情况下支付功能是金庸的，但是当相应的值被修改时，该功能就可使用。</p>
+<p>属性列表有两种格式：二进制和XML。XML文件具有良好的可读性。其中的配置文件里存储了程序的基本信息，包括该应用能够运行的平台，代码签名等(在模拟器上运行的程序是不会显示代码签名的)</p>
+<p>如果用命令行查看文件或在代码中处理plist，就会经常遇到二进制格式的plist文件。二进制文件的可读性与可写性就不是那么理想了，但是你可以使用plutil(1)命令将plist文件转换成XML格式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ plutil -convert xml1 Info.plist -o -</span><br><span class="line">$ plutil -convert xml1 Info.plist -o Info-xml.plist</span><br><span class="line">$ plutil -convert binary1 Info-xml.plist -o Info-bin.plist</span><br></pre></td></tr></table></figure></p>
+<p>第一条命令将一个二进制的plist转换成XML，然后打印到标准输出(stdout)，之后可以通过管道(pipe)把内容传给less(1)或者类似的命令。当然你也可以向第二条命令那样，使用-o filename参数直接将内容输出到一个文件。第三条命令，binary1转换类型，将XML格式的plist转换为二进制格式。不过两种格式系统都能识别，所以一般不做转换。</p>
+<p>为了无缝读取和编辑plist，可以提前配置好你的文本编辑器，使其在读写plist文件的时候自动转换。。你可以在你所熟悉的环境里配置，比如你习惯用Vim，那么就可以在.vimrc配置文件中添加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">command -bar PlistXML :set binary | :1,$!plutil -convert xml1 /dev/stdin -o -</span><br><span class="line">command -bar Plistbbin :1,$!plutil -convert binary1 /dev/stdin -o -</span><br><span class="line"></span><br><span class="line">func ReadPlist()</span><br><span class="line">    if getline(&quot;&apos;[&quot;) =~ &quot;^bplist&quot;</span><br><span class="line">        :PlistXML</span><br><span class="line">        set filetype=xml</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">augroup misc</span><br><span class="line">au BufWinEnter *.plist, call ReadPlist()</span><br><span class="line">augroup end</span><br></pre></td></tr></table></figure></p>
+<p>这个配置使用:PlistXML命令自动将需要编辑的二进制格式plist转换为XML文件，从而在肉眼可读的情况下对文件进行修改。当我们准备将这些修改保存到文件中时，改文件将再次使用:Plistbin命令将XML转换成二进制进行保存。<br>你可以使用Xcode查看plist文件，优势在于他可以用下拉菜单来显示所有可用的键，这些键对应不同类型的值。不过你最好掌握在命令行中处理plist文件的做法，这样将来可以通过SSH与越狱设备进行交互。</p>
+<p>可以通过man手册来查看更多关于plist(5)和plutil(1)的信息。如果你正在使用越狱设备，则可以直接使用Erica Sadum的Erica Utilities（可以在Cydia下载安装）中的plutil命令在设备上处理plist文件。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 安全 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[iOS 11适配：contentInsetAdjustmentBehavior解析]]></title>
       <url>/2017/12/13/27/</url>
       <content type="html"><![CDATA[<p>上一篇一篇文章介绍了影响页面布局的几个属性，如今iOS 11出来后变化挺大的，在这里重新梳理下。<br><a id="more"></a><br>可以看到在iOS 11中，UIViewController的automaticallyAdjustsScrollViewInsets属性被弃用了，系统推荐我们使用UIScrollView的contentInsetAdjustmentBehavior属性替代之。关于这个属性，系统提供了四种行为模式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UIScrollViewContentInsetAdjustmentAutomatic</span><br><span class="line">UIScrollViewContentInsetAdjustmentScrollableAxes</span><br><span class="line">UIScrollViewContentInsetAdjustmentNever</span><br><span class="line">UIScrollViewContentInsetAdjustmentAlways</span><br></pre></td></tr></table></figure></p>
@@ -61,9 +85,9 @@
     <entry>
       <title><![CDATA[影响导航控制器中页面布局的几个属性]]></title>
       <url>/2017/12/13/26/</url>
-      <content type="html"><![CDATA[<p>关于iOS的适配一直有许许多多的坑，今天来简单说一下最主要的几个影响布局的属性。<br><a id="more"></a><br>主要有这么几个属性。</p>
-<blockquote>
-<p>Property                                                                 Class<br>edgesForExtendedLayout                                     UIViewController<br>extendedLayoutIncludesOpaqueBars                   UIViewController<br>automaticallyAdjustsScrollViewInsets                   UIViewController<br>translucent                                                             NavigationBar</p>
+      <content type="html"><![CDATA[<p>关于iOS的适配一直有许许多多的坑，今天来简单说一下最主要的几个影响布局的属性。<br><a id="more"></a></p>
+<h3 id="先来介绍几个主要属性"><a href="#先来介绍几个主要属性" class="headerlink" title="先来介绍几个主要属性"></a>先来介绍几个主要属性</h3><blockquote>
+<p>UIViewController 的 edgesForExtendedLayout<br>UIViewController 的 extendedLayoutIncludesOpaqueBars<br>UIViewController 的 automaticallyAdjustsScrollViewInsets<br>NavigationBar 的 translucent</p>
 </blockquote>
 <ol>
 <li><p>edgesForExtendedLayout属性的系统默认值为UIRectEdgeAll：意味着当导航控制器的导航栏为半透明效果时，子控制器self.view布局的起始位置将从屏幕边缘左上角开始。</p>
@@ -72,9 +96,10 @@
 </li>
 <li><p>translucent属性值会决定导航栏是否有半透明效果。translucent为NO，意味着导航栏为非透明，此时如上文所述，即便当前是UIRectEdgeAll，由于extendedLayoutIncludesOpaqueBars为默认NO，self.view的布局起始位置依旧是从导航栏下方开始。</p>
 </li>
+<li><p>至于automaticallyAdjustsScrollViewInsets属性，系统默认值为YES。意味着当导航控制器的childViewController.view的上层视图为scollView类簇时，则系统会自动为该scrollView的contentInset(内边距属性)的Top值增加额外的64，于是内容就会下移64。</p>
+</li>
 </ol>
-<p>需要特别注意的是：</p>
-<blockquote>
+<h3 id="关于translucent属性需要特别注意的是："><a href="#关于translucent属性需要特别注意的是：" class="headerlink" title="关于translucent属性需要特别注意的是："></a>关于translucent属性需要特别注意的是：</h3><blockquote>
 <p>根据官方文档所述：translucent会受navigationBar的backgroudImage属性的影响。也就是说当你使用了一张自定义图片作为navigationBar的背景图时，translucent的值将由系统根据该图片是否颜色值透明，来推断translucent是YES还是NO。</p>
 </blockquote>
 <p>于是坑就来了：对于导航控制器中的各个childViewController，是共用同一个的navigationBar。当你在一个childViewController中自定义了navigationBar的背景图片，或是直接改变了translucent属性，此时再push或pop到另一个childViewController时，更改导航栏的半透明效果可能会影响到页面的布局起始位置，从而发生视图发生跳动，出现“意外”的上下偏移。</p>
@@ -82,10 +107,7 @@
 <blockquote>
 <p>为避免该情况，应该将控制器B的extendedLayoutIncludesOpaqueBars设置为YES；或是当B页面viewWillAppear:时，再度将导航栏设置为半透明效果。</p>
 </blockquote>
-<ol>
-<li>至于automaticallyAdjustsScrollViewInsets属性，系统默认值为YES。意味着当导航控制器的childViewController.view的上层视图为scollView类簇时，则系统会自动为该scrollView的contentInset(内边距属性)的Top值增加额外的64，于是内容就会下移64。</li>
-</ol>
-<blockquote>
+<h3 id="关于automaticallyAdjustsScrollViewInsets属性需要特别注意的是"><a href="#关于automaticallyAdjustsScrollViewInsets属性需要特别注意的是" class="headerlink" title="关于automaticallyAdjustsScrollViewInsets属性需要特别注意的是"></a>关于automaticallyAdjustsScrollViewInsets属性需要特别注意的是</h3><blockquote>
 <p>以tableView为例，当你使用默认的创建方式，也就是UIRectEdgeAll+导航栏半透明的情况下，首行cell的位置将处于导航栏下方，也就是屏幕坐标系的(0, 64)位置处，此时上滑将会形成穿透效果导航栏的效果。</p>
 </blockquote>
 <p>补充：当你的设计中出现导航栏穿透效果，自定义非透明的导航栏背景、导航栏完全透明等需求时，记得结合上述几点进行判断处理，避免发生预想之外的界面偏差。</p>
@@ -288,6 +310,22 @@
     </entry>
     
     <entry>
+      <title><![CDATA[no rule to process file 'xxx.h' of type sourcecode.c.h for architecture armv7]]></title>
+      <url>/2017/11/02/29/</url>
+      <content type="html"><![CDATA[<p>Xcode编译提示：[WARN]warning: no rule to process file ‘xxx.h’ of type sourcecode.c.h for architecture armv7<br><a id="more"></a><br>iOS开发中，Xcode编译出现如下警告提示： [WARN]warning: no rule to process file xxx.h’ of type sourcecode.c.h for architecture armv7</p>
+<p>这是因为检查到有.h文件在编译列表中了。<br>所以只要在列表中去掉就可以。<br>点击你的xcode项目文件，然后点击『Build Phases』，确保在『Compile Sources』中没有.h文件。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Xcode </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变]]></title>
       <url>/2017/10/26/24/</url>
       <content type="html"><![CDATA[<p>在新的iOS 11的SDK中，这几个函数参数类型发生了改变<br><a id="more"></a><br>在新的iOS 11的SDK中，这几个函数参数类型发生了改变，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public func strtod(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Double</span><br><span class="line"></span><br><span class="line">public func strtof(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Float</span><br><span class="line"></span><br><span class="line">public func strtol(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int</span><br><span class="line"></span><br><span class="line">public func strtoll(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int64</span><br><span class="line"></span><br><span class="line">/* !__DARWIN_NO_LONG_LONG */</span><br><span class="line">public func strtoul(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt</span><br><span class="line"></span><br><span class="line">public func strtoull(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt64</span><br></pre></td></tr></table></figure></p>
@@ -299,6 +337,25 @@
         <tags>
             
             <tag> Swift </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[解决NSTimer在UITableView滑动中暂停问题]]></title>
+      <url>/2017/09/04/30/</url>
+      <content type="html"><![CDATA[<p>最近在研究动画特效。发现将NSTimer动画添加到tableVIew上的时候会遇见动画暂停的问题，其实是动画的计时器停止了，经过研究找到了解决方法， 和大家分享一下。<br><a id="more"></a><br>当你使用下面这个方法创建NSTimer的时候<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class func scheduledTimer(timeInterval ti: TimeInterval, target aTarget: Any, selector aSelector: Selector, userInfo: Any?, repeats yesOrNo: Bool) -&gt; Timer</span><br></pre></td></tr></table></figure></p>
+<p>在tableview滑动时timer就是显示暂停，原因是timer的这个简便构造方法把timer加入了NSRunLoopDefaultMode上，而tableview在滑动时只会处理UITrackingRunLoopMode，也就是说当前的RunLoop并没有功夫处理timer事件。</p>
+<p>解决的方法是将timer绑定到NSRunLoopCommonModes上，通过以下方法构造timer：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">init(timeInterval ti: TimeInterval, target aTarget: Any, selector aSelector: Selector, userInfo: Any?, repeats yesOrNo: Bool)</span><br></pre></td></tr></table></figure></p>
+<p>这样timer在tableview滑动中就不会暂停了。</p>
+<p>当然这样做也不是100%能解决问题，有时timer计时不准确。具体的解决方法可以参考这个：<br><a href="http://blog.csdn.net/martin_liang/article/details/40783057" target="_blank" rel="noopener">http://blog.csdn.net/martin_liang/article/details/40783057</a><br>但是像我这样做动画、对时间精确度要求不高的，倒是可以用这个方法解决问题。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOS </tag>
             
         </tags>
         
@@ -400,6 +457,63 @@
         <tags>
             
             <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关于Xcode单元测试，你必须知道的18个知识]]></title>
+      <url>/2017/04/06/31/</url>
+      <content type="html"><![CDATA[<p>关于Xcode的单元测试，有些方法你是必须知道的。<br><a id="more"></a></p>
+<ol>
+<li><p>XCTFail(format…) 生成一个失败的测试；</p>
+</li>
+<li><p>XCTAssertNil(a1, format…)为空判断，a1为空时通过，反之不通过；</p>
+</li>
+<li><p>XCTAssertNotNil(a1, format…)不为空判断，a1不为空时通过，反之不通过；</p>
+</li>
+<li><p>XCTAssert(expression, format…)当expression求值为TRUE时通过；</p>
+</li>
+<li><p>XCTAssertTrue(expression, format…)当expression求值为TRUE时通过；</p>
+</li>
+<li><p>XCTAssertFalse(expression, format…)当expression求值为False时通过；</p>
+</li>
+<li><p>XCTAssertEqualObjects(a1, a2, format…)判断相等，[a1 isEqual:a2]值为TRUE时通过，其中一个不为空时，不通过；</p>
+</li>
+<li><p>XCTAssertNotEqualObjects(a1, a2, format…)判断不等，[a1 isEqual:a2]值为False时通过；</p>
+</li>
+<li><p>XCTAssertEqual(a1, a2, format…)判断相等（当a1和a2是 C语言标量、结构体或联合体时使用,实际测试发现NSString也可以）；</p>
+</li>
+<li><p>XCTAssertNotEqual(a1, a2, format…)判断不等（当a1和a2是 C语言标量、结构体或联合体时使用）；</p>
+</li>
+<li><p>XCTAssertEqualWithAccuracy(a1, a2, accuracy, format…)判断相等，（double或float类型）提供一个误差范围，当在误差范围（+/-accuracy）以内相等时通过测试；</p>
+</li>
+<li><p>XCTAssertNotEqualWithAccuracy(a1, a2, accuracy, format…) 判断不等，（double或float类型）提供一个误差范围，当在误差范围以内不等时通过测试；</p>
+</li>
+<li><p>XCTAssertThrows(expression, format…)异常测试，当expression发生异常时通过；反之不通过；（很变态）</p>
+</li>
+<li><p>XCTAssertThrowsSpecific(expression, specificException, format…) 异常测试，当expression发生specificException异常时通过；反之发生其他异常或不发生异常均不通过；</p>
+</li>
+<li><p>XCTAssertThrowsSpecificNamed(expression, specificException, exception_name, format…)异常测试，当expression发生具体异常、具体异常名称的异常时通过测试，反之不通过；</p>
+</li>
+<li><p>XCTAssertNoThrow(expression, format…)异常测试，当expression没有发生异常时通过测试；</p>
+</li>
+<li><p>XCTAssertNoThrowSpecific(expression, specificException, format…)异常测试，当expression没有发生具体异常、具体异常名称的异常时通过测试，反之不通过；</p>
+</li>
+<li><p>XCTAssertNoThrowSpecificNamed(expression, specificException, exception_name, format…)异常测试，当expression没有发生具体异常、具体异常名称的异常时通过测试，反之不通过</p>
+</li>
+</ol>
+<p>特别注意下XCTAssertEqualObjects和XCTAssertEqual。</p>
+<p>XCTAssertEqualObjects(a1, a2, format…)的判断条件是[a1 isEqual:a2]是否返回一个YES。</p>
+<p>XCTAssertEqual(a1, a2, format…)的判断条件是a1 == a2是否返回一个YES。</p>
+<p>对于后者，如果a1和a2都是基本数据类型变量，那么只有a1 == a2才会返回YES。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 软件测试 </tag>
             
         </tags>
         

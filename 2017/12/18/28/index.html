@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。">
+<meta name="description" content="想要理解iOS应用所面临的某些问题，最好能熟知应用如何存储和操作私有目录下的各种数据，包括配置文件、资源文件、二进制我呢间以及文档。在这里你会发现各种信息的泄露方式，同时也能深入理解应用程序的核心。">
 <meta name="keywords" content="安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS 安全模型浅析(五) ---- 挑战AppStore审核">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/05/02/20/index.html">
+<meta property="og:title" content="iOS应用剖析 ---- 对plist文件进行处理">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/12/18/28/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。">
+<meta property="og:description" content="想要理解iOS应用所面临的某些问题，最好能熟知应用如何存储和操作私有目录下的各种数据，包括配置文件、资源文件、二进制我呢间以及文档。在这里你会发现各种信息的泄露方式，同时也能深入理解应用程序的核心。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-12T03:01:59.000Z">
+<meta property="og:updated_time" content="2017-12-18T02:24:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS 安全模型浅析(五) ---- 挑战AppStore审核">
-<meta name="twitter:description" content="当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。">
+<meta name="twitter:title" content="iOS应用剖析 ---- 对plist文件进行处理">
+<meta name="twitter:description" content="想要理解iOS应用所面临的某些问题，最好能熟知应用如何存储和操作私有目录下的各种数据，包括配置文件、资源文件、二进制我呢间以及文档。在这里你会发现各种信息的泄露方式，同时也能深入理解应用程序的核心。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>iOS 安全模型浅析(五) ---- 挑战AppStore审核 | ParadiseDuo的日记本</title>
+<title>iOS应用剖析 ---- 对plist文件进行处理 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-20" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-28" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/05/02/20/" class="article-date">
-      <time datetime="2017-05-02T13:05:16.000Z" itemprop="datePublished">2017-05-02</time>
+      <a href="/2017/12/18/28/" class="article-date">
+      <time datetime="2017-12-18T02:22:22.000Z" itemprop="datePublished">2017-12-18</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS 安全模型浅析(五) ---- 挑战AppStore审核
+      iOS应用剖析 ---- 对plist文件进行处理
     </h1>
   
 
@@ -319,14 +319,16 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。<br><a id="more"></a><br>当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。</p>
-<p>苹果公司没有公开披露他们的审查技术，而该技术主要用来检查应用能否满足AppStore的上架要求。可以确定的是，苹果使用了二进制分析和动态测试技术。这一过程可以将绝大部分带有明显恶意的应用拒之门外，也阻止了一些苹果不喜欢的应用上架(比如多种通信应用，色情或者重口味的应用)。</p>
-<p>尽管苹果公司付出了很大努力来确保用户可以用到安全和高质量的应用，但事实证明，一个中等水平的攻击者完全有能力伪装一个动态代码更新应用，让他通过苹果商店的审查。主要有以下几个方式。</p>
-<h2 id="WebKit桥接："><a href="#WebKit桥接：" class="headerlink" title="WebKit桥接："></a>WebKit桥接：</h2><p>基于WebKit桥接，可以通过JavaScript使用一些iOS的原生API，比如获取用户位置和使用媒体服务。PhoneGap就是一个典型的框架，以及最近很火的JSPatch。这种方式可以提供能多有用的功能，但使用它们也意味着应用程序的许多逻辑要写成JavaScript，因此不需要打包到应用中。举个例子，一个开发者可以使用JavaScript实现一个常规的打开文件功能，然后在应用审核期间不做任何的恶意操作。一旦审核通过，开发者可以修改设备的JavaScript，从而读取设备上那些本应该是禁区的数据。当然，现在这种热更新已经被苹果明令禁止了。所有使用了热更新框架的开发者都收到了苹果发的警告邮件，限定以后的版本不需使用热更新，不然可能会导致应用程序下架。但是对于Web应用来说，却没有什么明确的限制。还有一些使用了React Native框架的应用程序也没有收到警告，当然，这也不意味着以后苹果不会封杀它，毕竟他的创造者Facebook也只是在一些小应用上使用了这个框架。</p>
-<h2 id="动态修复："><a href="#动态修复：" class="headerlink" title="动态修复："></a>动态修复：</h2><p>通常来说，如果一段原生代码没有经过苹果发布的密钥签名认证，应用程序则无法运行它。如果苹果的签名验证逻辑中存在bug或漏洞，那么可能就会允许下载和执行原生代码。iOS有一个特性，前面的文章提到过，可以让程序分配一段没有NX保护的内存区块，该区块可读可写，甚至可以执行，里面运行的代码也不需要经过签名验证。这一机制被苹果用在了Safari的JIT编辑器上，以便实现一些功能，但是这就给了攻击者可趁之机。毕竟有代码的地方就可能出现漏洞，这样第三方应用程序就可以执行相同的把戏。最著名的例子就是Charlie Miller的破解程序，他破解了这个特性。这就意味着原生代码不需要签名认证就可以下载并执行。Miller向AppStore提交了一个股票代码查询应用InstaStock来演示这一过程。在应用审查期间，该应用安分守己，不进行任何恶意或者异常操作。但是一旦通过审核，Miller可以远程遥控该应用程序下载新的，未经签名的代码并执行，整个过程毫无阻碍。当然，现在这个漏洞已经被补上了，但是他却为我们如何骗过审核提供了思路。</p>
-<h2 id="故意植入不安全代码："><a href="#故意植入不安全代码：" class="headerlink" title="故意植入不安全代码："></a>故意植入不安全代码：</h2><p>这个绕过AppStore审查的方法很有趣，它会让你的应用变得更加脆弱，很容易受到远程攻击。乔治亚理工学院曾开发过一款用来概念演示的应用Jekyll，他主要用来演示应用内核的缓冲区溢出。恶意代码被打包在应用程序自身之中以便可以顺利获得签名，同样在审查时不进行任何恶意操作，不去调用这些代码。一旦获准上架，开发者能够利用缓冲区溢出的漏洞改变应用程序的控制流，使其导向隐藏的恶意代码。这些代码能够使用苹果的私有框架，进而操控设备的蓝牙、短信甚至其他模块。</p>
-<h2 id="内嵌解释器："><a href="#内嵌解释器：" class="headerlink" title="内嵌解释器："></a>内嵌解释器：</h2><p>过去几年，苹果在这方面的政策已经发生了改变，有许多产品(主要是游戏)会使用一个内嵌的Lua解释器来执行大部分的内在逻辑。当然了，过了这么多年，以内嵌解释器为媒介的恶意行为还没有见诸报端，毕竟相对于JavaScript直接调用原生代码来说，Lua解释器对于系统的原声API的操控还是十分受限的，你只能在一个安全的API范围内进行操作。但是，恶意应用可以通过一个类似的解释器来动态下载代码，并在内存中执行。当然，在AppStore的审核中这些恶意代码还是会隐藏自己。通过此方法我们能增加一个新的功能，行为不端的开发者也能较为便利的添加一个恶意功能。</p>
-<p>其实AppStore的审核只能清除那些简单的恶意程序，但是恶意程序的确可以从审查人员的眼皮子底下溜走。时刻记住这一点，并在你的应用程序中用代码做好防御，不能假定操作系统中的其他程序都是善意的。</p>
+        <p>想要理解iOS应用所面临的某些问题，最好能熟知应用如何存储和操作私有目录下的各种数据，包括配置文件、资源文件、二进制我呢间以及文档。在这里你会发现各种信息的泄露方式，同时也能深入理解应用程序的核心。<br><a id="more"></a><br>要找出应用在本地存储的所有数据，最快的方法是查看~/Library/Developer/CoreSimulator/Devices目录。从Xcode6开始，只要在模拟器上运行过的应用，Xcode都会根据当前设备类型和系统版本建立一个文件夹并分配一个UUID。相关应用的数据也会被存储在这里。其中应用的二进制和资源文件(包括.nib文件和图形文件)都放置在<device id="">/data/Containers/Bundle/Application/<app bundleid="">目录下。而经常变化的动态数据则存储在~<device id="">/data/Containers/Data/Application/<app bundleid="">目录中。系统数据(如全局配置文件)将存储在其余的目录下。</app></device></app></device></p>
+<p>如果你的设备已经越狱，那么你可以使用SSH连接到设备，并研究一下它的目录结构。但是你也可以使用iExplorer这样的工具来查看和安装应用程序的目录结构，不论你越狱与否。</p>
+<h3 id="对plist文件进行处理："><a href="#对plist文件进行处理：" class="headerlink" title="对plist文件进行处理："></a>对plist文件进行处理：</h3><p>iOS将应用程序的配置数据存储在属性列表(plist)文件里，这些信息都是CoreFoundation数据类型，比如CFArray和CFString。从安全角度来说，你需要重点检查plist文件中不是纯文本的值，比如证书，他们有可能会被修改从而改变应用程序的行为。</p>
+<p>举个例子：默认情况下支付功能是金庸的，但是当相应的值被修改时，该功能就可使用。</p>
+<p>属性列表有两种格式：二进制和XML。XML文件具有良好的可读性。其中的配置文件里存储了程序的基本信息，包括该应用能够运行的平台，代码签名等(在模拟器上运行的程序是不会显示代码签名的)</p>
+<p>如果用命令行查看文件或在代码中处理plist，就会经常遇到二进制格式的plist文件。二进制文件的可读性与可写性就不是那么理想了，但是你可以使用plutil(1)命令将plist文件转换成XML格式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ plutil -convert xml1 Info.plist -o -</span><br><span class="line">$ plutil -convert xml1 Info.plist -o Info-xml.plist</span><br><span class="line">$ plutil -convert binary1 Info-xml.plist -o Info-bin.plist</span><br></pre></td></tr></table></figure></p>
+<p>第一条命令将一个二进制的plist转换成XML，然后打印到标准输出(stdout)，之后可以通过管道(pipe)把内容传给less(1)或者类似的命令。当然你也可以向第二条命令那样，使用-o filename参数直接将内容输出到一个文件。第三条命令，binary1转换类型，将XML格式的plist转换为二进制格式。不过两种格式系统都能识别，所以一般不做转换。</p>
+<p>为了无缝读取和编辑plist，可以提前配置好你的文本编辑器，使其在读写plist文件的时候自动转换。。你可以在你所熟悉的环境里配置，比如你习惯用Vim，那么就可以在.vimrc配置文件中添加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">command -bar PlistXML :set binary | :1,$!plutil -convert xml1 /dev/stdin -o -</span><br><span class="line">command -bar Plistbbin :1,$!plutil -convert binary1 /dev/stdin -o -</span><br><span class="line"></span><br><span class="line">func ReadPlist()</span><br><span class="line">    if getline(&quot;&apos;[&quot;) =~ &quot;^bplist&quot;</span><br><span class="line">        :PlistXML</span><br><span class="line">        set filetype=xml</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">augroup misc</span><br><span class="line">au BufWinEnter *.plist, call ReadPlist()</span><br><span class="line">augroup end</span><br></pre></td></tr></table></figure></p>
+<p>这个配置使用:PlistXML命令自动将需要编辑的二进制格式plist转换为XML文件，从而在肉眼可读的情况下对文件进行修改。当我们准备将这些修改保存到文件中时，改文件将再次使用:Plistbin命令将XML转换成二进制进行保存。<br>你可以使用Xcode查看plist文件，优势在于他可以用下拉菜单来显示所有可用的键，这些键对应不同类型的值。不过你最好掌握在命令行中处理plist文件的做法，这样将来可以通过SSH与越狱设备进行交互。</p>
+<p>可以通过man手册来查看更多关于plist(5)和plutil(1)的信息。如果你正在使用越狱设备，则可以直接使用Erica Sadum的Erica Utilities（可以在Cydia下载安装）中的plutil命令在设备上处理plist文件。</p>
 
       
     </div>
@@ -335,13 +337,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></p>
+        <p><span>本文标题:</span><a href="/2017/12/18/28/">iOS应用剖析 ---- 对plist文件进行处理</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-05-02, 21:05:16</p>
-        <p><span>最后更新:</span>2017-12-12, 11:01:59</p>
+        <p><span>发布时间:</span>2017-12-18, 10:22:22</p>
+        <p><span>最后更新:</span>2017-12-18, 10:24:24</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/05/02/20/" title="iOS 安全模型浅析(五) ---- 挑战AppStore审核">https://youshaoduo.github.io/2017/05/02/20/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/05/02/20/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/18/28/" title="iOS应用剖析 ---- 对plist文件进行处理">https://youshaoduo.github.io/2017/12/18/28/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/18/28/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -353,16 +355,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/09/04/30/">
-                    解决NSTimer在UITableView滑动中暂停问题
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/05/01/19/">
-                    iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测
+                <a href="/2017/12/13/27/">
+                    iOS 11适配：contentInsetAdjustmentBehavior解析
                 </a>
             </div>
         
@@ -374,7 +370,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WebKit桥接："><span class="toc-number">1.</span> <span class="toc-text">WebKit桥接：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态修复："><span class="toc-number">2.</span> <span class="toc-text">动态修复：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#故意植入不安全代码："><span class="toc-number">3.</span> <span class="toc-text">故意植入不安全代码：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内嵌解释器："><span class="toc-number">4.</span> <span class="toc-text">内嵌解释器：</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#对plist文件进行处理："><span class="toc-number">1.</span> <span class="toc-text">对plist文件进行处理：</span></a></li></ol>
         
     </div>
     <style>
@@ -410,7 +406,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"iOS 安全模型浅析(五) ---- 挑战AppStore审核　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iOS应用剖析 ---- 对plist文件进行处理　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -450,15 +446,13 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/09/04/30/" title="上一篇: 解决NSTimer在UITableView滑动中暂停问题">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/05/01/19/" title="下一篇: iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测">
+            <a href="/2017/12/13/27/" title="下一篇: iOS 11适配：contentInsetAdjustmentBehavior解析">
                 <i class="fa fa-angle-right"></i>
             </a>
         
