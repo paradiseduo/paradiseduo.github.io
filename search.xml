@@ -3,6 +3,35 @@
   
     
     <entry>
+      <title><![CDATA[用Mac终端编写、编译C程序]]></title>
+      <url>/2017/12/19/35/</url>
+      <content type="html"><![CDATA[<p>在没有编写C语言IDE的情况下，我们可以通过Mac的终端对C语言进行编写与编译。<br><a id="more"></a><br>步骤：创建C文件、用Vim编写C程序、编译C程序文件、执行编译后生成的.out文件。</p>
+<ol>
+<li><p>$:touch Hello.c               //创建一个Hello.c文件（本目录下）</p>
+</li>
+<li><p>$:vim Hello.c                  //用vim编辑Hello.c文件</p>
+</li>
+</ol>
+<p>输入 i                                   //打开vim后先输入i进入编辑状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int main() &#123;</span><br><span class="line">    printf(“Hello Mac ! \n”);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ESC键                      //按ESC键退出编辑状态<br>:wq                           //先输入“:”，再输入“w”表示保存，最后输入“q”表示退出</p>
+<ol>
+<li><p>$:gcc Hello.c             //编译Hello.c文件，会生成可执行文件“a.out”</p>
+</li>
+<li><p>$:./a.out                    //执行a.out</p>
+</li>
+</ol>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[iOS应用剖析 ---- 设备目录]]></title>
       <url>/2017/12/19/34/</url>
       <content type="html"><![CDATA[<p>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。<br><a id="more"></a><br>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。</p>

@@ -30,7 +30,7 @@
 
 
 
-    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="shortcut icon" href="/img/small.png">
 
 
 
@@ -479,11 +479,11 @@
         var titleTime;
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
-                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                document.title = "(つェ⊂)我知道你全都知道~" + originTitle;
                 clearTimeout(titleTime);
             }
             else {
-                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                document.title = "(*´∇｀*)你知道我全都知道~" + originTitle;
                 titleTime = setTimeout(function() {
                     document.title = originTitle;
                 }, 2000);
