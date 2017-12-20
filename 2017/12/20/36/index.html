@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
-<meta name="keywords" content="其他">
+<meta name="description" content="Data目录中最重要的是Application子目录。">
+<meta name="keywords" content="安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Xcode8,Xcode9 查看模拟器沙盒目录的方法">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/12/05/12/index.html">
+<meta property="og:title" content="iOS应用剖析 ---- Data目录">
+<meta property="og:url" content="https://youshaoduo.github.io/2017/12/20/36/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
+<meta property="og:description" content="Data目录中最重要的是Application子目录。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:11:52.000Z">
+<meta property="og:updated_time" content="2017-12-20T02:56:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xcode8,Xcode9 查看模拟器沙盒目录的方法">
-<meta name="twitter:description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
+<meta name="twitter:title" content="iOS应用剖析 ---- Data目录">
+<meta name="twitter:description" content="Data目录中最重要的是Application子目录。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Xcode8,Xcode9 查看模拟器沙盒目录的方法 | ParadiseDuo的日记本</title>
+<title>iOS应用剖析 ---- Data目录 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-12" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-36" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/05/12/" class="article-date">
-      <time datetime="2017-12-05T09:09:47.000Z" itemprop="datePublished">2017-12-05</time>
+      <a href="/2017/12/20/36/" class="article-date">
+      <time datetime="2017-12-20T02:52:58.000Z" itemprop="datePublished">2017-12-20</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Xcode8,Xcode9 查看模拟器沙盒目录的方法
+      iOS应用剖析 ---- Data目录
     </h1>
   
 
@@ -309,7 +309,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,8 +319,26 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><a id="more"></a><br>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSLog(@&quot;%@&quot;, paths[0]);</span><br></pre></td></tr></table></figure></p>
-<p>打开Finder，点前往<br>把打印出来的path复制到输入框中按回车即可。</p>
+        <p>Data目录中最重要的是Application子目录。<br><a id="more"></a><br>Data/Applications目录包含了应用程序运行所需的其他数据：参数设置，缓存，cookie等。这个目录也是需要重点检查的对象。因为大部分数据泄露都发生在这里。下面我来深入的介绍一下这些子目录，当然，目录树中的目录不一定会全部出现在应用的目录中，有一些是使用特定的API创建的。</p>
+<h3 id="Documents和Inbox目录"><a href="#Documents和Inbox目录" class="headerlink" title="Documents和Inbox目录"></a>Documents和Inbox目录</h3><p>Documents目录主要用来存储非临时状态的应用数据，比如用户创建的内容或应用程序在离线模式下需要的本地缓存信息。 如果你在应用的Info.plist文件中设置了UIFileSharingEnabled，那么可以通过iTunes访问这些文件。</p>
+<p>其他应用发送过来的文件储存在Documents/Index目录中。这些应用可以使用UIDocumentInteractionController类来发送文件。</p>
+<p>你只能读取和删除存储在Inbox目录下的文件。这些来自于其他应用程序的文件不能写入你的应用目录里，他们将被一个优先级更高的系统进程处理。 你可以定期删除这些文件也可以让用户选择是否删除，这样用户就可以知道这里有没有敏感信息。</p>
+<p>如果你正在开发一个应用想确保磁盘上不会遗留任何敏感信息，那么可以将Inbox目录中的文档复制到另外一个位置，从而对数据进行保护，然后从Inbox目录中移除这些文件。</p>
+<p>注意，你的应用程序请求打开的任意文件都有可能永久的遗留在磁盘中。如果你尝试打开一个应用程序无法处理的文件类型，那么这个文件将会被传递给第三方应用，我们无法知道第三方应用是否会将它删除或者也许会将文件永久保留下来。换句话说，你无法清理那些要求第三方应用打开的文件即使只是用Quick Look API来简单预览一下内容。Inbox文件在外面存放太长时间很危险，应该考虑让你的应用能够查看自己的数据，而不是依赖一个帮手，你保证最后正确的清除这些文件。</p>
+<h3 id="Library目录"><a href="#Library目录" class="headerlink" title="Library目录"></a>Library目录</h3><p>Library目录包含应用程序相关的大部分文件包括由应用程序和网络产生的缓存数据。Library目录下的文件可以通过iTunes和iCloud进行备份，Cache目录除外。</p>
+<h3 id="Application-Support目录"><a href="#Application-Support目录" class="headerlink" title="Application Support目录"></a>Application Support目录</h3><p>由用户创建和接受的文件不会储存在Application Support目录中，该目录主要用来存储应用程序使用的数据文件。例如，一个应用程序内购买的下载内容，配置文件，积分榜等。正如它名字所暗示的那样，该目录下的文件，主要用来支持应用程序运行，这些文件可以在应用程序安装时不熟也可以由应用程序创建或从网络上下载。</p>
+<p>默认情况下iiTunes会备份这个目录下的数据到你的计算机和iCloud中。但是如果你不放心将数据保存在苹果的云端也可以通过为新创建的文件设置NSURLIsExcludedFromBackupKey属性来禁止备份到云端。</p>
+<p>值得注意的是，苹果只要求应用备份用户数据到iCloud，包括用户创建的文档配置文件等，不要求应用程序备份数据。如果一个应用程序，允许将应用相关的内容备份到iCloud上，比如可下载内容，那么该应用，一定会被App Store拒绝上架。</p>
+<h3 id="Caches和Snapshots目录"><a href="#Caches和Snapshots目录" class="headerlink" title="Caches和Snapshots目录"></a>Caches和Snapshots目录</h3><p>Caches目录在功能上类似网页浏览器的缓存：应用程序保留数据的主要目的是为了性能，而不是因为数据本身很重要。所以iTunes不会备份此目录。</p>
+<p>虽然苹果声明应该由你的应用程序管理Caches目录但是操作系统，其实也会操作该目录下的内容和子文件夹Snapshots。我们应该形成一种思维定式：Caches目录用来存放临时内容，伴随着应用程序的启动与退出，这些内容将会被丢弃。iOS在系统运行空间不足时也会自动删除这些话传目录，不过并不会删除当前正在运行程序的缓存。</p>
+<p>Caches目录有时也会把网页缓存内容存储在子目录Caches/com.mycompany.myapp</p>
+<p>中。该位置也容易泄露敏感信息，因为通过https进行长时间传输数据可以被iOS缓存。如果开发者没有禁止数据缓存和尽快使缓存数据过期，那么攻击者总能在这里尝到甜头。</p>
+<p>最后，当应用程序，进入后台操作系统会自动把当前应用的屏幕快照存储在Snapshots子目录中，这样做会无形中把一些敏感信息存储在本地。操作系统的初衷是好的：应用被切回前台时操作系统可以使它的屏幕快照创建一个快速的动画。不幸的是，在很多应用中经常看到由此产生的副作用：截图中包含了用户的社会保险号码，用户的详细信息以及其他敏感内容。</p>
+<h3 id="Cookies目录"><a href="#Cookies目录" class="headerlink" title="Cookies目录"></a>Cookies目录</h3><p>由URL加载系统所产生的Cookie都存储在Cookies目录中。创建NSURLRequest请求时，你将指定相关的Cookie策略，或者选择系统默认的策略。和OS X不同，iOS上的Cookie不会在应用程序之间共享，每个应用都有单独的目录来存储自己的Cookie。</p>
+<h3 id="Preferences目录"><a href="#Preferences目录" class="headerlink" title="Preferences目录"></a>Preferences目录</h3><p>iOS将应用的偏好设置存储在Preferences目录下，但是不允许应用，直接编辑目录中的文件。 取而代之，此目录下文件的创建，读取和操作都通过NSUserDefaults或CFPreferences API来完成。</p>
+<p>这些API将应用设置文件已传文本的格式存储，因此绝不能用它们来存储敏感的用户信息和证书。审查一个应用的本地存储信息时一定要记得检查Preference目录中的plist文件。有时候你会在这些plist文件中，发现用户名和密码API访问密钥和不应该暴露给用户的安全设置。</p>
+<h3 id="保存应用程序状态的目录"><a href="#保存应用程序状态的目录" class="headerlink" title="保存应用程序状态的目录"></a>保存应用程序状态的目录</h3><p>用户期待应用能够记住他们输入文本框的内容和启用的设置。如果一个用户切换到另外一个应用，片刻后又切回之前的应用，原先的应用可能已经在后台被操作系统杀掉了。为了在应用启动时使它的界面和之前保持一致，新版本的iOS通过State Preservation API将对象状态信息存储在Saved Application State目录中。开发者可以将需要保存状态的UI标记出来。</p>
+<h3 id="tmp目录"><a href="#tmp目录" class="headerlink" title="tmp目录"></a>tmp目录</h3><p>正如你猜测的那样，tmp用来存储临时文件。和Caches目录一样，当你的应用程序停止运行时，该目录中包含的文件可能会被操作系统自动删除。此目录的使用方法与Caches目录类似，不同之处在于Caches意味着缓存的这些文件可能会被再次获取和重新创建。比如，你从远程服务器下载了特定的应用数据，然后为了提高性能，会将数据缓存在Caches中，如果输就消失了，可以重新去下载。另一方面tmp严格存储着由应用产生的临时数据，也就是说如果这些文件在重新访问前被删除，你并不能重新获取到他们。此外，和Caches目录一样，tmp也不会被分到iTunes或iCloud中。</p>
 
       
     </div>
@@ -329,13 +347,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></p>
+        <p><span>本文标题:</span><a href="/2017/12/20/36/">iOS应用剖析 ---- Data目录</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-12-05, 17:09:47</p>
-        <p><span>最后更新:</span>2017-12-05, 17:11:52</p>
+        <p><span>发布时间:</span>2017-12-20, 10:52:58</p>
+        <p><span>最后更新:</span>2017-12-20, 10:56:02</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/05/12/" title="Xcode8,Xcode9 查看模拟器沙盒目录的方法">https://youshaoduo.github.io/2017/12/05/12/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/05/12/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/20/36/" title="iOS应用剖析 ---- Data目录">https://youshaoduo.github.io/2017/12/20/36/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/20/36/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -347,16 +365,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/06/21/">
-                    Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/12/04/2/">
-                    Hexo中的Yelee主题，首页不显示文章摘要
+                <a href="/2017/12/19/35/">
+                    用Mac终端编写、编译C程序
                 </a>
             </div>
         
@@ -368,7 +380,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Documents和Inbox目录"><span class="toc-number">1.</span> <span class="toc-text">Documents和Inbox目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Library目录"><span class="toc-number">2.</span> <span class="toc-text">Library目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Application-Support目录"><span class="toc-number">3.</span> <span class="toc-text">Application Support目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Caches和Snapshots目录"><span class="toc-number">4.</span> <span class="toc-text">Caches和Snapshots目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cookies目录"><span class="toc-number">5.</span> <span class="toc-text">Cookies目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Preferences目录"><span class="toc-number">6.</span> <span class="toc-text">Preferences目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保存应用程序状态的目录"><span class="toc-number">7.</span> <span class="toc-text">保存应用程序状态的目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tmp目录"><span class="toc-number">8.</span> <span class="toc-text">tmp目录</span></a></li></ol>
         
     </div>
     <style>
@@ -404,7 +416,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Xcode8,Xcode9 查看模拟器沙盒目录的方法　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iOS应用剖析 ---- Data目录　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -444,15 +456,13 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/06/21/" title="上一篇: Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/04/2/" title="下一篇: Hexo中的Yelee主题，首页不显示文章摘要">
+            <a href="/2017/12/19/35/" title="下一篇: 用Mac终端编写、编译C程序">
                 <i class="fa fa-angle-right"></i>
             </a>
         
