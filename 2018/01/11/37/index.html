@@ -15,13 +15,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="ParadiseDuo的日记本">
-<meta property="og:url" content="https://youshaoduo.github.io/tags/安全/index.html">
+<meta name="description" content="相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。">
+<meta name="keywords" content="CocoaPod">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pod install速度慢的终极解决方案">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/01/11/37/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-11T04:08:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ParadiseDuo的日记本">
+<meta name="twitter:title" content="pod install速度慢的终极解决方案">
+<meta name="twitter:description" content="相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -53,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Tag: 安全 | ParadiseDuo的日记本</title>
+<title>pod install速度慢的终极解决方案 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -63,9 +68,9 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: false,
+        isPost: true,
         isArchive: false,
-        isTag: true,
+        isTag: false,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
@@ -274,287 +279,196 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-37" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2018/01/11/37/" class="article-date">
+      <time datetime="2018-01-11T04:03:15.000Z" itemprop="datePublished">2018-01-11</time>
+</a>
+
+
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pod install速度慢的终极解决方案
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CocoaPod/">CocoaPod</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/20/36/" class="archive-article-date">
-      <time datetime="2017-12-20T02:52:58.000Z" itemprop="datePublished">12-20</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/20/36/">iOS应用剖析 ---- Data目录</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
+    <div class="article-entry" itemprop="articleBody">
+      
           
+        <p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。<br><a id="more"></a><br>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。</p>
+<ol>
+<li>使用国内镜像的Specs</li>
+<li>在pod install时使用命令pod install –no-repo-update</li>
+<li>使用proxychains使终端命令走代理</li>
+</ol>
+<p>下面就来说明一下这几种方法为何没有完全解决问题</p>
+<h4 id="使用国内镜像的Specs"><a href="#使用国内镜像的Specs" class="headerlink" title="使用国内镜像的Specs"></a>使用国内镜像的Specs</h4><p>这个只是加快了Specs下载更新速度，而且如果使用国内镜像Specs，那么Podfile中就必须指明使用这个Specs。</p>
+<h4 id="在pod-install时使用命令pod-install-–no-repo-update"><a href="#在pod-install时使用命令pod-install-–no-repo-update" class="headerlink" title="在pod install时使用命令pod install –no-repo-update"></a>在pod install时使用命令pod install –no-repo-update</h4><p>install时不更新本地库，但如果第一次install还是要去github clone代码</p>
+<h4 id="使用proxychains使终端命令走代理"><a href="#使用proxychains使终端命令走代理" class="headerlink" title="使用proxychains使终端命令走代理"></a>使用proxychains使终端命令走代理</h4><p>这个只是使pod命令走代理，git download的时候不会走代理</p>
+<p>其实真正慢的原因并不在pod命令，而是在于github上的代码库访问速度慢，那么就知道真正的解决方案就是要加快git命令的速度。<br>我使用Shadowsocks代理，默认代理端口为1080，配置好代理之后去终端输入git配置命令，命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure></p>
+<p>上面的命令是给git设置全局代理，但是我们并不希望国内git库也走代理，而是只需要github上的代码库走代理，命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.https://github.com.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure></p>
+<p>如此就从根本上解决了问题，下面附上设置代理前后git命令的速度<br>代理前<br><br>代理后<br></p>
 
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/01/11/37/">pod install速度慢的终极解决方案</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2018-01-11, 12:03:15</p>
+        <p><span>最后更新:</span>2018-01-11, 12:08:35</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/01/11/37/" title="pod install速度慢的终极解决方案">https://youshaoduo.github.io/2018/01/11/37/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/11/37/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
     </div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/12/20/36/">
+                    iOS应用剖析 ---- Data目录
+                </a>
+            </div>
+        
+    </nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/19/34/" class="archive-article-date">
-      <time datetime="2017-12-19T02:17:38.000Z" itemprop="datePublished">12-19</time>
-</a>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用国内镜像的Specs"><span class="toc-number">1.</span> <span class="toc-text">使用国内镜像的Specs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在pod-install时使用命令pod-install-–no-repo-update"><span class="toc-number">2.</span> <span class="toc-text">在pod install时使用命令pod install –no-repo-update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用proxychains使终端命令走代理"><span class="toc-number">3.</span> <span class="toc-text">使用proxychains使终端命令走代理</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
 
 
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
         </div>
-         
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"pod install速度慢的终极解决方案　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a>
-    </h1>
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
   
 
-        <div class="article-info info-on-archive">
-          
 
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/12/20/36/" title="下一篇: iOS应用剖析 ---- Data目录">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
     </div>
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/12/18/28/" class="archive-article-date">
-      <time datetime="2017-12-18T02:22:22.000Z" itemprop="datePublished">12-18</time>
-</a>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/37/">pod install速度慢的终极解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/36/">iOS应用剖析 ---- Data目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/35/">用Mac终端编写、编译C程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/18/28/">iOS应用剖析 ---- 对plist文件进行处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/27/">iOS 11适配：contentInsetAdjustmentBehavior解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/23/">Swift中class func与static func的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/26/">影响导航控制器中页面布局的几个属性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/25/">iOS11 UITableView顶部多出一片空白区域</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/06/21/">Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/22/">在Windows电脑上给Python配置OpenCV</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/02/29/">no rule to process file 'xxx.h' of type sourcecode.c.h for architecture armv7</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/01/32/">深度探索TLD的C++源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/24/">Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/04/30/">解决NSTimer在UITableView滑动中暂停问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/28/33/">MATLAB2016b 中运行color_tracker出错</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/14/">你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/31/">关于Xcode单元测试，你必须知道的18个知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/15/">关于数据结构和内存中堆和栈，你可能还不知道的几个区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/8/">Swift3 单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/13/">NSProcessInfo类方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a></li></ul>
 
 
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/18/28/">iOS应用剖析 ---- 对plist文件进行处理</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/05/02/20/" class="archive-article-date">
-      <time datetime="2017-05-02T13:05:16.000Z" itemprop="datePublished">05-02</time>
-</a>
 
 
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/05/01/19/" class="archive-article-date">
-      <time datetime="2017-05-01T08:36:11.000Z" itemprop="datePublished">05-01</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/04/09/18/" class="archive-article-date">
-      <time datetime="2017-04-09T15:48:07.000Z" itemprop="datePublished">04-09</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/03/26/17/" class="archive-article-date">
-      <time datetime="2017-03-26T12:08:04.000Z" itemprop="datePublished">03-26</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-          <div class="article-meta">
-              <a href="/2017/03/26/16/" class="archive-article-date">
-      <time datetime="2017-03-26T02:48:00.000Z" itemprop="datePublished">03-26</time>
-</a>
-
-
-        </div>
-         
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a>
-    </h1>
-  
-
-        <div class="article-info info-on-archive">
-          
-
-          
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
