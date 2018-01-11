@@ -5,7 +5,8 @@
     <entry>
       <title><![CDATA[pod install速度慢的终极解决方案]]></title>
       <url>/2018/01/11/37/</url>
-      <content type="html"><![CDATA[<p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题</p>
+<a id="more"></a>
 <p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。</p>
 <ol>
 <li>使用国内镜像的Specs</li>
@@ -25,6 +26,33 @@
         <tags>
             
             <tag> CocoaPod </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[浅谈Xcode下的绝对路径和相对路径]]></title>
+      <url>/2018/01/01/38/</url>
+      <content type="html"><![CDATA[<p>一般我们在xcode中添加头文件，或者添加pch文件时候，这时候就需要用到相对路径和绝对路径这两个概念了。<br><a id="more"></a><br>首先我们需要简单了解一下什么是绝对路径和相对路径。相对路径实际就是调用当前目录下面的文件，绝对路径跟相对路径一样调用文件，但绝对路径是一个固定地址。<br>简单举个例子介绍一下，例如我在桌面建一个aa的文件夹，里面一个index.html，再建一个Image文件夹，放一张图片为image1.jpg<br>例：</p>
+<ol>
+<li>绝对路径：C:\Administrator\桌面\aa\image\image1.jpg</li>
+<li>相对路径：aa/Image/image1.jpg</li>
+</ol>
+<p>绝对路径寻找方法:点击工程某个文件，右键“show in finder”打开终端，cd 把文件夹拖入，即可出现一个路径，这个就是绝对路径</p>
+<p>相对路径即相对于当前工程文件的路径，“./”表示当前工程文件夹，后面接得全部是真实文件夹名，工程内部的group无效，”../“表示上层目录 ,在xcode里“$(PROJECT_DIR)”也表示当前工程文件夹目录</p>
+<p>这里还要了解一下在iOS中怎么代表相对路径和绝对路劲</p>
+<ol>
+<li>$(SRCROOT)代表的是项目根目录下</li>
+<li>$(PROJECT_DIR)代表的是当前工程文件夹目录,也就是整个项目</li>
+</ol>
+<p>一般在实际开发中，都是用的相对路径，除非是自己做项目，项目位置不变动。否则代码就是用相对路径，这样就不会害怕项目的位置变动了或者发给别人开发。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 其他 </tag>
             
         </tags>
         

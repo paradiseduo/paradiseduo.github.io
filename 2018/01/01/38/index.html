@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。">
+<meta name="description" content="一般我们在xcode中添加头文件，或者添加pch文件时候，这时候就需要用到相对路径和绝对路径这两个概念了。">
 <meta name="keywords" content="其他">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac 设置Launchpad 的列数和行数">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/11/13/3/index.html">
+<meta property="og:title" content="浅谈Xcode下的绝对路径和相对路径">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/01/01/38/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。">
+<meta property="og:description" content="一般我们在xcode中添加头文件，或者添加pch文件时候，这时候就需要用到相对路径和绝对路径这两个概念了。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T08:53:29.000Z">
+<meta property="og:updated_time" content="2018-01-11T04:18:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac 设置Launchpad 的列数和行数">
-<meta name="twitter:description" content="这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。">
+<meta name="twitter:title" content="浅谈Xcode下的绝对路径和相对路径">
+<meta name="twitter:description" content="一般我们在xcode中添加头文件，或者添加pch文件时候，这时候就需要用到相对路径和绝对路径这两个概念了。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Mac 设置Launchpad 的列数和行数 | ParadiseDuo的日记本</title>
+<title>浅谈Xcode下的绝对路径和相对路径 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-3" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-38" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/11/13/3/" class="article-date">
-      <time datetime="2017-11-13T08:55:32.000Z" itemprop="datePublished">2017-11-13</time>
+      <a href="/2018/01/01/38/" class="article-date">
+      <time datetime="2018-01-01T04:17:03.000Z" itemprop="datePublished">2018-01-01</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Mac 设置Launchpad 的列数和行数
+      浅谈Xcode下的绝对路径和相对路径
     </h1>
   
 
@@ -319,22 +319,19 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>这两天在搞博客的事情，发现Mac的Launchpad里面一页显示的东西太少，很不方便，于是就搜集了一下如何让她显示更多图标的方法。<br><a id="more"></a></p>
-<p>打开终端。</p>
+        <p>一般我们在xcode中添加头文件，或者添加pch文件时候，这时候就需要用到相对路径和绝对路径这两个概念了。<br><a id="more"></a><br>首先我们需要简单了解一下什么是绝对路径和相对路径。相对路径实际就是调用当前目录下面的文件，绝对路径跟相对路径一样调用文件，但绝对路径是一个固定地址。<br>简单举个例子介绍一下，例如我在桌面建一个aa的文件夹，里面一个index.html，再建一个Image文件夹，放一张图片为image1.jpg<br>例：</p>
 <ol>
-<li><p>设置 Launchpad 的列数，对应于每一行 App 的个数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.dock springboard-columns -int 列数</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>设置 Launchpad 的行数，对应于每一列 App 的个数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.dock springboard-rows -int 行数</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重置 Launchpad</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.dock ResetLaunchPad -bool TRUE</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重置 Dock</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">killall Dock</span><br></pre></td></tr></table></figure>
-</li>
+<li>绝对路径：C:\Administrator\桌面\aa\image\image1.jpg</li>
+<li>相对路径：aa/Image/image1.jpg</li>
 </ol>
+<p>绝对路径寻找方法:点击工程某个文件，右键“show in finder”打开终端，cd 把文件夹拖入，即可出现一个路径，这个就是绝对路径</p>
+<p>相对路径即相对于当前工程文件的路径，“./”表示当前工程文件夹，后面接得全部是真实文件夹名，工程内部的group无效，”../“表示上层目录 ,在xcode里“$(PROJECT_DIR)”也表示当前工程文件夹目录</p>
+<p>这里还要了解一下在iOS中怎么代表相对路径和绝对路劲</p>
+<ol>
+<li>$(SRCROOT)代表的是项目根目录下</li>
+<li>$(PROJECT_DIR)代表的是当前工程文件夹目录,也就是整个项目</li>
+</ol>
+<p>一般在实际开发中，都是用的相对路径，除非是自己做项目，项目位置不变动。否则代码就是用相对路径，这样就不会害怕项目的位置变动了或者发给别人开发。</p>
 
       
     </div>
@@ -343,13 +340,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></p>
+        <p><span>本文标题:</span><a href="/2018/01/01/38/">浅谈Xcode下的绝对路径和相对路径</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-11-13, 16:55:32</p>
-        <p><span>最后更新:</span>2017-12-05, 16:53:29</p>
+        <p><span>发布时间:</span>2018-01-01, 12:17:03</p>
+        <p><span>最后更新:</span>2018-01-11, 12:18:32</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/11/13/3/" title="Mac 设置Launchpad 的列数和行数">https://youshaoduo.github.io/2017/11/13/3/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/11/13/3/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/01/01/38/" title="浅谈Xcode下的绝对路径和相对路径">https://youshaoduo.github.io/2018/01/01/38/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/01/38/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -362,15 +359,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/01/22/">
-                    在Windows电脑上给Python配置OpenCV
+                <a href="/2018/01/11/37/">
+                    pod install速度慢的终极解决方案
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/11/08/4/">
-                    加密和签名的区别
+                <a href="/2017/12/20/36/">
+                    iOS应用剖析 ---- Data目录
                 </a>
             </div>
         
@@ -418,7 +415,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Mac 设置Launchpad 的列数和行数　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"浅谈Xcode下的绝对路径和相对路径　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -458,7 +455,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/01/22/" title="上一篇: 在Windows电脑上给Python配置OpenCV">
+            <a href="/2018/01/11/37/" title="上一篇: pod install速度慢的终极解决方案">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -466,7 +463,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/11/08/4/" title="下一篇: 加密和签名的区别">
+            <a href="/2017/12/20/36/" title="下一篇: iOS应用剖析 ---- Data目录">
                 <i class="fa fa-angle-right"></i>
             </a>
         
