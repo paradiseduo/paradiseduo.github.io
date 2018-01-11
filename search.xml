@@ -5,7 +5,8 @@
     <entry>
       <title><![CDATA[pod install速度慢的终极解决方案]]></title>
       <url>/2018/01/11/37/</url>
-      <content type="html"><![CDATA[<p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。<br><a id="more"></a><br>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。</p>
+      <content type="html"><![CDATA[<p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。<br><a id="more"></a></p>
+<p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。</p>
 <ol>
 <li>使用国内镜像的Specs</li>
 <li>在pod install时使用命令pod install –no-repo-update</li>
