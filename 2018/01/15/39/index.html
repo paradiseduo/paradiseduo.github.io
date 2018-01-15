@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ParadiseDuo" />
+
+
+
+<meta name="description" content="UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 s">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIApplication中文翻译">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/01/15/39/index.html">
+<meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 shareApplication 方法来获取此对象。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-15T09:21:08.982Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIApplication中文翻译">
+<meta name="twitter:description" content="UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 shareApplication 方法来获取此对象。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ParadiseDuo的日记本" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/small.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>UIApplication中文翻译 | ParadiseDuo的日记本</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/1.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ParadiseDuo</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="https://www.126.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/youshaoduo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/u/585bdde35a65" title="简书"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/youshaoduo" title="CSDN"></a>
+                            
+                                <a class="fa QQ" href="https://user.qzone.qq.com/596309302" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPod/">CocoaPod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Xcode/">Xcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件测试/">软件测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">喜欢买鞋子的我</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ParadiseDuo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/1.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ParadiseDuo</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="https://www.126.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/youshaoduo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/u/585bdde35a65" title="简书"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/youshaoduo" title="CSDN"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="https://user.qzone.qq.com/596309302" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-39" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/15/39/" class="article-date">
+      <time datetime="2018-01-15T09:11:31.000Z" itemprop="datePublished">2018-01-15</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UIApplication中文翻译
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 shareApplication 方法来获取此对象。<br><a id="more"></a><br>UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 shareApplication 方法来获取此对象。</p>
+<p>此外，UIApplication 还处理着用户的触摸事件，分发 action message 到它拥有的合适的目标对象上。应用程序对象维持一个打开的窗口列表，通过这个列表可以检索应用程序的任何 UIView 对象。</p>
+<p>UIApplication 定义一个 delegate 对象，遵循 UIApplicationDelegate 协议，AppDelegate而且必须执行某些相关的协议方法。此外，应用程序对象通知这个代理对象一些很重要的运行时候的事件，比如app推出，内存紧张，app 终止等。</p>
+<p>应用程序联合处理一些资源，如 email， 图片文件等，通过openURL: 方法，例如一个app调用 eamil url， 通过调用 open URL，可以唤醒 Mail app。</p>
+<p>用UIApplication 相关的API可以管理设备的特定行为。如下所示：</p>
+<ol>
+<li>暂停触摸事件 beginIgnoringInteractionEvents</li>
+<li>注册远程推送 unregisterForRemoteNotifications</li>
+<li>触发 undo-redo UI applicationSupportsShakeToEdit</li>
+<li>确定是否有一个安装程序处理 URL scheme  canOpenURL:</li>
+<li>扩展App应用程序的执行，以便它可以在后台完成一个任务beginBackgroundTaskWithExpirationHandler:, beginBackgroundTaskWithName:expirationHandler:</li>
+<li>添加和取消本地的通知 scheduleLocalNotification:, cancelLocalNotification:</li>
+<li>协调遥控接收事件 beginReceivingRemoteControlEvents, endReceivingRemoteControlEvents</li>
+<li>执行app-level状态恢复任务 methods in the Managing the State Restoration Behavior task group</li>
+</ol>
+<h4 id="获得实例"><a href="#获得实例" class="headerlink" title="获得实例"></a>获得实例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 返回应用单个实例</span><br><span class="line">+ (UIApplication *)sharedApplication</span><br></pre></td></tr></table></figure>
+<h4 id="获得AppDelegate"><a href="#获得AppDelegate" class="headerlink" title="获得AppDelegate"></a>获得AppDelegate</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 这个应用的代理</span><br><span class="line">@property(nonatomic, assign) id&lt; UIApplicationDelegate &gt; delegate</span><br></pre></td></tr></table></figure>
+<h4 id="获得-app-Windows"><a href="#获得-app-Windows" class="headerlink" title="获得 app Windows"></a>获得 app Windows</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) UIWindow *keyWindow</span><br><span class="line">// app的主 window</span><br><span class="line"></span><br><span class="line">@property(nonatomic, readonly) NSArray &lt;__kindof UIWindow *&gt; *windows</span><br><span class="line">// 隐藏的和看得见的所有 window</span><br></pre></td></tr></table></figure>
+<h4 id="控制和处理事件"><a href="#控制和处理事件" class="headerlink" title="控制和处理事件"></a>控制和处理事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (void)sendEvent:(UIEvent *)event</span><br><span class="line">// 发送事件给app内适用的响应者</span><br><span class="line"></span><br><span class="line">- (BOOL)sendAction:(SEL)action</span><br><span class="line">to:(id)target</span><br><span class="line">from:(id)sender</span><br><span class="line">forEvent:(UIEvent *)event</span><br><span class="line">// 发送一个含选择器的动作消息到指定的目标</span><br><span class="line"></span><br><span class="line">- (void)beginIgnoringInteractionEvents</span><br><span class="line">// 告诉接受者暂停处理 touch相关的事件</span><br><span class="line"></span><br><span class="line">- (void)endIgnoringInteractionEvents</span><br><span class="line">// 告诉接受者继续处理 touch相关的事件</span><br><span class="line"></span><br><span class="line">- (BOOL)isIgnoringInteractionEvents</span><br><span class="line">// 是否忽略交互事件</span><br><span class="line"></span><br><span class="line">@property(nonatomic) BOOL applicationSupportsShakeToEdit</span><br><span class="line">// 是否接受摇晃的时候， 展现 撤销和恢复 视图</span><br></pre></td></tr></table></figure>
+<h4 id="打开URL资源"><a href="#打开URL资源" class="headerlink" title="打开URL资源"></a>打开URL资源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)openURL:(NSURL *)url</span><br><span class="line">// 通过特定的URL中打开资源</span><br><span class="line"></span><br><span class="line">- (BOOL)canOpenURL:(NSURL *)url</span><br><span class="line">// 返回一个bool值， 是否从已经安装的 apps 中跳转</span><br></pre></td></tr></table></figure>
+<h4 id="配置用户通知设置"><a href="#配置用户通知设置" class="headerlink" title="配置用户通知设置"></a>配置用户通知设置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)registerUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings</span><br><span class="line">// 注册可选的通知</span><br><span class="line"></span><br><span class="line">- (UIUserNotificationSettings *)currentUserNotificationSettings</span><br><span class="line">// 返回关于 user 对于这个app的通知设置</span><br></pre></td></tr></table></figure>
+<h4 id="注册远程通知"><a href="#注册远程通知" class="headerlink" title="注册远程通知"></a>注册远程通知</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)registerForRemoteNotifications</span><br><span class="line">// 注册接受的远程通知，这些通知经由 APNS 发出</span><br><span class="line"></span><br><span class="line">- (void)unregisterForRemoteNotifications</span><br><span class="line">// 注销掉远程通知</span><br><span class="line"></span><br><span class="line">- (BOOL)isRegisteredForRemoteNotifications</span><br><span class="line">// 表明是否已经注册过了远程通知</span><br></pre></td></tr></table></figure>
+<h4 id="注册本地通知"><a href="#注册本地通知" class="headerlink" title="注册本地通知"></a>注册本地通知</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)scheduleLocalNotification:(UILocalNotification *)notification</span><br><span class="line">// 安排当地的本地通知，封装了日期和时间</span><br><span class="line"></span><br><span class="line">- (void)presentLocalNotificationNow:(UILocalNotification *)notification</span><br><span class="line">// 立刻弹出本地通知</span><br><span class="line"></span><br><span class="line">- (void)cancelLocalNotification:(UILocalNotification *)notification</span><br><span class="line">// 取消预定的交付的本地通知</span><br><span class="line"></span><br><span class="line">- (void)cancelAllLocalNotifications</span><br><span class="line">// 取消所有的预定的本地通知</span><br><span class="line"></span><br><span class="line">@property(nonatomic, copy) NSArray &lt;UILocalNotification *&gt; *scheduledLocalNotifications</span><br><span class="line">// 目前的宿友的预定的本地通知</span><br></pre></td></tr></table></figure>
+<h4 id="控制状态恢复"><a href="#控制状态恢复" class="headerlink" title="控制状态恢复"></a>控制状态恢复</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)extendStateRestoration</span><br><span class="line">// 异步恢复状态</span><br><span class="line"></span><br><span class="line">- (void)completeStateRestoration</span><br><span class="line">// 结束异步恢复状态</span><br><span class="line"></span><br><span class="line">- (void)ignoreSnapshotOnNextApplicationLaunch</span><br><span class="line">// 阻止应用程序使用最近的快找图像，在接下来的循环中</span><br><span class="line"></span><br><span class="line">+ (void)registerObjectForStateRestoration:(id&lt;UIStateRestoring&gt;)object</span><br><span class="line">restorationIdentifier:(NSString *)restorationIdentifier</span><br><span class="line">// 注册自定义对象的使用状态恢复系统</span><br></pre></td></tr></table></figure>
+<h4 id="控制后台扩展"><a href="#控制后台扩展" class="headerlink" title="控制后台扩展"></a>控制后台扩展</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) UIApplicationState applicationState</span><br><span class="line">// app当前的运行的状态</span><br><span class="line"></span><br><span class="line">@property(nonatomic, readonly) NSTimeInterval backgroundTimeRemaining</span><br><span class="line">// app 在后台运行的时间</span><br><span class="line"></span><br><span class="line">@property(nonatomic, readonly) UIBackgroundRefreshStatus backgroundRefreshStatus</span><br><span class="line">// 进入到后台，因此能够进行后台的操作</span><br><span class="line"></span><br><span class="line">- (void)setMinimumBackgroundFetchInterval:(NSTimeInterval)minimumBackgroundFetchInterval</span><br><span class="line">// 指定最小时间间隔在后台获取操作</span><br><span class="line"></span><br><span class="line">- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithName:(NSString *)taskName</span><br><span class="line">expirationHandler:(void (^)(void))handler</span><br><span class="line">// 标记新的长时间运行的任务以及指定任务的命名</span><br><span class="line"></span><br><span class="line">- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:(void (^)(void))handler</span><br><span class="line">// 标记开始心的长时间运行的后台任务</span><br><span class="line"></span><br><span class="line">- (void)endBackgroundTask:(UIBackgroundTaskIdentifier)identifier</span><br><span class="line">// 结束指定的长时间的后台任务</span><br><span class="line"></span><br><span class="line">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</span><br><span class="line">// 一个bool值 确定控制器是否停止运行在空闲的时间</span><br></pre></td></tr></table></figure>
+<h4 id="控制-Home-Screen-和-3D-Touch"><a href="#控制-Home-Screen-和-3D-Touch" class="headerlink" title="控制 Home Screen 和 3D Touch"></a>控制 Home Screen 和 3D Touch</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, copy) NSArray &lt;UIApplicationShortcutItem *&gt; *shortcutItems</span><br><span class="line">// 重置此变量，设置一系列的 quick actions 用于3Dtouch展现</span><br></pre></td></tr></table></figure>
+<h4 id="注册遥控事件"><a href="#注册遥控事件" class="headerlink" title="注册遥控事件"></a>注册遥控事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)beginReceivingRemoteControlEvents</span><br><span class="line">// 告诉app 开始接受遥控事件</span><br><span class="line"></span><br><span class="line">- (void)endReceivingRemoteControlEvents</span><br><span class="line">// 告诉app 结束接受遥控事件</span><br></pre></td></tr></table></figure>
+<h4 id="控制应用程序外观"><a href="#控制应用程序外观" class="headerlink" title="控制应用程序外观"></a>控制应用程序外观</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) CGRect statusBarFrame</span><br><span class="line">// 获取状态栏的 rect</span><br><span class="line"></span><br><span class="line">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</span><br><span class="line">// 是否指示网络活动，默认是NO</span><br><span class="line"></span><br><span class="line">@property(nonatomic) NSInteger applicationIconBadgeNumber</span><br><span class="line">// 未读消息数字</span><br><span class="line"></span><br><span class="line">@property(nonatomic, readonly) UIUserInterfaceLayoutDirection userInterfaceLayoutDirection</span><br><span class="line">// 返回用户界面的布局方向。</span><br></pre></td></tr></table></figure>
+<h4 id="控制默认的方向"><a href="#控制默认的方向" class="headerlink" title="控制默认的方向"></a>控制默认的方向</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(UIWindow *)window</span><br><span class="line">// 在指定的窗口中， 返回默认的视图控制器方向接口</span><br></pre></td></tr></table></figure>
+<h4 id="控制状态栏方向"><a href="#控制状态栏方向" class="headerlink" title="控制状态栏方向"></a>控制状态栏方向</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) NSTimeInterval statusBarOrientationAnimationDuration</span><br><span class="line">// 状态栏动画持续时间</span><br></pre></td></tr></table></figure>
+<h4 id="字体大小偏好"><a href="#字体大小偏好" class="headerlink" title="字体大小偏好"></a>字体大小偏好</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, readonly) NSString *preferredContentSizeCategory</span><br><span class="line">// 字体偏好</span><br></pre></td></tr></table></figure>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">UIBackgroundTaskIdentifier;</span><br><span class="line">// 一个独特的标志，这个标志用于在后台请求运行</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIRemoteNotificationType</span><br><span class="line">// 指示应用程序的通知类型</span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">UIRemoteNotificationTypeNone    = 0,</span><br><span class="line">UIRemoteNotificationTypeBadge   = 1 &lt;&lt; 0,</span><br><span class="line">UIRemoteNotificationTypeSound   = 1 &lt;&lt; 1,</span><br><span class="line">UIRemoteNotificationTypeAlert   = 1 &lt;&lt; 2,</span><br><span class="line">UIRemoteNotificationTypeNewsstandContentAvailability = 1 &lt;&lt; 3</span><br><span class="line">&#125; UIRemoteNotificationType;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIStatusBarStyle</span><br><span class="line">// 状态栏的样式</span><br><span class="line">typedef enum : NSInteger &#123;</span><br><span class="line">UIStatusBarStyleDefault,         // 黑色状态，用于白背景</span><br><span class="line">UIStatusBarStyleLightContent,    // light 状态， 用于dark 背景</span><br><span class="line"></span><br><span class="line">UIStatusBarStyleBlackTranslucent, // 7.0 弃用</span><br><span class="line">UIStatusBarStyleBlackOpaque       // 7.0 弃用</span><br><span class="line">&#125; UIStatusBarStyle;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIStatusBarAnimation</span><br><span class="line">// 在状态栏隐藏于显现之间的动画</span><br><span class="line">typedef enum : NSInteger &#123;</span><br><span class="line">UIStatusBarAnimationNone,</span><br><span class="line">UIStatusBarAnimationFade,</span><br><span class="line">UIStatusBarAnimationSlide,</span><br><span class="line">&#125; UIStatusBarAnimation;</span><br></pre></td></tr></table></figure>
+<h4 id="常量-Constants"><a href="#常量-Constants" class="headerlink" title="常量(Constants)"></a>常量(Constants)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">UIApplicationState  // 应用状态</span><br><span class="line">typedef enum : NSInteger &#123;</span><br><span class="line">UIApplicationStateActive,</span><br><span class="line">UIApplicationStateInactive,</span><br><span class="line">UIApplicationStateBackground</span><br><span class="line">&#125; UIApplicationState;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">在后台运行时候常用的常量</span><br><span class="line">const UIBackgroundTaskIdentifier UIBackgroundTaskInvalid;</span><br><span class="line">// 无效的后台任务</span><br><span class="line">const NSTimeInterval UIMinimumKeepAliveTimeout;</span><br><span class="line">// 后台保持的最小的时间</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIBackgroundFetchResult</span><br><span class="line">// 后台请求结果</span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">UIBackgroundFetchResultNewData,</span><br><span class="line">UIBackgroundFetchResultNoData,</span><br><span class="line">UIBackgroundFetchResultFailed</span><br><span class="line">&#125; UIBackgroundFetchResult;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Fetch Intervals</span><br><span class="line">// 请求间隔</span><br><span class="line">const NSTimeInterval UIApplicationBackgroundFetchIntervalMinimum; // 系统支持的最小的间隔</span><br><span class="line">const NSTimeInterval UIApplicationBackgroundFetchIntervalNever;   // 最大间隔， 以阻止请求</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIBackgroundRefreshStatus</span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">UIBackgroundRefreshStatusRestricted,  // 限制</span><br><span class="line">UIBackgroundRefreshStatusDenied,      // 否定</span><br><span class="line">UIBackgroundRefreshStatusAvailable    // 可用</span><br><span class="line">&#125; UIBackgroundRefreshStatus;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIInterfaceOrientation</span><br><span class="line">// 应用程序的用户界面方向</span><br><span class="line">typedef enum : NSInteger &#123;</span><br><span class="line">UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,</span><br><span class="line">UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,</span><br><span class="line">UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,</span><br><span class="line">UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,</span><br><span class="line">UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft</span><br><span class="line">&#125; UIInterfaceOrientation;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIInterfaceOrientationMask</span><br><span class="line">// 指定一个视图控制器支持的接口方向。</span><br><span class="line">typedef enum : NSUInteger &#123;</span><br><span class="line">UIInterfaceOrientationMaskPortrait = (1 &lt;&lt; UIInterfaceOrientationPortrait ),</span><br><span class="line">UIInterfaceOrientationMaskLandscapeLeft = (1 &lt;&lt; UIInterfaceOrientationLandscapeLeft ),</span><br><span class="line">UIInterfaceOrientationMaskLandscapeRight = (1 &lt;&lt; UIInterfaceOrientationLandscapeRight ),</span><br><span class="line">UIInterfaceOrientationMaskPortraitUpsideDown = (1 &lt;&lt; UIInterfaceOrientationPortraitUpsideDown ),</span><br><span class="line">UIInterfaceOrientationMaskLandscape = (UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight ),</span><br><span class="line">UIInterfaceOrientationMaskAll = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft |</span><br><span class="line">UIInterfaceOrientationMaskLandscapeRight | UIInterfaceOrientationMaskPortraitUpsideDown ),</span><br><span class="line">UIInterfaceOrientationMaskAllButUpsideDown = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft |</span><br><span class="line">UIInterfaceOrientationMaskLandscapeRight ),</span><br><span class="line">&#125; UIInterfaceOrientationMask;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UserInfo Dictionary Keys</span><br><span class="line">// 这些键值用来接受用户信息字典，用于访问值一些UIApplication-posted通知。</span><br><span class="line">NSString *const UIApplicationStatusBarOrientationUserInfoKey;</span><br><span class="line">NSString *const UIApplicationStatusBarFrameUserInfoKey;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Content Size Category Constants // 内容大笑类别常量</span><br><span class="line">NSString *const UIContentSizeCategoryExtraSmall;</span><br><span class="line">NSString *const UIContentSizeCategorySmall;</span><br><span class="line">NSString *const UIContentSizeCategoryMedium;</span><br><span class="line">NSString *const UIContentSizeCategoryLarge;</span><br><span class="line">NSString *const UIContentSizeCategoryExtraLarge;</span><br><span class="line">NSString *const UIContentSizeCategoryExtraExtraLarge;</span><br><span class="line">NSString *const UIContentSizeCategoryExtraExtraExtraLarge;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 内容尺寸改变的通知的key</span><br><span class="line">NSString *const UIContentSizeCategoryNewValueKey;</span><br></pre></td></tr></table></figure>
+<h4 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">UIApplicationBackgroundRefreshStatusDidChangeNotification</span><br><span class="line">// 在后台下载内容的应用程序的状态变化时候通知</span><br><span class="line"></span><br><span class="line">UIApplicationDidBecomeActiveNotification</span><br><span class="line">// 当程序变的活跃之后</span><br><span class="line"></span><br><span class="line">UIApplicationDidChangeStatusBarFrameNotification</span><br><span class="line">// 当状态栏frame 改变时候</span><br><span class="line"></span><br><span class="line">UIApplicationDidChangeStatusBarOrientationNotification</span><br><span class="line">// 当用户方向改变时候</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIApplicationDidEnterBackgroundNotification</span><br><span class="line">// 当app已经进入后台之后</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">UIApplicationDidFinishLaunchingNotification</span><br><span class="line">// 当app完全推出之后</span><br><span class="line"></span><br><span class="line">UIApplicationDidReceiveMemoryWarningNotification</span><br><span class="line">// 当应用内存紧张之后</span><br><span class="line"></span><br><span class="line">UIApplicationProtectedDataDidBecomeAvailable</span><br><span class="line">// 但受保护的文件进入活跃状态</span><br><span class="line"></span><br><span class="line">UIApplicationProtectedDataWillBecomeUnavailable</span><br><span class="line">// 当被保护的文件进入不活跃状态</span><br><span class="line"></span><br><span class="line">UIApplicationUserDidTakeScreenshotNotification</span><br><span class="line">// 当截屏的时候</span><br><span class="line"></span><br><span class="line">UIApplicationWillChangeStatusBarOrientationNotification</span><br><span class="line">// 当应用程序将要改变其接口方向</span><br><span class="line"></span><br><span class="line">UIApplicationWillChangeStatusBarFrameNotification</span><br><span class="line">// 当应用将要改变状态来frame</span><br><span class="line"></span><br><span class="line">UIApplicationWillEnterForegroundNotification</span><br><span class="line">// 当应用程序从后台将要进入前台</span><br><span class="line"></span><br><span class="line">UIApplicationWillResignActiveNotification</span><br><span class="line">// 应用程序不再主动和失去焦点。</span><br><span class="line"></span><br><span class="line">UIApplicationWillTerminateNotification</span><br><span class="line">// 当应用程序将要终止。</span><br><span class="line"></span><br><span class="line">UIContentSizeCategoryDidChangeNotification</span><br><span class="line">// 当用户更改内容大小的偏好设置</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/01/15/39/">UIApplication中文翻译</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2018-01-15, 17:11:31</p>
+        <p><span>最后更新:</span>2018-01-15, 17:21:08</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/01/15/39/" title="UIApplication中文翻译">https://youshaoduo.github.io/2018/01/15/39/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/15/39/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/01/11/37/">
+                    pod install速度慢的终极解决方案
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#获得实例"><span class="toc-number">1.</span> <span class="toc-text">获得实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获得AppDelegate"><span class="toc-number">2.</span> <span class="toc-text">获得AppDelegate</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获得-app-Windows"><span class="toc-number">3.</span> <span class="toc-text">获得 app Windows</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制和处理事件"><span class="toc-number">4.</span> <span class="toc-text">控制和处理事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#打开URL资源"><span class="toc-number">5.</span> <span class="toc-text">打开URL资源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置用户通知设置"><span class="toc-number">6.</span> <span class="toc-text">配置用户通知设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注册远程通知"><span class="toc-number">7.</span> <span class="toc-text">注册远程通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注册本地通知"><span class="toc-number">8.</span> <span class="toc-text">注册本地通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制状态恢复"><span class="toc-number">9.</span> <span class="toc-text">控制状态恢复</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制后台扩展"><span class="toc-number">10.</span> <span class="toc-text">控制后台扩展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制-Home-Screen-和-3D-Touch"><span class="toc-number">11.</span> <span class="toc-text">控制 Home Screen 和 3D Touch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注册遥控事件"><span class="toc-number">12.</span> <span class="toc-text">注册遥控事件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制应用程序外观"><span class="toc-number">13.</span> <span class="toc-text">控制应用程序外观</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制默认的方向"><span class="toc-number">14.</span> <span class="toc-text">控制默认的方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#控制状态栏方向"><span class="toc-number">15.</span> <span class="toc-text">控制状态栏方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#字体大小偏好"><span class="toc-number">16.</span> <span class="toc-text">字体大小偏好</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据类型"><span class="toc-number">17.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#常量-Constants"><span class="toc-number">18.</span> <span class="toc-text">常量(Constants)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通知"><span class="toc-number">19.</span> <span class="toc-text">通知</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"UIApplication中文翻译　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+  
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
+  
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/01/11/37/" title="下一篇: pod install速度慢的终极解决方案">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/01/15/39/">UIApplication中文翻译</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/37/">pod install速度慢的终极解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/40/">iOS 应用程序挂起、复原与终止</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/05/41/">iOS 后台任务</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/01/38/">浅谈Xcode下的绝对路径和相对路径</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/36/">iOS应用剖析 ---- Data目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/35/">用Mac终端编写、编译C程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/18/28/">iOS应用剖析 ---- 对plist文件进行处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/27/">iOS 11适配：contentInsetAdjustmentBehavior解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/23/">Swift中class func与static func的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/26/">影响导航控制器中页面布局的几个属性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/25/">iOS11 UITableView顶部多出一片空白区域</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/06/21/">Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/22/">在Windows电脑上给Python配置OpenCV</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/02/29/">no rule to process file 'xxx.h' of type sourcecode.c.h for architecture armv7</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/01/32/">深度探索TLD的C++源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/24/">Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/04/30/">解决NSTimer在UITableView滑动中暂停问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/28/33/">MATLAB2016b 中运行color_tracker出错</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/14/">你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/31/">关于Xcode单元测试，你必须知道的18个知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/15/">关于数据结构和内存中堆和栈，你可能还不知道的几个区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/8/">Swift3 单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/13/">NSProcessInfo类方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 ParadiseDuo
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 11;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂)我知道你全都知道~" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*)你知道我全都知道~" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
