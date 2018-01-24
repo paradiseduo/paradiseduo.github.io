@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-12T03:01:59.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:38:34.518Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 安全模型浅析(五) ---- 挑战AppStore审核">
 <meta name="twitter:description" content="当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。">
@@ -319,7 +319,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。<br><a id="more"></a><br>当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。</p>
+        <p>当开发一个应用或评估其面对的威胁时，需要将用户设备上的其他应用考虑进来。设备上任何恶意的第三方应用程序都能通过IPC机制与其他应用交互，也能窃取用户的私人信息。AppStore的应用程序审查是对抗这些恶意程序最有力的武器。</p>
+<a id="more"></a>
 <p>苹果公司没有公开披露他们的审查技术，而该技术主要用来检查应用能否满足AppStore的上架要求。可以确定的是，苹果使用了二进制分析和动态测试技术。这一过程可以将绝大部分带有明显恶意的应用拒之门外，也阻止了一些苹果不喜欢的应用上架(比如多种通信应用，色情或者重口味的应用)。</p>
 <p>尽管苹果公司付出了很大努力来确保用户可以用到安全和高质量的应用，但事实证明，一个中等水平的攻击者完全有能力伪装一个动态代码更新应用，让他通过苹果商店的审查。主要有以下几个方式。</p>
 <h2 id="WebKit桥接："><a href="#WebKit桥接：" class="headerlink" title="WebKit桥接："></a>WebKit桥接：</h2><p>基于WebKit桥接，可以通过JavaScript使用一些iOS的原生API，比如获取用户位置和使用媒体服务。PhoneGap就是一个典型的框架，以及最近很火的JSPatch。这种方式可以提供能多有用的功能，但使用它们也意味着应用程序的许多逻辑要写成JavaScript，因此不需要打包到应用中。举个例子，一个开发者可以使用JavaScript实现一个常规的打开文件功能，然后在应用审核期间不做任何的恶意操作。一旦审核通过，开发者可以修改设备的JavaScript，从而读取设备上那些本应该是禁区的数据。当然，现在这种热更新已经被苹果明令禁止了。所有使用了热更新框架的开发者都收到了苹果发的警告邮件，限定以后的版本不需使用热更新，不然可能会导致应用程序下架。但是对于Web应用来说，却没有什么明确的限制。还有一些使用了React Native框架的应用程序也没有收到警告，当然，这也不意味着以后苹果不会封杀它，毕竟他的创造者Facebook也只是在一些小应用上使用了这个框架。</p>
@@ -338,7 +339,7 @@
         <p><span>本文标题:</span><a href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-05-02, 21:05:16</p>
-        <p><span>最后更新:</span>2017-12-12, 11:01:59</p>
+        <p><span>最后更新:</span>2018-01-24, 12:38:34</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/05/02/20/" title="iOS 安全模型浅析(五) ---- 挑战AppStore审核">https://youshaoduo.github.io/2017/05/02/20/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/05/02/20/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

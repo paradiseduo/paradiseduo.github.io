@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。">
+<meta name="description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？">
 <meta name="keywords" content="其他">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SourceTree超前一个版本，落后N个版本">
 <meta property="og:url" content="https://youshaoduo.github.io/2016/10/08/1/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。">
+<meta property="og:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T08:52:43.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:32:35.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SourceTree超前一个版本，落后N个版本">
-<meta name="twitter:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？ 首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。">
+<meta name="twitter:description" content="在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -320,8 +320,9 @@
       
           
         <p>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
-<p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br><a id="more"></a><br>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
-<p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br>然后输入(不要用这个，用下面的)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。</p>
+<p>然后输入(不要用这个，用下面的)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard HEAD^</span><br></pre></td></tr></table></figure></p>
 <p>这句话的意思是将自己最近的一次提交撤销，回到push之前的状态。但是所有commit的内容就都消失了。非常不建议用这个参数，会牺牲太多的代码。。<br>如果不想让commit消失，可以改一下参数。用这个参数可以保证你提交的代码原封不动的保存下来。前提是你本地的工作台是干净的。如果不是请把所有代码都暂存。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD^</span><br></pre></td></tr></table></figure></p>
 <p>执行这句话之后重新拉取一遍代码就可以了，push的都会撤销回来。</p>
 <p>如果想一次回退多个push，可以这样：(例子是撤销最近三次的提交)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --soft HEAD~3</span><br></pre></td></tr></table></figure></p>
@@ -345,7 +346,7 @@
         <p><span>本文标题:</span><a href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2016-10-08, 12:34:23</p>
-        <p><span>最后更新:</span>2017-12-05, 16:52:43</p>
+        <p><span>最后更新:</span>2018-01-24, 12:32:35</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/10/08/1/" title="SourceTree超前一个版本，落后N个版本">https://youshaoduo.github.io/2016/10/08/1/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/10/08/1/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

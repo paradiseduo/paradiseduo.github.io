@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-19T02:18:56.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:40:35.140Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS应用剖析 ---- 设备目录">
 <meta name="twitter:description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
@@ -319,7 +319,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。<br><a id="more"></a><br>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。</p>
+        <p>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。</p>
+<a id="more"></a>
 <p>在这个plist文件中，想找出设备信息并不容易。为了找出设备信息，要么去Devices目录下查看.default_created.plist文件，要么使用grep命令找出所有的device.plist文件。<br>打开终端，输入(这里举例子，具体路径还要根据自己的电脑酌情改变)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cd /User/me/Library/Developer/CoreSimulator/Devices &amp;&amp; ls</span><br><span class="line"></span><br><span class="line">$ for dir in &apos;ls|grep -v default&apos;</span><br><span class="line">do</span><br><span class="line">echo $dir</span><br><span class="line">grep -Cl name $dir/device.plist |tail -l|sed -e &apos;s/&lt;/\*string&gt;//g&apos;</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
 <p>进入正在运行的应用程序目录后，你会看到data目录，它包含所有的模拟器文件，还包括应用的相关数据。应用数据被分别放到了三个目录中，他们在data/Containers目录下，分别是Bundle、Data和Shared目录。<br>这篇文章主要介绍一下Bundle和Shared目录，关于Data目录内容较多，下一篇文章单独介绍。</p>
 <h3 id="Bundle目录"><a href="#Bundle目录" class="headerlink" title="Bundle目录"></a>Bundle目录</h3><p>Bundle目录中有一个Applications目录，该目录包含设备上的所有的应用目录，这些应用目录用应用程序的bundle ID命名。</p>
@@ -341,7 +342,7 @@
         <p><span>本文标题:</span><a href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-12-19, 10:17:38</p>
-        <p><span>最后更新:</span>2017-12-19, 10:18:56</p>
+        <p><span>最后更新:</span>2018-01-24, 12:40:35</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/19/34/" title="iOS应用剖析 ---- 设备目录">https://youshaoduo.github.io/2017/12/19/34/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/19/34/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T08:53:08.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:33:13.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo中的Yelee主题，首页不显示文章摘要">
 <meta name="twitter:description" content="最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。">
@@ -319,7 +319,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。<br><a id="more"></a><br>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。</p>
+        <p>最近在用Hexo自己搭建博客，使用了文档比较全的Yelee主题，但是在使用过程中发现了一个大问题，在所有文章列表中有文章，但是首页却不显示文章摘要。</p>
+<a id="more"></a>
 <p>我找了一下，发现是themes/yelee/layout/_partial/head.ejs中的这段代码的search: &lt;%= theme.search.on %&gt;定义有问题。</p>
 <p>具体代码如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var yiliaConfig = &#123;</span><br><span class="line">    fancybox: &lt;%=theme.fancybox%&gt;,</span><br><span class="line">    animate: &lt;%=theme.animate%&gt;,</span><br><span class="line">    isHome: &lt;%=is_home()%&gt;,</span><br><span class="line">    isPost: &lt;%=is_post()%&gt;,</span><br><span class="line">    isArchive: &lt;%=is_archive()%&gt;,</span><br><span class="line">    isTag: &lt;%=is_tag()%&gt;,</span><br><span class="line">    isCategory: &lt;%=is_category()%&gt;,</span><br><span class="line">    fancybox_js: <span class="string">"&lt;%- theme.CDN.fancybox_js %&gt;"</span>,</span><br><span class="line">    scrollreveal: <span class="string">"&lt;%- theme.CDN.scrollreveal %&gt;"</span>,</span><br><span class="line">    search: &lt;%= theme.search.on %&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>注意看这里最后一个search，里面用的是on，而在yelee主题的_config.xml里默认设置是search:onload:false，这里写的是onload而不是on，导致Uncaught ReferenceError: yiliaConfig is not defined。</p>
@@ -335,7 +336,7 @@
         <p><span>本文标题:</span><a href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-12-04, 14:36:58</p>
-        <p><span>最后更新:</span>2017-12-05, 16:53:08</p>
+        <p><span>最后更新:</span>2018-01-24, 12:33:13</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/04/2/" title="Hexo中的Yelee主题，首页不显示文章摘要">https://youshaoduo.github.io/2017/12/04/2/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/04/2/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

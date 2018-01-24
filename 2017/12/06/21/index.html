@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://youshaoduo.github.io/2017/12/06/21/20170829114329806.png">
 <meta property="og:image" content="https://youshaoduo.github.io/2017/12/06/21/20170829114414527.png">
 <meta property="og:image" content="https://youshaoduo.github.io/2017/12/06/21/20170829114522568.jpeg">
-<meta property="og:updated_time" content="2017-12-13T06:15:49.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:38:55.336Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD">
 <meta name="twitter:description" content="TLD即Tracking Learning Detection，Zdenek Kalal大神在其主页上给出的代码，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。">
@@ -326,7 +326,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>TLD即Tracking Learning Detection，Zdenek Kalal大神在其<a href="http://info.ee.surrey.ac.uk/Personal/Z.Kalal/tld.html" target="_blank" rel="noopener">主页上给出的代码</a>，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。<br><a id="more"></a><br>TLD即Tracking Learning Detection，Zdenek Kalal大神在其主页上给出的代码，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。</p>
+        <p>TLD即Tracking Learning Detection，Zdenek Kalal大神在其<a href="http://info.ee.surrey.ac.uk/Personal/Z.Kalal/tld.html" target="_blank" rel="noopener">主页上给出的代码</a>，是一种实时更新学习库的神级跟踪算法。ZK大神成功的利用这个算法开了一家公司，并且现在已经更新到2.2版本了，放到平板、电脑、工作站中都可以完美运行，已经做到了商业化。虽然开源代码是2011年写的，但是放到现在来说仍有重要的学习意义。</p>
+<a id="more"></a>
 <p>先说一下，我电脑的程序配置:WIN7x64+VS2015pro+MATLAB2016b+OpenCV3.2，一开始，这个程序在我电脑上始终没有跑起来，我通过在网上找到各种资料进行拼凑，却仍然不能正常运行，以至于一度想要将软件配置成几年前的版本（因为网上有前辈用WIN7+VS2005+MATLAB2011a+OpenCV2.2运行起来了，我的部分资料也是借鉴他的）。</p>
 <p>鉴于所有的配置都是几年前的老套路，而OPENCV也已经更新到3.2（今天刚看了下cv的官网，8月初更新到了3.3。。。。。。）。我决定自己总结一篇最新的配置方法。</p>
 <p>跑TLD程序，首先应该运行compile.m程序，然后再运行run_TLD.m，在任何机器上，首先得保证matlab的mex命令设置正确，其可通过：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mex –setup</span><br></pre></td></tr></table></figure></p>
@@ -354,7 +355,7 @@
         <p><span>本文标题:</span><a href="/2017/12/06/21/">Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-12-06, 13:51:38</p>
-        <p><span>最后更新:</span>2017-12-13, 14:15:49</p>
+        <p><span>最后更新:</span>2018-01-24, 12:38:55</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/06/21/" title="Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD">https://youshaoduo.github.io/2017/12/06/21/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/06/21/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

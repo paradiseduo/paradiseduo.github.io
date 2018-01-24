@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151435869.jpeg">
 <meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151637804.jpeg">
 <meta property="og:image" content="https://youshaoduo.github.io/2017/08/28/33/20170828151654822.jpeg">
-<meta property="og:updated_time" content="2017-12-18T03:27:14.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:40:25.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MATLAB2016b 中运行color_tracker出错">
 <meta name="twitter:description" content="最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。">
@@ -324,7 +324,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。<br><a id="more"></a><br>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错，具体错误如下：<br><img src="/2017/08/28/33/20170828151236654.jpeg"></p>
+        <p>最近在研究视觉追踪算法，看到了一篇Adaptive Color Attributes for Real-Time Visual Tracking，俗称CN的视觉追踪算法，从官网下载程序之后，在公司的电脑上（MATLAB2014a）完美运行，但是在我的电脑MATLAB2016b上却运行出错。</p>
+<a id="more"></a>
+<p>具体错误如下：<br><img src="/2017/08/28/33/20170828151236654.jpeg"></p>
 <p>报错提示我Number值必须是双精度标量或空矩阵！！！<br>于是我在网上寻找相关的资料，发现并没有与之相关的错误出现（根本就没有figure中number的用法！！！），但是在寻找中我发现了某个网站贴出了详细的figure应用格式表：<br>在仔细查看后发现了如下一个应用：<br><img src="/2017/08/28/33/20170828151435869.jpeg"></p>
 <p>注意这个缺省值，不就是figure所需要的“空矩阵”吗？，于是我将对应出错的那一段改成了如下形式：把number用userdata进行了替换：<br><img src="/2017/08/28/33/20170828151637804.jpeg"><br>再次运行，完美解决。<br><img src="/2017/08/28/33/20170828151654822.jpeg"></p>
 <p>ps：虽然自己找到了可以解决运行的方法，但是可能会有点“野狐禅”的感觉，因为自己对matlab的应用还不够熟练，以后还是要多多学习，不过还是邓爷爷说得好，不管黑猫白猫，能抓到老鼠的就是好猫，所以只要能解决问题就行了~</p>
@@ -339,7 +341,7 @@
         <p><span>本文标题:</span><a href="/2017/08/28/33/">MATLAB2016b 中运行color_tracker出错</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-08-28, 15:22:05</p>
-        <p><span>最后更新:</span>2017-12-18, 11:27:14</p>
+        <p><span>最后更新:</span>2018-01-24, 12:40:25</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/08/28/33/" title="MATLAB2016b 中运行color_tracker出错">https://youshaoduo.github.io/2017/08/28/33/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/08/28/33/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

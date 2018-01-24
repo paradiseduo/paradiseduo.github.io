@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-12T03:02:53.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:41:43.745Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 安全模型浅析(二) ---- 沙盒机制">
 <meta name="twitter:description" content="苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。">
@@ -319,7 +319,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。<br><a id="more"></a><br>苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。</p>
+        <p>苹果的沙盒机制想必大家都听过，并且都会称赞这是iOS做的比安卓系统好的一个重要因素，沙盒机制让iOS更为安全。</p>
+<a id="more"></a>
 <p>沙盒机制历史上被称作安全带，是一种基于FreeBSD系统(是一种类UNIX操作系统，是由经过BSD、386BSD和4.4BSD发展而来的Unix的一个重要分支)TrustedBSD框架的强制访问控制(MAC)机制，他的主要推动者是罗伯特沃森。这里我只是简单介绍一下，详细的信息以及介绍可以看这里<a href="http://shouce.jb51.net/freebsd-arch-handbook/mac.html" target="_blank" rel="noopener">TrustedBSD MAC框架介绍</a>，这份文档写得十分详尽，感兴趣的读者可以看看。</p>
 <p>言归正题，沙盒机制采用一种类似于Lisp的配置语言来描述那些资源系统可以访问，哪些禁止访问。这些资源包括文件、系统服务、网络连接、内存资源等。MAC机制不同于传统的访问控制机制(比如自主访问控制DAC)，他不允许主体(比如用户进程)操作对象(文件、套接字等)。DAC最常见的形式就是Unix系统上的用户、组和其它权限，所有这些都可以被授予读、写或执行的权限。在DAC系统中，用户如果拥有了一个对象的所有权，也就拥有了该对象的修改权限。例如，你有一个文件，你可以将其设置为全局可读或可写，这显然是破坏了访问机制。</p>
 <p>MAC是一个广义的术语，在沙盒中意味着应用程序被关进了一个虚拟的容器。该容器遵循一系列的特定规则，即哪些系统资源可以被访问，比如网络资源、文件读写、进程克隆等。在OS X中你可以部分控制应用程序的沙盒功能，但是在iOS中，所有的第三方应用都要遵循唯一的限制策略。</p>
@@ -338,7 +339,7 @@
         <p><span>本文标题:</span><a href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-03-26, 20:08:04</p>
-        <p><span>最后更新:</span>2017-12-12, 11:02:53</p>
+        <p><span>最后更新:</span>2018-01-24, 12:41:43</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/03/26/17/" title="iOS 安全模型浅析(二) ---- 沙盒机制">https://youshaoduo.github.io/2017/03/26/17/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/03/26/17/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

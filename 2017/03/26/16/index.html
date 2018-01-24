@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应">
+<meta name="description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。">
 <meta name="keywords" content="安全">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 安全模型浅析(一) ---- 安全启动">
 <meta property="og:url" content="https://youshaoduo.github.io/2017/03/26/16/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应用同样会被拒绝。">
+<meta property="og:description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-12T02:57:49.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:37:55.946Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 安全模型浅析(一) ---- 安全启动">
-<meta name="twitter:description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应用同样会被拒绝。">
+<meta name="twitter:description" content="就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -319,7 +319,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的指导手册，但是很多遵循了执导的应用同样会被拒绝。<br><a id="more"></a><br>就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的<a href="https://developer.apple.com/app-store/review/guidelines/" target="_blank" rel="noopener">指导手册</a>，但是很多遵循了执导的应用同样会被拒绝。</p>
+        <p>就目前情况来说，AppStore确实成功的将很多恶意软件拒之门外，但是对于开发者来说，应用程序的审查就是一个黑箱操作。</p>
+<a id="more"></a>
+<p>苹果公司对应用的审查不会对外公开，所以你无法搞清楚他们是如何揪出你应用中那些不能使用的API。大部分时候你搞不清楚什么功能允许使用，什么功能禁止使用。但是苹果提供了正式的<a href="https://developer.apple.com/app-store/review/guidelines/" target="_blank" rel="noopener">指导手册</a>，但是很多遵循了执导的应用同样会被拒绝。</p>
 <p>当然，什么是恶意程序是由苹果来定义的，苹果使用AppStore来控制或限制iOS平台上的应用程序的功能，这就意味着如果要实现某个特定的功能，唯一的手段就是要将设备越狱或者骗过应用商店的审查。比如通过某些特殊的操作(摇动手机XX次，出现一个控制按钮)开启隐藏功能。</p>
 <p>官方的应用审查永远无法抓到那些钻空子的恶意软件，所以需要另外一套高效的机制来阻止恶意程序破坏操作系统的安全。在接下来的时间里，我会不定期的更新博客，介绍iOS的一些基本安全组件是如何阻止恶意攻击和保护数据的。</p>
 <h2 id="首先介绍iOS的安全启动机制："><a href="#首先介绍iOS的安全启动机制：" class="headerlink" title="首先介绍iOS的安全启动机制："></a>首先介绍iOS的安全启动机制：</h2><p>当启动一台iOS设备时，系统首先会从只读的ROM中读取初始化指令，也就是系统的引导程序(事实上所有的操作系统启动时都要经过这一步，只是过程略有不同)。这个引导ROM包含苹果官方权威认证的公钥，他会验证底层启动加载器(LLB)的签名，一旦通过验证后就启动系统。LLB会所一些基础工作，然后验证第二级引导程序iBoot。iBoot启动后，设备就可以进入恢复模式或启动内核。在iBoot验证完内核签名的合法性之后，整个启动程序开始步入正轨：加载驱动程序、检测设备、启动系统守护进程。</p>
@@ -336,7 +338,7 @@
         <p><span>本文标题:</span><a href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-03-26, 10:48:00</p>
-        <p><span>最后更新:</span>2017-12-12, 10:57:49</p>
+        <p><span>最后更新:</span>2018-01-24, 12:37:55</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/03/26/16/" title="iOS 安全模型浅析(一) ---- 安全启动">https://youshaoduo.github.io/2017/03/26/16/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/03/26/16/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

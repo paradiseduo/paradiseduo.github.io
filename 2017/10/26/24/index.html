@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="在新的iOS 11的SDK中，这几个函数参数类型发生了改变">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-13T07:26:37.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:39:20.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变">
 <meta name="twitter:description" content="在新的iOS 11的SDK中，这几个函数参数类型发生了改变">
@@ -319,7 +319,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>在新的iOS 11的SDK中，这几个函数参数类型发生了改变<br><a id="more"></a><br>在新的iOS 11的SDK中，这几个函数参数类型发生了改变，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public func strtod(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Double</span><br><span class="line"></span><br><span class="line">public func strtof(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Float</span><br><span class="line"></span><br><span class="line">public func strtol(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int</span><br><span class="line"></span><br><span class="line">public func strtoll(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int64</span><br><span class="line"></span><br><span class="line">/* !__DARWIN_NO_LONG_LONG */</span><br><span class="line">public func strtoul(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt</span><br><span class="line"></span><br><span class="line">public func strtoull(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt64</span><br></pre></td></tr></table></figure></p>
+        <p>在新的iOS 11的SDK中，这几个函数参数类型发生了改变</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public func strtod(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Double</span><br><span class="line"></span><br><span class="line">public func strtof(_: UnsafePointer&lt;Int8&gt;!, _: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!) -&gt; Float</span><br><span class="line"></span><br><span class="line">public func strtol(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int</span><br><span class="line"></span><br><span class="line">public func strtoll(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; Int64</span><br><span class="line"></span><br><span class="line">/* !__DARWIN_NO_LONG_LONG */</span><br><span class="line">public func strtoul(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt</span><br><span class="line"></span><br><span class="line">public func strtoull(_ __str: UnsafePointer&lt;Int8&gt;!, _ __endptr: UnsafeMutablePointer&lt;UnsafeMutablePointer&lt;Int8&gt;?&gt;!, _ __base: Int32) -&gt; UInt64</span><br></pre></td></tr></table></figure>
 <p>从原来可以直接传的char*变成了一个UnsafePointer<int8>。那么我们用到函数的地方也要改变一下，具体代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let s = hex[hex.characters.index(hex.startIndex, offsetBy: start)..&lt;hex.characters.index(hex.startIndex, offsetBy: end)]</span><br><span class="line">return CGFloat(s.withCString&#123;strtoul($0, nil, 16)&#125;)</span><br></pre></td></tr></table></figure></int8></p>
 <p>这里的s是一个String类型，他有一个withCString方法。利用这个方法可以将字符串中的字符转换成UnsafePointer<int8>类型。</int8></p>
 
@@ -333,7 +335,7 @@
         <p><span>本文标题:</span><a href="/2017/10/26/24/">Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-10-26, 12:24:37</p>
-        <p><span>最后更新:</span>2017-12-13, 15:26:37</p>
+        <p><span>最后更新:</span>2018-01-24, 12:39:20</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/10/26/24/" title="Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变">https://youshaoduo.github.io/2017/10/26/24/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/10/26/24/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

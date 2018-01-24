@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:06:45.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:34:23.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swift 中的for循环，正序与逆序(倒序)">
 <meta name="twitter:description" content="看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。">
@@ -319,7 +319,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。<br><a id="more"></a><br>看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i in (0...10).reversed() &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>看了许多关于Swift  for循环的文章，发现基本上都是正序的for循环，对于逆序的我一直使用while循环，直到我发现了这个方法。。。</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i in (0...10).reversed() &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用这个就可以倒序for循环了</p>
 <p>还有另一种比较优雅而且装X的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i in stride(from: 3, through: 0, by: -1) &#123;</span><br><span class="line">    print(i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>Swift 的 stride 函数返回一个任意可变步长 类型值的序列。可变步长类型是可以设置偏移量的一维标量。<br>他有两个变种，<br>from，to，最后一个值将会严格小(大)于to的值<br>stride(from:3, to:0, by:-1) 表示3，2，1</p>
@@ -335,7 +337,7 @@
         <p><span>本文标题:</span><a href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2016-11-02, 18:32:27</p>
-        <p><span>最后更新:</span>2017-12-05, 17:06:45</p>
+        <p><span>最后更新:</span>2018-01-24, 12:34:23</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/11/02/9/" title="Swift 中的for循环，正序与逆序(倒序)">https://youshaoduo.github.io/2016/11/02/9/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/11/02/9/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

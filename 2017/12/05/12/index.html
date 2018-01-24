@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="ParadiseDuo的日记本">
 <meta property="og:description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-05T09:11:52.000Z">
+<meta property="og:updated_time" content="2018-01-24T04:37:04.684Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xcode8,Xcode9 查看模拟器沙盒目录的方法">
 <meta name="twitter:description" content="自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？">
@@ -319,7 +319,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><a id="more"></a><br>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSLog(@&quot;%@&quot;, paths[0]);</span><br></pre></td></tr></table></figure></p>
+        <p>自从升级到Xcode8之后，所有的插件都被禁用了，那么应该如何进入模拟器的沙盒目录呢？</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);</span><br><span class="line">NSLog(@&quot;%@&quot;, paths[0]);</span><br></pre></td></tr></table></figure>
 <p>打开Finder，点前往<br>把打印出来的path复制到输入框中按回车即可。</p>
 
       
@@ -332,7 +334,7 @@
         <p><span>本文标题:</span><a href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
         <p><span>发布时间:</span>2017-12-05, 17:09:47</p>
-        <p><span>最后更新:</span>2017-12-05, 17:11:52</p>
+        <p><span>最后更新:</span>2018-01-24, 12:37:04</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/05/12/" title="Xcode8,Xcode9 查看模拟器沙盒目录的方法">https://youshaoduo.github.io/2017/12/05/12/</a>
             <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/05/12/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
