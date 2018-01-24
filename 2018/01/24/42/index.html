@@ -15,18 +15,20 @@
 
 
 
-<meta name="description" content="相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题">
-<meta name="keywords" content="CocoaPod">
+<meta name="description" content="升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pod install速度慢的终极解决方案">
-<meta property="og:url" content="https://youshaoduo.github.io/2018/01/11/37/index.html">
+<meta property="og:title" content="iOS Xcode9中的Voice over IP选项">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/01/24/42/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题">
+<meta property="og:description" content="升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-11T04:23:08.000Z">
+<meta property="og:image" content="https://youshaoduo.github.io/2018/01/24/42/20180122153315445.png">
+<meta property="og:updated_time" content="2018-01-24T04:29:01.235Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pod install速度慢的终极解决方案">
-<meta name="twitter:description" content="相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题">
+<meta name="twitter:title" content="iOS Xcode9中的Voice over IP选项">
+<meta name="twitter:description" content="升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。">
+<meta name="twitter:image" content="https://youshaoduo.github.io/2018/01/24/42/20180122153315445.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>pod install速度慢的终极解决方案 | ParadiseDuo的日记本</title>
+<title>iOS Xcode9中的Voice over IP选项 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +281,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-37" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-42" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/01/11/37/" class="article-date">
-      <time datetime="2018-01-11T04:03:15.000Z" itemprop="datePublished">2018-01-11</time>
+      <a href="/2018/01/24/42/" class="article-date">
+      <time datetime="2018-01-24T04:27:16.000Z" itemprop="datePublished">2018-01-24</time>
 </a>
 
 
@@ -298,7 +300,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      pod install速度慢的终极解决方案
+      iOS Xcode9中的Voice over IP选项
     </h1>
   
 
@@ -309,7 +311,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CocoaPod/">CocoaPod</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,21 +321,13 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题</p>
-<a id="more"></a>
-<p>相信大家已经感受到pod install速度越来越慢了，网上提供了几种解决方案，但是都没有完全解决速度慢的问题。</p>
-<ol>
-<li>使用国内镜像的Specs</li>
-<li>在pod install时使用命令pod install –no-repo-update</li>
-<li>使用proxychains使终端命令走代理</li>
-</ol>
-<p>下面就来说明一下这几种方法为何没有完全解决问题</p>
-<h4 id="使用国内镜像的Specs"><a href="#使用国内镜像的Specs" class="headerlink" title="使用国内镜像的Specs"></a>使用国内镜像的Specs</h4><p>这个只是加快了Specs下载更新速度，而且如果使用国内镜像Specs，那么Podfile中就必须指明使用这个Specs。</p>
-<h4 id="在pod-install时使用命令pod-install-–no-repo-update"><a href="#在pod-install时使用命令pod-install-–no-repo-update" class="headerlink" title="在pod install时使用命令pod install –no-repo-update"></a>在pod install时使用命令pod install –no-repo-update</h4><p>install时不更新本地库，但如果第一次install还是要去github clone代码</p>
-<h4 id="使用proxychains使终端命令走代理"><a href="#使用proxychains使终端命令走代理" class="headerlink" title="使用proxychains使终端命令走代理"></a>使用proxychains使终端命令走代理</h4><p>这个只是使pod命令走代理，git download的时候不会走代理</p>
-<p>其实真正慢的原因并不在pod命令，而是在于github上的代码库访问速度慢，那么就知道真正的解决方案就是要加快git命令的速度。<br>我使用Shadowsocks代理，默认代理端口为1080，配置好代理之后去终端输入git配置命令，命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure></p>
-<p>上面的命令是给git设置全局代理，但是我们并不希望国内git库也走代理，而是只需要github上的代码库走代理，命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.https://github.com.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure></p>
-<p>如此就从根本上解决了问题</p>
+        <p>升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。<br><a id="more"></a><br>升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。<br><img src="/2018/01/24/42/20180122153315445.png"><br>另外需要注意的是，升级到Xcode9以后，隐藏了这个选项其实是为了强制大家使用CallKit+PushKit来做VoIP的应用程序。</p>
+<p>我们的经验是基于PushKit的VoIP应用程序比那些使用传统VoIP架构的应用程序更可靠，更省电。</p>
+<p>Apple始终建议您使用最新版本的Xcode，因为它结合了最佳功能和最佳兼容性。</p>
+<p>具体来说，我们鼓励VoIP应用程序充分利用iOS 10 SDK中的新框架CallKit，从根本上改善了VoIP应用程序的用户体验。</p>
+<p>另外，请注意，macOS 10.12 Sierra不支持Xcode 7。</p>
+<p>在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构。</p>
+<p>最好早点开始这项工作。</p>
 
       
     </div>
@@ -342,13 +336,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2018/01/11/37/">pod install速度慢的终极解决方案</a></p>
+        <p><span>本文标题:</span><a href="/2018/01/24/42/">iOS Xcode9中的Voice over IP选项</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2018-01-11, 12:03:15</p>
-        <p><span>最后更新:</span>2018-01-11, 12:23:08</p>
+        <p><span>发布时间:</span>2018-01-24, 12:27:16</p>
+        <p><span>最后更新:</span>2018-01-24, 12:29:01</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2018/01/11/37/" title="pod install速度慢的终极解决方案">https://youshaoduo.github.io/2018/01/11/37/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/11/37/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/01/24/42/" title="iOS Xcode9中的Voice over IP选项">https://youshaoduo.github.io/2018/01/24/42/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/24/42/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -360,16 +354,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/01/15/39/">
-                    UIApplication中文翻译
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2018/01/10/40/">
-                    iOS 应用程序挂起、复原与终止
+                <a href="/2018/01/15/39/">
+                    UIApplication中文翻译
                 </a>
             </div>
         
@@ -381,7 +369,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用国内镜像的Specs"><span class="toc-number">1.</span> <span class="toc-text">使用国内镜像的Specs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在pod-install时使用命令pod-install-–no-repo-update"><span class="toc-number">2.</span> <span class="toc-text">在pod install时使用命令pod install –no-repo-update</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用proxychains使终端命令走代理"><span class="toc-number">3.</span> <span class="toc-text">使用proxychains使终端命令走代理</span></a></li></ol>
+            
         
     </div>
     <style>
@@ -417,7 +405,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"pod install速度慢的终极解决方案　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iOS Xcode9中的Voice over IP选项　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -457,15 +445,13 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/01/15/39/" title="上一篇: UIApplication中文翻译">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2018/01/10/40/" title="下一篇: iOS 应用程序挂起、复原与终止">
+            <a href="/2018/01/15/39/" title="下一篇: UIApplication中文翻译">
                 <i class="fa fa-angle-right"></i>
             </a>
         

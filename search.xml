@@ -3,6 +3,27 @@
   
     
     <entry>
+      <title><![CDATA[iOS Xcode9中的Voice over IP选项]]></title>
+      <url>/2018/01/24/42/</url>
+      <content type="html"><![CDATA[<p>升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。<br><a id="more"></a><br>升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。<br><img src="/2018/01/24/42/20180122153315445.png"><br>另外需要注意的是，升级到Xcode9以后，隐藏了这个选项其实是为了强制大家使用CallKit+PushKit来做VoIP的应用程序。</p>
+<p>我们的经验是基于PushKit的VoIP应用程序比那些使用传统VoIP架构的应用程序更可靠，更省电。</p>
+<p>Apple始终建议您使用最新版本的Xcode，因为它结合了最佳功能和最佳兼容性。</p>
+<p>具体来说，我们鼓励VoIP应用程序充分利用iOS 10 SDK中的新框架CallKit，从根本上改善了VoIP应用程序的用户体验。</p>
+<p>另外，请注意，macOS 10.12 Sierra不支持Xcode 7。</p>
+<p>在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构。</p>
+<p>最好早点开始这项工作。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> iOS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[UIApplication中文翻译]]></title>
       <url>/2018/01/15/39/</url>
       <content type="html"><![CDATA[<p>UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 shareApplication 方法来获取此对象。<br><a id="more"></a><br>UIApplication 类在整个 apps 运行过程中，扮演一个中央处理和协调的工作，任何程序应该只有一个 UIApplication 实例，当一个app 被推出时，系统会调用 UIApplicationMain 函数，在它的其它任务中，这个函数创建了一个单利 UIApplication 对象，此后，你可以调用 shareApplication 方法来获取此对象。</p>
