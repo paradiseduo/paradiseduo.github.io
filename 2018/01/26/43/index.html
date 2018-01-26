@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ParadiseDuo" />
+
+
+
+<meta name="description" content="很多VoIP的开发者发现，升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS CallKit与PushKit的集成">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/01/26/43/index.html">
+<meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="很多VoIP的开发者发现，升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://youshaoduo.github.io/2018/01/26/43/A8E35734-9BDD-4921-A7E8-64E37AD3C407.png">
+<meta property="og:image" content="https://youshaoduo.github.io/2018/01/26/43/1870246-f767b26f3aceb124.png">
+<meta property="og:image" content="https://youshaoduo.github.io/2018/01/26/43/1870246-5d199f5d045e84c1.png">
+<meta property="og:image" content="https://youshaoduo.github.io/2018/01/26/43/1870246-e5d4fe2e73dfc69e.png">
+<meta property="og:updated_time" content="2018-01-26T10:10:00.407Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS CallKit与PushKit的集成">
+<meta name="twitter:description" content="很多VoIP的开发者发现，升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构。">
+<meta name="twitter:image" content="https://youshaoduo.github.io/2018/01/26/43/A8E35734-9BDD-4921-A7E8-64E37AD3C407.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ParadiseDuo的日记本" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/small.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>iOS CallKit与PushKit的集成 | ParadiseDuo的日记本</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/1.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ParadiseDuo</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="https://www.126.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/youshaoduo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/u/585bdde35a65" title="简书"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/youshaoduo" title="CSDN"></a>
+                            
+                                <a class="fa QQ" href="https://user.qzone.qq.com/596309302" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPod/">CocoaPod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Xcode/">Xcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件测试/">软件测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">喜欢买鞋子的我</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ParadiseDuo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/1.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ParadiseDuo</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="https://www.126.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/youshaoduo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/u/585bdde35a65" title="简书"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/youshaoduo" title="CSDN"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="https://user.qzone.qq.com/596309302" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-43" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/26/43/" class="article-date">
+      <time datetime="2018-01-26T09:54:54.000Z" itemprop="datePublished">2018-01-26</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS CallKit与PushKit的集成
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>很多VoIP的开发者发现，升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构。</p>
+<a id="more"></a>
+<p>这里我就来简单介绍一下如何集成CallKit与PushKit</p>
+<p>要集成，首先就要导入framework，图中的三个framework都要导入，第一个framework是从通讯录中直接拨打App电话所需要的。<br><img src="/2018/01/26/43/A8E35734-9BDD-4921-A7E8-64E37AD3C407.png"></p>
+<h2 id="PushKit"><a href="#PushKit" class="headerlink" title="PushKit"></a>PushKit</h2><p>这个是iOS8后才支持的框架，如果你的项目现在还在支持iOS7，那么你可以以辞职为筹码去跟产品经理斗智斗勇了。</p>
+<p>集成PushKit很简单，跟注册普通的APNS推送一个样，先去注册：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//import PushKit  这个加在文件头部。大家都是老司机了，缺头文件自己加。</span><br><span class="line">let voipRegistry = PKPushRegistry(queue: DispatchQueue.main)</span><br><span class="line">voipRegistry.delegate = self</span><br><span class="line">voipRegistry.desiredPushTypes = [PKPushType.voIP]</span><br></pre></td></tr></table></figure></p>
+<p>然后注册成功没呢？看这个代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) &#123;</span><br><span class="line">if pushCredentials.token.count &gt; 0 &#123;</span><br><span class="line">var token = NSString(format: &quot;%@&quot;, pushCredentials.token as CVarArg) as String</span><br><span class="line">print(&quot;pushRegistry credentialsToken \(token)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>大家注意了，这里的token跟APNS的deviceToken虽然长度和格式一样，但是内容是不同的。这是因为苹果需要区分这是PushKit的推送还是APNS的推送。</p>
+<p>注册好token后，就可以上传给自己的服务器了。然后需要自己的服务器发推送。<br>这里就牵扯到证书的问题了，首先要知道的是，VoIP的PushKit推送证书跟APNS的是两个不同的证书，需要自己去生成，然后导出p12文件给服务器。<br><img src="/2018/01/26/43/1870246-f767b26f3aceb124.png"></p>
+<p>导出证书这里就不做过多赘述，只要知道一点，VoIP的PushKit证书只有Product环境的，但是测试环境也能使。<br><img src="/2018/01/26/43/1870246-5d199f5d045e84c1.png"></p>
+<p>导出p12文件，注意导出的文件大小应该有6kb，如果只有一半说明你没把公钥导进去。<br><img src="/2018/01/26/43/1870246-e5d4fe2e73dfc69e.png"></p>
+<p>下面就可以测试推送啦。。。<br>我们先来看看在哪里接推送，Appdelegate里面有这个方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) &#123;</span><br><span class="line">    guard type == .voIP else &#123;</span><br><span class="line">        log.info(&quot;Callkit&amp; pushRegistry didReceiveIncomingPush But Not VoIP&quot;)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    log.info(&quot;pushRegistry didReceiveIncomingPush&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法里的PKPushPayload里有个dictionaryPayload，是个字典，作用跟APNS里的info一个样。。。要学会举一反三呐。。</p>
+<p>至此，一套PushKit的推送流程就搭建好了。。如果服务器没搞好，但是想测试的话，可以用这个：<br><a href="https://github.com/noodlewerk/NWPusher" target="_blank" rel="noopener">https://github.com/noodlewerk/NWPusher</a><br>一个很牛逼的Push测试软件。用的HTTP2，只要证书选对，token填对，就能发啦。。</p>
+<h2 id="CallKit"><a href="#CallKit" class="headerlink" title="CallKit"></a>CallKit</h2><p>重点来了。。<br>对于CallKit首先要明确一点。在你使用的时候，不要把他看成一个很复杂的框架，他就是系统的打电话页面，跟你自己写的打电话页面一样一样的；只要是页面，就可以调用显示和消失，可以对上面的按钮进行操作。</p>
+<p>工欲善其事必先利其器，我们首先来创建几个工具类：<br>第一个，Call类，用来管理CallKit的电话，注意是管理CallKit的电话，跟你自己的电话逻辑不冲突！！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">enum CallState &#123; //状态都能看得懂吧。。看不懂的自己打个电话想想流程。</span><br><span class="line">    case connecting</span><br><span class="line">    case active</span><br><span class="line">    case held</span><br><span class="line">    case ended</span><br><span class="line">    case muted</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum ConnectedState &#123;</span><br><span class="line">    case pending</span><br><span class="line">    case complete</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Call &#123;</span><br><span class="line"></span><br><span class="line">    let uuid: UUID //来电的唯一标识符</span><br><span class="line">    let outgoing: Bool //是拨打的还是接听的</span><br><span class="line">    let handle: String //后面很多地方用得到，名字都是handle哈，可以理解为电话号码，其实就是自己App里被呼叫方的账号(至少我们是这样的)。。</span><br><span class="line"></span><br><span class="line">    var state: CallState = .ended &#123;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            stateChanged?()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    var connectedState: ConnectedState = .pending &#123;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            connectedStateChanged?()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    var stateChanged: (() -&gt; Void)?</span><br><span class="line">    var connectedStateChanged: (() -&gt; Void)?</span><br><span class="line"></span><br><span class="line">    init(uuid: UUID, outgoing: Bool = false, handle: String) &#123;</span><br><span class="line">        self.uuid = uuid</span><br><span class="line">        self.outgoing = outgoing</span><br><span class="line">        self.handle = handle</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func start(completion: ((_ success: Bool) -&gt; Void)?) &#123;</span><br><span class="line">        completion?(true)</span><br><span class="line"></span><br><span class="line">        DispatchQueue.main.asyncAfter(wallDeadline: DispatchWallTime.now() + 3) &#123;</span><br><span class="line">            self.state = .connecting</span><br><span class="line">            self.connectedState = .pending</span><br><span class="line"></span><br><span class="line">            DispatchQueue.main.asyncAfter(wallDeadline: DispatchWallTime.now() + 1.5) &#123;</span><br><span class="line">                self.state = .active</span><br><span class="line">                self.connectedState = .complete</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func answer() &#123;</span><br><span class="line">        state = .active</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func end() &#123;</span><br><span class="line">        state = .ended</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后建立一个Audio类，用来管理音频，铃声的播放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">func configureAudioSession() &#123; //这里必须这么做。。不然会出现没铃声的情况。原因嘛。。我也不知道。。</span><br><span class="line">    log.info(&quot;Callkit&amp; Configuring audio session&quot;)</span><br><span class="line">    let session = AVAudioSession.sharedInstance()</span><br><span class="line">    do &#123;</span><br><span class="line">        try session.setCategory(AVAudioSessionCategoryPlayAndRecord)</span><br><span class="line">        try session.setMode(AVAudioSessionModeVoiceChat)</span><br><span class="line">    &#125; catch (let error) &#123;</span><br><span class="line">        log.info(&quot;Callkit&amp; Error while configuring audio session: \(error)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func startAudio() &#123;</span><br><span class="line">    log.info(&quot;Callkit&amp; Starting audio&quot;)</span><br><span class="line">    //开始播放铃声</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func stopAudio() &#123;</span><br><span class="line">    log.info(&quot;Callkit&amp; Stopping audio&quot;)</span><br><span class="line">    //停止播放铃声</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>工具类都做好了，下面开始集成CallKit<del>~</del><del>~</del>~<br>首先，建立一个CallKitManager的类，只要是用户发起的动作，都跟这个类有关系。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@available(iOS 10.0, *)</span><br><span class="line">class CallKitManager &#123;</span><br><span class="line"></span><br><span class="line">    static let shared = CallKitManager()</span><br><span class="line"></span><br><span class="line">    var callsChangedHandler: (() -&gt; Void)?</span><br><span class="line"></span><br><span class="line">    private let callController = CXCallController()</span><br><span class="line">    private(set) var calls = [Call]()</span><br><span class="line"></span><br><span class="line">    private init()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    func callWithUUID(uuid: UUID) -&gt; Call? &#123;</span><br><span class="line">        guard let index = calls.index(where: &#123; $0.uuid == uuid &#125;) else &#123;</span><br><span class="line">            return nil</span><br><span class="line">        &#125;</span><br><span class="line">        return calls[index]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func add(call: Call) &#123;</span><br><span class="line">        calls.append(call)</span><br><span class="line">        call.stateChanged = &#123; [weak self] in</span><br><span class="line">        guard let strongSelf = self else &#123; return &#125;</span><br><span class="line">            strongSelf.callsChangedHandler?()</span><br><span class="line">        &#125;</span><br><span class="line">        callsChangedHandler?()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func remove(call: Call) &#123;</span><br><span class="line">        guard let index = calls.index(where: &#123; $0 === call &#125;) else &#123; return &#125;</span><br><span class="line">        calls.remove(at: index)</span><br><span class="line">        callsChangedHandler?()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func removeAllCalls() &#123;</span><br><span class="line">        calls.removeAll()</span><br><span class="line">        callsChangedHandler?()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>想必大家都发现了，现在CallKitManager里面只有callController跟CallKit有关系，不急，我们一点一点的把这个类丰富起来。这么做是为了加深理解，并不是简单的复制代码，到时候出了问题知道在哪进行改动。</p>
+<p>现在CallKitManager里面的函数，其实是用了我们自己写的Call类，对CallKit做一个逻辑的管理，大家发现了，这里就跟队列一个样，add、remove、removeAll、callWithUUID(根据uuid去找到这个call对象)。</p>
+<p>然后我们来看一下callController这个CXCallController对象，CallKitManager里面目前唯一与CallKit有关系就是他。CXCallController可以让系统收到App的一些Request，用户的action，App内部的事件。</p>
+<p>我们现在来丰富CallKitManager，先从打电话开始：<br>添加下列代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">func startCall(handle: String, videoEnabled: Bool) &#123;</span><br><span class="line">    //一个 CXHandle 对象表示了一次操作，同时指定了操作的类型和值。App支持对电话号码进行操作，因此我们在操作中指定了电话号码。</span><br><span class="line">    let handle = CXHandle(type: .phoneNumber, value: handle)</span><br><span class="line">    //一个 CXStartCallAction 用一个 UUID 和一个操作作为输入。</span><br><span class="line">    let startCallAction = CXStartCallAction(call: UUID(), handle: handle)</span><br><span class="line">    //你可以通过 action 的 isVideo 属性指定通话是音频还是视频。</span><br><span class="line">    startCallAction.isVideo = videoEnabled</span><br><span class="line">    let transaction = CXTransaction(action: startCallAction)</span><br><span class="line">    requestTransaction(transaction)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//调用 callController 的 request(_:completion:) 。系统会请求 CXProvider 执行这个 CXTransaction，这会导致你实现的委托方法被调用。</span><br><span class="line">private func requestTransaction(_ transaction: CXTransaction) &#123;</span><br><span class="line">    callController.request(transaction) &#123; error in</span><br><span class="line">        if let error = error &#123;</span><br><span class="line">            log.info(&quot;Callkit&amp; Error requesting transaction: \(error)&quot;)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            log.info(&quot;Callkit&amp; Requested transaction successfully&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>是不是迫不及待的想调用一下这个函数了？但是调用后发现，并没有什么事情发生。。<br>其实就是这样。。因为你只向系统发送了要打电话的请求，但是系统也要告诉你你现在可不可以打，这样才叫与系统通讯嘛。。不能只是单方面的要求，还需要对方的应答。这里其实就跟服务器请求一个样，发要求，等回应，收到回应后进行下一步操作。</p>
+<p>那么这里，我们就需要来接收系统的回应了。。怎么接收到呢？<br>我们新建一个类，名字叫ProviderDelegate，继承自谁不重要，重要的是需要遵循CXProviderDelegate这个代理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">@available(iOS 10.0, *)</span><br><span class="line">class ProviderDelegate: NSObject, CXProviderDelegate &#123;</span><br><span class="line">    static let shared = ProviderDelegate()</span><br><span class="line">    //ProviderDelegate 需要和 CXProvider 和 CXCallController 打交道，因此保持两个对二者的引用。</span><br><span class="line">    private let callManager: CallKitManager //还记得他里面有个callController嘛。。</span><br><span class="line">    private let provider: CXProvider</span><br><span class="line"></span><br><span class="line">    override init() &#123;</span><br><span class="line">        self.callManager = CallKitManager.shared</span><br><span class="line">        //用一个 CXProviderConfiguration 初始化 CXProvider，前者在后面会定义成一个静态属性。CXProviderConfiguration 用于定义通话的行为和能力。</span><br><span class="line">        provider = CXProvider(configuration: type(of: self).providerConfiguration)</span><br><span class="line">        super.init()</span><br><span class="line">        //为了能够响应来自于 CXProvider 的事件，你需要设置它的委托。</span><br><span class="line">        provider.setDelegate(self, queue: nil)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //通过设置CXProviderConfiguration来支持视频通话、电话号码处理，并将通话群组的数字限制为 1 个，其实光看属性名大家也能看得懂吧。</span><br><span class="line">    static var providerConfiguration: CXProviderConfiguration &#123;</span><br><span class="line">        let providerConfiguration = CXProviderConfiguration(localizedName: &quot;Mata Chat&quot;)//这里填你App的名字哦。。</span><br><span class="line">        providerConfiguration.supportsVideo = false</span><br><span class="line">        providerConfiguration.maximumCallsPerCallGroup = 1</span><br><span class="line">        providerConfiguration.maximumCallGroups = 1</span><br><span class="line">        providerConfiguration.supportedHandleTypes = [.phoneNumber]</span><br><span class="line">        return providerConfiguration</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //这个方法牛逼了，它是用来更新系统电话属性的。。</span><br><span class="line">    func callUpdate(handle: String, hasVideo: Bool) -&gt; CXCallUpdate &#123;</span><br><span class="line">        let update = CXCallUpdate()</span><br><span class="line">        update.localizedCallerName = &quot;ParadiseDuo&quot;//这里是系统通话记录里显示的联系人名称哦。需要显示什么按照你们的业务逻辑来。</span><br><span class="line">        update.supportsGrouping = false</span><br><span class="line">        update.supportsHolding = false</span><br><span class="line">        update.remoteHandle = CXHandle(type: .phoneNumber, value: handle) //填了联系人的名字，怎么能不填他的handle(&apos;电话号码&apos;)呢，具体填什么，根据你们的业务逻辑来</span><br><span class="line">        update.hasVideo = hasVideo</span><br><span class="line">        return update</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //CXProviderDelegate 唯一一个必须实现的代理方法！！当 CXProvider 被 reset 时，这个方法被调用，这样你的 App 就可以清空所有去电，会到干净的状态。在这个方法中，你会停止所有的呼出音频会话，然后抛弃所有激活的通话。</span><br><span class="line">    func providerDidReset(_ provider: CXProvider) &#123;</span><br><span class="line">        stopAudio()</span><br><span class="line">        for call in callManager.calls &#123;</span><br><span class="line">            call.end()</span><br><span class="line">        &#125;</span><br><span class="line">        callManager.removeAllCalls()</span><br><span class="line">        //这里添加你们挂断电话或抛弃所有激活的通话的代码。。</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的ProviderDelegate准备工作做好后，继续我们打电话的逻辑，在ProviderDelegate添加代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">func provider(_ provider: CXProvider, perform action: CXStartCallAction) &#123;</span><br><span class="line">    //向系统通讯录更新通话记录</span><br><span class="line">    let update = self.callUpdate(handle: action.handle.value, hasVideo: action.isVideo)</span><br><span class="line">    provider.reportCall(with: action.callUUID, updated: update)</span><br><span class="line"></span><br><span class="line">    let call = Call(uuid: action.callUUID, outgoing: true, handle: action.handle.value)</span><br><span class="line">    //当我们用 UUID 创建出 Call 对象之后，我们就应该去配置 App 的音频会话。和呼入通话一样，你的唯一任务就是配置。真正的处理在后面进行，也就是在 provider(_:didActivate) 委托方法被调用时</span><br><span class="line">    configureAudioSession()</span><br><span class="line">    //delegate 会监听通话的生命周期。它首先会会报告的就是呼出通话开始连接。当通话最终连上时，delegate 也会被通知。</span><br><span class="line">    call.connectedStateChanged = &#123; [weak self] in</span><br><span class="line">        guard let w = self else &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        if call.connectedState == .pending &#123;</span><br><span class="line">            w.provider.reportOutgoingCall(with: call.uuid, startedConnectingAt: nil)</span><br><span class="line">        &#125; else if call.connectedState == .complete &#123;</span><br><span class="line">            w.provider.reportOutgoingCall(with: call.uuid, connectedAt: nil)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //调用 call.start() 方法会导致 call 的生命周期变化。如果连接成功，则标记 action 为 fullfill。</span><br><span class="line">    call.start &#123; [weak self] (success) in</span><br><span class="line">        guard let w = self else &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        if success &#123;</span><br><span class="line">            //这里填写你们App内打电话的逻辑。。</span><br><span class="line"></span><br><span class="line">            w.callManager.add(call: call)</span><br><span class="line">            //所有的Action只有调用了fulfill()之后才算执行完毕。</span><br><span class="line">            action.fulfill()</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            action.fail()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//当系统激活 CXProvider 的 audio session时，委托会被调用。这给你一个机会开始处理通话的音频。</span><br><span class="line">func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) &#123;</span><br><span class="line">    startAudio() //一定要记得播放铃声呐。。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，通过CallKit拨打电话的逻辑就完成了。你只要在自己App需要打电话的地方，调用<br>CallKitManager.shared.startCall(handle: userName, videoEnabled: false)就行啦。。但是有一点需要注意，CallKit只有iOS 10以上支持，所以iOS 10以下的手机还是要支持你们原来打电话的逻辑，像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if #available(iOS 10.0, *) &#123;</span><br><span class="line">    CallKitManager.shared.startCall(handle:userName, videoEnabled: false)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    //原来打电话的逻辑</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后当你兴冲冲的去用CallKit打电话的时候，却发现弹出的是自己的通话页面。。。T_T<br>但是此时你查看系统的通话记录，应该会发现通话记录里面新增了一条从自己App打出去的记录。这样就说明CallKit拨打电话接入成功了！</p>
+<h2 id="接电话"><a href="#接电话" class="headerlink" title="接电话"></a>接电话</h2><p>首先来讲一下如果接电话，来到ProviderDelegate中，添加方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func reportIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((Error?) -&gt; Void)?) &#123;</span><br><span class="line">    //准备向系统报告一个 call update 事件，它包含了所有的来电相关的元数据。</span><br><span class="line">    let update = self.callUpdate(handle: handle, hasVideo: hasVideo)</span><br><span class="line">    //调用 CXProvider 的reportIcomingCall(with:update:completion:)方法通知系统有来电。</span><br><span class="line">    provider.reportNewIncomingCall(with: uuid, update: update) &#123; error in</span><br><span class="line">        if error == nil &#123;</span><br><span class="line">            //completion 回调会在系统处理来电时调用。如果没有任何错误，你就创建一个 Call 实例，将它添加到 CallManager 的通话列表。</span><br><span class="line">            let call = Call(uuid: uuid, handle: handle)</span><br><span class="line">            self.callManager.add(call: call)</span><br><span class="line">        &#125;</span><br><span class="line">        //调用 completion，如果它不为空的话。</span><br><span class="line">        completion?(error)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个方法需要在所有接电话的地方手动调用，需要根据自己的业务逻辑来判断。还有就是不要忘了iOS的版本兼容哦。。</p>
+<p>在ProviderDelegate中实现系统接电话的代理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) &#123;</span><br><span class="line">    //从 callManager 中获得一个引用，UUID 指定为要接听的动画的 UUID。</span><br><span class="line">    guard let call = callManager.callWithUUID(uuid: action.callUUID) else &#123;</span><br><span class="line">        action.fail()</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    //设置通话要用的 audio session 是 App 的责任。系统会以一个较高的优先级来激活这个 session。</span><br><span class="line">    configureAudioSession()</span><br><span class="line">    //通过调用 answer，你会表明这个通话现在激活</span><br><span class="line">    call.answer()</span><br><span class="line">    //在这里添加自己App接电话的逻辑</span><br><span class="line"></span><br><span class="line">    //在处理一个 CXAction 时，重要的一点是，要么你拒绝它（fail），要么满足它（fullfill)。如果处理过程中没有发生错误，你可以调用 fullfill() 表示成功。</span><br><span class="line">    action.fulfill()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>回到AppDelegate中，找到之前写的PushKit收到推送的代理方法，在里面添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) &#123;</span><br><span class="line">    guard type == .voIP else &#123;</span><br><span class="line">        log.info(&quot;Callkit&amp; pushRegistry didReceiveIncomingPush But Not VoIP&quot;)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    log.info(&quot;Callkit&amp; pushRegistry didReceiveIncomingPush&quot;)</span><br><span class="line">    //别忘了在这里加上你们自己接电话的逻辑，比如连接聊天服务器啥的，不然这个电话打不通的</span><br><span class="line">    if let uuidString = payload.dictionaryPayload[&quot;UUID&quot;] as? String,</span><br><span class="line">        let handle = payload.dictionaryPayload[&quot;handle&quot;] as? String,</span><br><span class="line">        let hasVideo = payload.dictionaryPayload[&quot;hasVideo&quot;] as? Bool,</span><br><span class="line">        let uuid = UUID(uuidString: uuidString)</span><br><span class="line">    &#123;</span><br><span class="line">        if #available(iOS 10.0, *) &#123;</span><br><span class="line">            ProviderDelegate.shared.reportIncomingCall(uuid: uuid, handle: handle, hasVideo: hasVideo, completion: &#123; (error) in</span><br><span class="line">                if let e = error &#123;</span><br><span class="line">                    log.info(&quot;CallKit&amp; displayIncomingCall Error \(e)&quot;)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // Fallback on earlier versions</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，CallKit接电话的逻辑完成了，你只需要在合适的地方调用reportIncomingCall就可以调出系统的通话页面了。</p>
+<h2 id="挂电话"><a href="#挂电话" class="headerlink" title="挂电话"></a>挂电话</h2><p>来到CallKitManager中，添加方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func end(call: Call) &#123;</span><br><span class="line">    //先创建一个 CXEndCallAction。将通话的 UUID 传递给构造函数，以便在后面可以识别通话。</span><br><span class="line">    let endCallAction = CXEndCallAction(call: call.uuid)</span><br><span class="line">    //然后将 action 封装成 CXTransaction，以便发送给系统。</span><br><span class="line">    let transaction = CXTransaction(action: endCallAction)</span><br><span class="line">    requestTransaction(transaction)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>来到ProviderDelegate中，实现系统代理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func provider(_ provider: CXProvider, perform action: CXEndCallAction) &#123;</span><br><span class="line">    //从 callManager 获得一个 call 对象。</span><br><span class="line">    guard let call = callManager.callWithUUID(uuid: action.callUUID) else &#123;</span><br><span class="line">        action.fail()</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    //当 call 即将结束时，停止这次通话的音频处理。</span><br><span class="line">    stopAudio()</span><br><span class="line">    //调用 end() 方法修改本次通话的状态，以允许其他类和新的状态交互。</span><br><span class="line">    call.end()</span><br><span class="line">    //在这里添加自己App挂断电话的逻辑</span><br><span class="line">    //将 action 标记为 fulfill。</span><br><span class="line">    action.fulfill()</span><br><span class="line">    //当你不再需要这个通话时，可以让 callManager 回收它。</span><br><span class="line">    callManager.remove(call: call)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>添加完之后，只需要在你自己App挂断电话的地方调用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if #available(iOS 10.0, *) &#123;</span><br><span class="line">    if let call = CallKitManager.shared.calls.first &#123; //因为我们这里不支持群通话，所以一次只有一个call</span><br><span class="line">        CallKitManager.shared.end(call: call)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>就可以了。。这里的CallKitManager.shared.calls保存了所有CallKit的通话。是咱们自己写的工具类哦，忘了的话自己翻翻上篇文章。</p>
+<p>至此，CallKit挂电话的逻辑结束。。</p>
+<h2 id="通话暂时挂起"><a href="#通话暂时挂起" class="headerlink" title="通话暂时挂起"></a>通话暂时挂起</h2><p>来到CallKitManager中，添加方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func setHeld(call: Call, onHold: Bool) &#123;</span><br><span class="line">    //这个 CXSetHeldCallAction 包含了通话的 UUID 以及保持状态</span><br><span class="line">    let setHeldCallAction = CXSetHeldCallAction(call: call.uuid, onHold: onHold)</span><br><span class="line">    let transaction = CXTransaction()</span><br><span class="line">    transaction.addAction(setHeldCallAction)</span><br><span class="line"></span><br><span class="line">    requestTransaction(transaction)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>来到ProviderDelegate中，实现系统代理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func provider(_ provider: CXProvider, perform action: CXSetHeldCallAction) &#123;</span><br><span class="line">    guard let call = callManager.callWithUUID(uuid: action.callUUID) else &#123;</span><br><span class="line">        action.fail()</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    //获得 CXCall 对象之后，我们要根据 action 的 isOnHold 属性来设置它的 state。</span><br><span class="line">    call.state = action.isOnHold ? .held:.active</span><br><span class="line">    //根据状态的不同，分别进行启动或停止音频会话。</span><br><span class="line">    if call.state == .held &#123;</span><br><span class="line">        stopAudio()</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        startAudio()</span><br><span class="line">    &#125;</span><br><span class="line">    //在这里添加你们自己的通话挂起逻辑</span><br><span class="line">    action.fulfill()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>添加完之后，只需要在你自己App通话暂时挂起的地方调用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if #available(iOS 10.0, *) &#123;</span><br><span class="line">    if let call = CallKitManager.shared.calls.first &#123;</span><br><span class="line">        CallKitManager.shared.setHeld(call: call, onHold: true)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>就可以了。。</p>
+<p>至此，CallKit通话暂时挂起的逻辑结束。。</p>
+<h2 id="麦克风静音"><a href="#麦克风静音" class="headerlink" title="麦克风静音"></a>麦克风静音</h2><p>来到CallKitManager中，添加方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func setMute(call: Call, muted: Bool) &#123;</span><br><span class="line">    //CXSetMutedCallAction设置麦克风静音</span><br><span class="line">    let setMuteCallAction = CXSetMutedCallAction(call: call.uuid, muted: muted)</span><br><span class="line">    let transaction = CXTransaction()</span><br><span class="line">    transaction.addAction(setMuteCallAction)</span><br><span class="line">    requestTransaction(transaction)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>来到ProviderDelegate中，实现系统代理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func provider(_ provider: CXProvider, perform action: CXSetMutedCallAction) &#123;</span><br><span class="line">    guard let call = callManager.callWithUUID(uuid: action.callUUID) else &#123;</span><br><span class="line">        action.fail()</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    //获得 CXCall 对象之后，我们要根据 action 的 ismuted 属性来设置它的 state。</span><br><span class="line">    call.state = action.isMuted ? .muted : .active</span><br><span class="line">    //在这里添加你们自己的麦克风静音逻辑</span><br><span class="line">    action.fulfill()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>添加完之后，只需要在你自己App麦克风静音的地方调用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if #available(iOS 10.0, *) &#123;</span><br><span class="line">    if let call = CallKitManager.shared.calls.first &#123;</span><br><span class="line">        CallKitManager.shared.setMute(call: call, muted: true)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>就可以了。。</p>
+<p>至此，CallKit麦克风静音的逻辑结束。。</p>
+<p>到这里，在App内互动的CallKit的基本功能都已经集成完毕，其实到后面大家就能看出来，文章中所有的功能实现，都是先在CallKitManager写用户需要调用的方法，在ProviderDelegate里面实现系统的代理方法，并且加上自己的通话逻辑。</p>
+<h2 id="关于系统扬声器与听筒的切换"><a href="#关于系统扬声器与听筒的切换" class="headerlink" title="关于系统扬声器与听筒的切换"></a>关于系统扬声器与听筒的切换</h2><p>这里不讲如何切换扬声器与听筒，只讲如何监听切换，保持App内通话页面免提的状态跟系统通话页面的一致。<br>在自己的通话页面上添加通知监听：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NotificationCenter.default.addObserver(forName: NSNotification.Name.AVAudioSessionRouteChange, object: nil, queue: OperationQueue.main) &#123;[weak self] (noti) in</span><br><span class="line">    guard let w = self else &#123; return &#125;</span><br><span class="line">    if #available(iOS 10.0, *) &#123;</span><br><span class="line">        let route = AVAudioSession.sharedInstance().currentRoute</span><br><span class="line">        for desc in route.outputs &#123;</span><br><span class="line">            if desc.portType == &quot;Speaker&quot; &#123;</span><br><span class="line">                // &quot;免提功能已开启&quot;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                // &quot;对方已接通，请使用听筒接听&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="从系统通话记录中拨打App电话"><a href="#从系统通话记录中拨打App电话" class="headerlink" title="从系统通话记录中拨打App电话"></a>从系统通话记录中拨打App电话</h2><p>在第一篇文章中，我们已经导入了Intents.framework，下面开始对他进行操作。<br>首先创建两个协议，目的是为了加几个属性：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">protocol StartCallConvertible &#123;</span><br><span class="line">    var startCallHandle: String? &#123; get &#125;</span><br><span class="line">    var video: Bool? &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">extension StartCallConvertible &#123;</span><br><span class="line">    var video: Bool? &#123;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@available(iOS 10.0, *)</span><br><span class="line">    protocol SupportedStartCallIntent &#123;</span><br><span class="line">    var contacts: [INPerson]? &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@available(iOS 10.0, *)</span><br><span class="line">extension INStartAudioCallIntent: SupportedStartCallIntent &#123;&#125;</span><br><span class="line">@available(iOS 10.0, *)</span><br><span class="line">extension INStartVideoCallIntent: SupportedStartCallIntent &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后对NSUserActivity进行扩展，实现StartCallConvertible协议：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">extension NSUserActivity: StartCallConvertible &#123;</span><br><span class="line"></span><br><span class="line">    var startCallHandle: String? &#123;</span><br><span class="line">        if #available(iOS 10.0, *) &#123;</span><br><span class="line">            guard let interaction = interaction,</span><br><span class="line">                    let startCallIntent = interaction.intent as? SupportedStartCallIntent,</span><br><span class="line">                    let contact = startCallIntent.contacts?.first</span><br><span class="line">            else &#123;</span><br><span class="line">                return nil</span><br><span class="line">            &#125;</span><br><span class="line">            return contact.personHandle?.value</span><br><span class="line">        &#125;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    var video: Bool? &#123;</span><br><span class="line">        if #available(iOS 10.0, *) &#123;</span><br><span class="line">            guard let interaction = interaction,</span><br><span class="line">                let startCallIntent = interaction.intent as? SupportedStartCallIntent</span><br><span class="line">            else &#123;</span><br><span class="line">                return nil</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return startCallIntent is INStartVideoCallIntent</span><br><span class="line">        &#125;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>回到AppDelegate中，实现代理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">override func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -&gt; Void) -&gt; Bool &#123;</span><br><span class="line">    if #available(iOS 10.0, *) &#123;</span><br><span class="line">        guard let handle = userActivity.startCallHandle else &#123;</span><br><span class="line">            log.info(&quot;Callkit&amp; Could not determine start call handle from user activity: \(userActivity)&quot;)</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        guard let video = userActivity.video else &#123;</span><br><span class="line">            log.info(&quot;Callkit&amp; Could not determine video from user activity: \(userActivity)&quot;)</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">        //如果当前有电话，需要根据自己App的业务逻辑判断</span><br><span class="line"></span><br><span class="line">        //如果没有电话，就打电话，调用自己的打电话方法。</span><br><span class="line"></span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br><span class="line">    return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，从通话记录中调到自己App打电话的功能就实现啦。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/01/26/43/">iOS CallKit与PushKit的集成</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2018-01-26, 17:54:54</p>
+        <p><span>最后更新:</span>2018-01-26, 18:10:00</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/01/26/43/" title="iOS CallKit与PushKit的集成">https://youshaoduo.github.io/2018/01/26/43/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/26/43/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/01/24/42/">
+                    iOS Xcode9中的Voice over IP选项
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PushKit"><span class="toc-number">1.</span> <span class="toc-text">PushKit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CallKit"><span class="toc-number">2.</span> <span class="toc-text">CallKit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接电话"><span class="toc-number">3.</span> <span class="toc-text">接电话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挂电话"><span class="toc-number">4.</span> <span class="toc-text">挂电话</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通话暂时挂起"><span class="toc-number">5.</span> <span class="toc-text">通话暂时挂起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#麦克风静音"><span class="toc-number">6.</span> <span class="toc-text">麦克风静音</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于系统扬声器与听筒的切换"><span class="toc-number">7.</span> <span class="toc-text">关于系统扬声器与听筒的切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从系统通话记录中拨打App电话"><span class="toc-number">8.</span> <span class="toc-text">从系统通话记录中拨打App电话</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"iOS CallKit与PushKit的集成　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+  
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
+  
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/01/24/42/" title="下一篇: iOS Xcode9中的Voice over IP选项">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/01/26/43/">iOS CallKit与PushKit的集成</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/24/42/">iOS Xcode9中的Voice over IP选项</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/15/39/">UIApplication中文翻译</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/37/">pod install速度慢的终极解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/40/">iOS 应用程序挂起、复原与终止</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/05/41/">iOS 后台任务</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/01/38/">浅谈Xcode下的绝对路径和相对路径</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/36/">iOS应用剖析 ---- Data目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/35/">用Mac终端编写、编译C程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/18/28/">iOS应用剖析 ---- 对plist文件进行处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/27/">iOS 11适配：contentInsetAdjustmentBehavior解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/23/">Swift中class func与static func的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/26/">影响导航控制器中页面布局的几个属性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/25/">iOS11 UITableView顶部多出一片空白区域</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/06/21/">Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/22/">在Windows电脑上给Python配置OpenCV</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/02/29/">no rule to process file 'xxx.h' of type sourcecode.c.h for architecture armv7</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/01/32/">深度探索TLD的C++源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/24/">Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/04/30/">解决NSTimer在UITableView滑动中暂停问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/28/33/">MATLAB2016b 中运行color_tracker出错</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/14/">你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/31/">关于Xcode单元测试，你必须知道的18个知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/15/">关于数据结构和内存中堆和栈，你可能还不知道的几个区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/8/">Swift3 单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/13/">NSProcessInfo类方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 ParadiseDuo
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 11;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂)我知道你全都知道~" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*)你知道我全都知道~" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
