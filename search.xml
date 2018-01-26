@@ -5,9 +5,9 @@
     <entry>
       <title><![CDATA[iOS CallKit与PushKit的集成]]></title>
       <url>/2018/01/26/43/</url>
-      <content type="html"><![CDATA[<p>很多VoIP的开发者发现，升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构。</p>
+      <content type="html"><![CDATA[<p>很多VoIP的开发者发现，升级到Xcode9以后，原来的Voice over IP的选项消失了，需要自行去info.plist中添加App provides Voice over IP services。在某些时候，对传统VoIP架构的支持将被删除，于是所有的VoIP应用将不得不转移到新的基于PushKit的VoIP架构</p>
 <a id="more"></a>
-<p>这里我就来简单介绍一下如何集成CallKit与PushKit</p>
+<p>这里我就来简单介绍一下如何集成CallKit与PushKit。</p>
 <p>要集成，首先就要导入framework，图中的三个framework都要导入，第一个framework是从通讯录中直接拨打App电话所需要的。<br><img src="/2018/01/26/43/A8E35734-9BDD-4921-A7E8-64E37AD3C407.png"></p>
 <h2 id="PushKit"><a href="#PushKit" class="headerlink" title="PushKit"></a>PushKit</h2><p>这个是iOS8后才支持的框架，如果你的项目现在还在支持iOS7，那么你可以以辞职为筹码去跟产品经理斗智斗勇了。</p>
 <p>集成PushKit很简单，跟注册普通的APNS推送一个样，先去注册：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//import PushKit  这个加在文件头部。大家都是老司机了，缺头文件自己加。</span><br><span class="line">let voipRegistry = PKPushRegistry(queue: DispatchQueue.main)</span><br><span class="line">voipRegistry.delegate = self</span><br><span class="line">voipRegistry.desiredPushTypes = [PKPushType.voIP]</span><br></pre></td></tr></table></figure></p>
