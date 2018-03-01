@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
-<meta name="keywords" content="安全">
+<meta name="description" content="有时候会有这么一些需求,需要用户上传自己的一些xml,doc,pdf文档.可是iOS上并没有直观的文件管理系统.这时候Document Picker就可以帮助我们访问iCould,dropBox等应用中的文件.然后进行相关操作.">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS应用剖析 ---- 设备目录">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/12/19/34/index.html">
+<meta property="og:title" content="使用UIDocumentPickerViewController从手机上选文件">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/03/01/47/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
+<meta property="og:description" content="有时候会有这么一些需求,需要用户上传自己的一些xml,doc,pdf文档.可是iOS上并没有直观的文件管理系统.这时候Document Picker就可以帮助我们访问iCould,dropBox等应用中的文件.然后进行相关操作.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-24T04:40:35.140Z">
+<meta property="og:updated_time" content="2018-03-01T08:17:24.927Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS应用剖析 ---- 设备目录">
-<meta name="twitter:description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
+<meta name="twitter:title" content="使用UIDocumentPickerViewController从手机上选文件">
+<meta name="twitter:description" content="有时候会有这么一些需求,需要用户上传自己的一些xml,doc,pdf文档.可是iOS上并没有直观的文件管理系统.这时候Document Picker就可以帮助我们访问iCould,dropBox等应用中的文件.然后进行相关操作.">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>iOS应用剖析 ---- 设备目录 | ParadiseDuo的日记本</title>
+<title>使用UIDocumentPickerViewController从手机上选文件 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-34" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-47" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/19/34/" class="article-date">
-      <time datetime="2017-12-19T02:17:38.000Z" itemprop="datePublished">2017-12-19</time>
+      <a href="/2018/03/01/47/" class="article-date">
+      <time datetime="2018-03-01T08:13:38.000Z" itemprop="datePublished">2018-03-01</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS应用剖析 ---- 设备目录
+      使用UIDocumentPickerViewController从手机上选文件
     </h1>
   
 
@@ -309,7 +309,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,18 +319,12 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。</p>
+        <p>有时候会有这么一些需求,需要用户上传自己的一些xml,doc,pdf文档.可是iOS上并没有直观的文件管理系统.这时候Document Picker就可以帮助我们访问iCould,dropBox等应用中的文件.然后进行相关操作.</p>
 <a id="more"></a>
-<p>在这个plist文件中，想找出设备信息并不容易。为了找出设备信息，要么去Devices目录下查看.default_created.plist文件，要么使用grep命令找出所有的device.plist文件。<br>打开终端，输入(这里举例子，具体路径还要根据自己的电脑酌情改变)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cd /User/me/Library/Developer/CoreSimulator/Devices &amp;&amp; ls</span><br><span class="line"></span><br><span class="line">$ for dir in &apos;ls|grep -v default&apos;</span><br><span class="line">do</span><br><span class="line">echo $dir</span><br><span class="line">grep -Cl name $dir/device.plist |tail -l|sed -e &apos;s/&lt;/\*string&gt;//g&apos;</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
-<p>进入正在运行的应用程序目录后，你会看到data目录，它包含所有的模拟器文件，还包括应用的相关数据。应用数据被分别放到了三个目录中，他们在data/Containers目录下，分别是Bundle、Data和Shared目录。<br>这篇文章主要介绍一下Bundle和Shared目录，关于Data目录内容较多，下一篇文章单独介绍。</p>
-<h3 id="Bundle目录"><a href="#Bundle目录" class="headerlink" title="Bundle目录"></a>Bundle目录</h3><p>Bundle目录中有一个Applications目录，该目录包含设备上的所有的应用目录，这些应用目录用应用程序的bundle ID命名。</p>
-<p>在应用目录中，.app文件夹存储应用程序的核心二进制代码、图像资源、本地化信息等；info.plist文件包含应用程序的核心配置信息，包括bundle标识、主程序包、应用程序的UI信息以及应用程序需要向设备请求的功能。</p>
-<p>在文件系统中，这些plist会以XML或二进制格式进行存储，后者通常是默认的存储方式。你可以通过代码的方式获取info.plist中的信息，及引用[NSBundle mainBundle]中的字典属性；一般通过这种方式来载入一些样式或本地化信息。</p>
-<p>info.plist文件中值得我们关注的条目是UIRequiredDeviceCapabilities，他看上去像这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;UIRequiredDeviceCapabilities&lt;/key&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;armv7&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;key&gt;location-services&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;key&gt;sms&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;/dict&gt;</span><br></pre></td></tr></table></figure></p>
-<p>UIRequiredDeviceCapabilities描述了应用所需要的系统资源。<br>虽然这不是强制要求的，但还是暗示了这个应用将涉及哪些活动类型。</p>
-<h3 id="Shared目录"><a href="#Shared目录" class="headerlink" title="Shared目录"></a>Shared目录</h3><p>Shared目录是一个特殊的目录，用来为应用程序提供一个共享的应用组(为了支持iOS8的扩展extensions)，比如通知中心的“今日”视图中的任务或键盘行为，widget。苹果要求所有的扩展必须对应一个容器应用，每一个容器应用会拥有自己的应用ID。扩展及其应用容器可以通过Shared目录来共享数据。</p>
-<p>例如，用户可以使用NSUserDefaults的初始化方法，制定一个名字来访问用户数据中共享的数据库。</p>
-<p>Shared目录不常用，但是当我们检查存储在perferences中的敏感信息或其他隐私数据时，别忘了它。</p>
+<p>首先应该在项目中添加对iCould的支持, 在TARGETS-Capabilities中把iCloud的按钮打开,勾选iCloud Documents.</p>
+<p>然后开始初始化一个Document Picker,并且声明所支持文件的类型.然后就会弹出一个iCloud Drive的文档选择器.这个选择器需要我们在手机上登录自己的iCloud的账号,然后我们就可以选择在iCloud中存放的文件.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSArray *documentTypes = @[@&quot;public.content&quot;, @&quot;public.text&quot;, @&quot;public.source-code &quot;, @&quot;public.image&quot;, @&quot;public.audiovisual-content&quot;, @&quot;com.adobe.pdf&quot;, @&quot;com.apple.keynote.key&quot;, @&quot;com.microsoft.word.doc&quot;, @&quot;com.microsoft.excel.xls&quot;, @&quot;com.microsoft.powerpoint.ppt&quot;];</span><br><span class="line"></span><br><span class="line">UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];</span><br><span class="line">documentPicker.delegate = self;</span><br><span class="line">documentPicker.modalPresentationStyle = UIModalPresentationFullScreen;</span><br><span class="line">[self presentViewController:documentPicker animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
+<p>选择之后根据documentPicker的代理方法- (void)documentPicker:(UIDocumentPickerViewController <em>)controller didPickDocumentAtURL:(NSURL </em>)url; 获取到文档的地址.然后NSFileCoordinator读取文件地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url &#123;</span><br><span class="line"></span><br><span class="line">    BOOL fileUrlAuthozied = [url startAccessingSecurityScopedResource];</span><br><span class="line">    if(fileUrlAuthozied)&#123;</span><br><span class="line">        NSFileCoordinator * fileCoordinator = [[NSFileCoordinator alloc] init];</span><br><span class="line">        NSError * error;</span><br><span class="line">        [fileCoordinator coordinateReadingItemAtURL:url options:0 error:&amp;error byAccessor:^(NSURL *newURL) &#123;</span><br><span class="line">            NSString * fileName = [newURL lastPathComponent];</span><br><span class="line">            NSData * data = [NSData dataWithContentsOfURL:newURL];</span><br><span class="line">        &#125;];</span><br><span class="line">        [url stopAccessingSecurityScopedResource];</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        //Error handling</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -339,13 +333,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></p>
+        <p><span>本文标题:</span><a href="/2018/03/01/47/">使用UIDocumentPickerViewController从手机上选文件</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-12-19, 10:17:38</p>
-        <p><span>最后更新:</span>2018-01-24, 12:40:35</p>
+        <p><span>发布时间:</span>2018-03-01, 16:13:38</p>
+        <p><span>最后更新:</span>2018-03-01, 16:17:24</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/19/34/" title="iOS应用剖析 ---- 设备目录">https://youshaoduo.github.io/2017/12/19/34/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/19/34/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/01/47/" title="使用UIDocumentPickerViewController从手机上选文件">https://youshaoduo.github.io/2018/03/01/47/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/03/01/47/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -357,16 +351,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/19/35/">
-                    用Mac终端编写、编译C程序
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/12/18/28/">
-                    iOS应用剖析 ---- 对plist文件进行处理
+                <a href="/2018/03/01/46/">
+                    Cocoa Touch 中的新特性
                 </a>
             </div>
         
@@ -378,7 +366,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bundle目录"><span class="toc-number">1.</span> <span class="toc-text">Bundle目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shared目录"><span class="toc-number">2.</span> <span class="toc-text">Shared目录</span></a></li></ol>
+            
         
     </div>
     <style>
@@ -414,7 +402,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"iOS应用剖析 ---- 设备目录　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"使用UIDocumentPickerViewController从手机上选文件　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -454,15 +442,13 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/19/35/" title="上一篇: 用Mac终端编写、编译C程序">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/18/28/" title="下一篇: iOS应用剖析 ---- 对plist文件进行处理">
+            <a href="/2018/03/01/46/" title="下一篇: Cocoa Touch 中的新特性">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
-<meta name="keywords" content="安全">
+<meta name="description" content="这些特性都是iOS11以后的一些特性，现在整理了一下，以备以后用到。">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS应用剖析 ---- 设备目录">
-<meta property="og:url" content="https://youshaoduo.github.io/2017/12/19/34/index.html">
+<meta property="og:title" content="Cocoa Touch 中的新特性">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/03/01/46/index.html">
 <meta property="og:site_name" content="ParadiseDuo的日记本">
-<meta property="og:description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
+<meta property="og:description" content="这些特性都是iOS11以后的一些特性，现在整理了一下，以备以后用到。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-24T04:40:35.140Z">
+<meta property="og:updated_time" content="2018-03-01T08:12:47.756Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS应用剖析 ---- 设备目录">
-<meta name="twitter:description" content="从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。">
+<meta name="twitter:title" content="Cocoa Touch 中的新特性">
+<meta name="twitter:description" content="这些特性都是iOS11以后的一些特性，现在整理了一下，以备以后用到。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>iOS应用剖析 ---- 设备目录 | ParadiseDuo的日记本</title>
+<title>Cocoa Touch 中的新特性 | ParadiseDuo的日记本</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -279,11 +279,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-34" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-46" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/12/19/34/" class="article-date">
-      <time datetime="2017-12-19T02:17:38.000Z" itemprop="datePublished">2017-12-19</time>
+      <a href="/2018/03/01/46/" class="article-date">
+      <time datetime="2018-03-01T08:00:56.000Z" itemprop="datePublished">2018-03-01</time>
 </a>
 
 
@@ -298,7 +298,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS应用剖析 ---- 设备目录
+      Cocoa Touch 中的新特性
     </h1>
   
 
@@ -309,7 +309,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -319,18 +319,30 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>从iOS8开始，模拟器平台（比如iPhone、iPad以及其他的变体设备）都存储在以唯一标识符命名的目录下。这些标识符由两部分组成：一部分是从Xcode启动模拟器时选择的设备类型，另一部分是系统版本。所有目录都有一个plist文件记录当前的设备信息。</p>
+        <p>这些特性都是iOS11以后的一些特性，现在整理了一下，以备以后用到。</p>
 <a id="more"></a>
-<p>在这个plist文件中，想找出设备信息并不容易。为了找出设备信息，要么去Devices目录下查看.default_created.plist文件，要么使用grep命令找出所有的device.plist文件。<br>打开终端，输入(这里举例子，具体路径还要根据自己的电脑酌情改变)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cd /User/me/Library/Developer/CoreSimulator/Devices &amp;&amp; ls</span><br><span class="line"></span><br><span class="line">$ for dir in &apos;ls|grep -v default&apos;</span><br><span class="line">do</span><br><span class="line">echo $dir</span><br><span class="line">grep -Cl name $dir/device.plist |tail -l|sed -e &apos;s/&lt;/\*string&gt;//g&apos;</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
-<p>进入正在运行的应用程序目录后，你会看到data目录，它包含所有的模拟器文件，还包括应用的相关数据。应用数据被分别放到了三个目录中，他们在data/Containers目录下，分别是Bundle、Data和Shared目录。<br>这篇文章主要介绍一下Bundle和Shared目录，关于Data目录内容较多，下一篇文章单独介绍。</p>
-<h3 id="Bundle目录"><a href="#Bundle目录" class="headerlink" title="Bundle目录"></a>Bundle目录</h3><p>Bundle目录中有一个Applications目录，该目录包含设备上的所有的应用目录，这些应用目录用应用程序的bundle ID命名。</p>
-<p>在应用目录中，.app文件夹存储应用程序的核心二进制代码、图像资源、本地化信息等；info.plist文件包含应用程序的核心配置信息，包括bundle标识、主程序包、应用程序的UI信息以及应用程序需要向设备请求的功能。</p>
-<p>在文件系统中，这些plist会以XML或二进制格式进行存储，后者通常是默认的存储方式。你可以通过代码的方式获取info.plist中的信息，及引用[NSBundle mainBundle]中的字典属性；一般通过这种方式来载入一些样式或本地化信息。</p>
-<p>info.plist文件中值得我们关注的条目是UIRequiredDeviceCapabilities，他看上去像这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;UIRequiredDeviceCapabilities&lt;/key&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;armv7&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;key&gt;location-services&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;key&gt;sms&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;/dict&gt;</span><br></pre></td></tr></table></figure></p>
-<p>UIRequiredDeviceCapabilities描述了应用所需要的系统资源。<br>虽然这不是强制要求的，但还是暗示了这个应用将涉及哪些活动类型。</p>
-<h3 id="Shared目录"><a href="#Shared目录" class="headerlink" title="Shared目录"></a>Shared目录</h3><p>Shared目录是一个特殊的目录，用来为应用程序提供一个共享的应用组(为了支持iOS8的扩展extensions)，比如通知中心的“今日”视图中的任务或键盘行为，widget。苹果要求所有的扩展必须对应一个容器应用，每一个容器应用会拥有自己的应用ID。扩展及其应用容器可以通过Shared目录来共享数据。</p>
-<p>例如，用户可以使用NSUserDefaults的初始化方法，制定一个名字来访问用户数据中共享的数据库。</p>
-<p>Shared目录不常用，但是当我们检查存储在perferences中的敏感信息或其他隐私数据时，别忘了它。</p>
+<h2 id="Drag-Drop-新的交互方式-拖拽"><a href="#Drag-Drop-新的交互方式-拖拽" class="headerlink" title="Drag Drop 新的交互方式 拖拽"></a>Drag Drop 新的交互方式 拖拽</h2><h3 id="Drag"><a href="#Drag" class="headerlink" title="Drag"></a>Drag</h3><p>需要 Drag 的对象要 add 一个 UIDragInteraction ，用法类似于 UIGestureRecognizer 。<br>UIDragInteraction 有一个 UIDragInteractionDelegate 的代理，可以提供数据，浮起的动画，和自定义的拖动时的动画。</p>
+<h3 id="Drop"><a href="#Drop" class="headerlink" title="Drop"></a>Drop</h3><p>接收 Drag 的对象的容器，容器要实现一个 UIDropInteractionDelegate 的代理，可以来根据拖入的对象调整当前的界面。</p>
+<h3 id="TableView-CollectionView-TextView-TextField-WebView-原生控件都支持"><a href="#TableView-CollectionView-TextView-TextField-WebView-原生控件都支持" class="headerlink" title="TableView, CollectionView, TextView, TextField, WebView 原生控件都支持"></a>TableView, CollectionView, TextView, TextField, WebView 原生控件都支持</h3><p>配合剪切板 UIPasteConfiguration 使用会更加方便。</p>
+<p>这个功能手机上可以在 文件 这个系统 app 中体验，里面的 tableview 和 collectionview 的 item 都是支持拖拽的。</p>
+<h2 id="File-Manager"><a href="#File-Manager" class="headerlink" title="File Manager"></a>File Manager</h2><h3 id="UIDocumentBrowserViewController"><a href="#UIDocumentBrowserViewController" class="headerlink" title="UIDocumentBrowserViewController"></a>UIDocumentBrowserViewController</h3><p>多了一个文件管理的 VC，默认里面会显示当前 app 权限以内的文件，包括本地的和存在 iCloud 的【如果三方 app 在 info.plist 中声明了 UISupportsDocumentBrowser 或者 UIFileSharingEnabled 和 LSSupportsOpeningDocumentsInPlace 的话，可以获得第三方 app 的文件】。</p>
+<p>构造方法如下【该构造还提供了文件筛选的能力】：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIDocumentBrowserViewController* view  = [[UIDocumentBrowserViewController alloc]</span><br><span class="line">initForOpeningFilesWithContentTypes:@[@&quot;.txt&quot;,@&quot;.pages&quot;,@&quot;.pdf&quot;]];</span><br></pre></td></tr></table></figure></p>
+<p>值得注意的是官方文档中提到，在使用该 VC 时。</p>
+<ol>
+<li>务必把文件管理里的 VC 作为应用的 根 VC，不要把它放在 navigation，tab 或者 split 视图中，也不要通过模态的样式展现出来。有需求的话用 UIDocumentPickerViewController 来替代。<ol>
+<li>由于文件可能被任何 app 中的 UIDocumentBrowserViewController 修改，所以对文件的操作尽量通过 UIDocument 子类 或者 NSFilePresenter 和 NSFileCoordinator 对象来操作。</li>
+</ol>
+</li>
+</ol>
+<h2 id="新的-UINavigationBar"><a href="#新的-UINavigationBar" class="headerlink" title="新的 UINavigationBar"></a>新的 UINavigationBar</h2><p>增加了大的标题栏【感觉不好看，而且会变卡，具体的去体验一下App Store里更新那个页面】，新增的 api，控制后面的 vc 层级是否需要继续展示大的 title，或者全部使用大的 title。可以在系统的 app 中体验这个特性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//声明大标题</span><br><span class="line">self.navigationController.navigationBar.prefersLargeTitles = YES;</span><br><span class="line">//包含三种模式 aoto / always / never （后续 present 的view 是否需要大标题）</span><br><span class="line">self.navigationController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAutomatic;</span><br></pre></td></tr></table></figure></p>
+<p>增加了统一的 navigation 搜索栏，不用再加在 tableview 的 header 中了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController.navigationItem.searchController</span><br></pre></td></tr></table></figure></p>
+<p>现在 navigation bar 是独立的，和你的 content vie 无关，为了更好的处理这些系统 view 的布局的变化，提供了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">self.view.safeAreaLayoutGuide // auto layout @available(iOS 11.0, *)</span><br><span class="line">self.view.safeAreaInsets // 代码布局 @available(iOS 11.0, *)</span><br><span class="line"></span><br><span class="line">- (void)viewSafeAreaInsetsDidChange&#123;</span><br><span class="line">//当布局变化的时候的回调</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="UIScrollView"><a href="#UIScrollView" class="headerlink" title="UIScrollView"></a>UIScrollView</h2><p>解决了 navigation vc 和 scrollview 的 contentInset 的冲突的问题，现在 navigation vc 不在修改 contentInset 了。<br>增加了 contentInsetAdjustmentBehavior 这个属性，默认为 UIScrollViewContentInsetAdjustmentAutomatic ,可以用来自定义滑动时候的便宜效果。<br>通过 adjustedContentInset 可以获取当前的偏移量。</p>
+<h2 id="TableView-的修改"><a href="#TableView-的修改" class="headerlink" title="TableView 的修改"></a>TableView 的修改</h2><h3 id="滑动操作"><a href="#滑动操作" class="headerlink" title="滑动操作"></a>滑动操作</h3><p>Row 增加了 UISwipeActionsConfiguration ，用来处理滑动操作。<br>UISwipeActionsConfiguration 通过 UIContextualAction 数组来初始化，可以配置不同的动作，左滑右滑等，还能配置 UISwipeActionsConfiguration 的 performsFirstActionWithFullSwipe 【Bool】属性 来决定第一个事件是否响应完整的滑动。</p>
+<h3 id="新的分界线"><a href="#新的分界线" class="headerlink" title="新的分界线"></a>新的分界线</h3><p>可以配置相对值和绝对值的 Inset<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.tableView.separatorInsetReference = UITableViewSeparatorInsetFromAutomaticInsets;</span><br></pre></td></tr></table></figure></p>
+<h2 id="密码自动填写功能"><a href="#密码自动填写功能" class="headerlink" title="密码自动填写功能"></a>密码自动填写功能</h2><p>场景是在 web 上登录账户之后，点击下线 app ，然后调到 appstore，打开 app ，输入密码，这时候可以自动填写。【应该需要网页 / app 端的支持】<br>这里没有具体展开，有个专门介绍这个 session 【Introducing Password AutoFil】</p>
+<h2 id="Asset-Catalogs-的调整"><a href="#Asset-Catalogs-的调整" class="headerlink" title="Asset Catalogs 的调整"></a>Asset Catalogs 的调整</h2><p>现在颜色也能放在 Asset Catalogs 中了，更方便的使用广色域的颜色。代码里可以通过下面的方法获取。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIColor *color = [UIColor colorNamed:@&quot;purple&quot;];</span><br></pre></td></tr></table></figure></p>
+<h2 id="屏幕刷新率"><a href="#屏幕刷新率" class="headerlink" title="屏幕刷新率"></a>屏幕刷新率</h2><p>通过 UIScreen 的 maximumFramesPerSecond 可以获取当前屏幕的刷新率<br>获取屏幕的刷新率，增强滑动和动画效果。</p>
 
       
     </div>
@@ -339,13 +351,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></p>
+        <p><span>本文标题:</span><a href="/2018/03/01/46/">Cocoa Touch 中的新特性</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
-        <p><span>发布时间:</span>2017-12-19, 10:17:38</p>
-        <p><span>最后更新:</span>2018-01-24, 12:40:35</p>
+        <p><span>发布时间:</span>2018-03-01, 16:00:56</p>
+        <p><span>最后更新:</span>2018-03-01, 16:12:47</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/12/19/34/" title="iOS应用剖析 ---- 设备目录">https://youshaoduo.github.io/2017/12/19/34/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2017/12/19/34/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/01/46/" title="Cocoa Touch 中的新特性">https://youshaoduo.github.io/2018/03/01/46/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/03/01/46/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -358,15 +370,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/19/35/">
-                    用Mac终端编写、编译C程序
+                <a href="/2018/03/01/47/">
+                    使用UIDocumentPickerViewController从手机上选文件
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/12/18/28/">
-                    iOS应用剖析 ---- 对plist文件进行处理
+                <a href="/2018/03/01/45/">
+                    UIDocumentPickerViewController的documentTypes
                 </a>
             </div>
         
@@ -378,7 +390,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bundle目录"><span class="toc-number">1.</span> <span class="toc-text">Bundle目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shared目录"><span class="toc-number">2.</span> <span class="toc-text">Shared目录</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Drag-Drop-新的交互方式-拖拽"><span class="toc-number">1.</span> <span class="toc-text">Drag Drop 新的交互方式 拖拽</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Drag"><span class="toc-number">1.1.</span> <span class="toc-text">Drag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Drop"><span class="toc-number">1.2.</span> <span class="toc-text">Drop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableView-CollectionView-TextView-TextField-WebView-原生控件都支持"><span class="toc-number">1.3.</span> <span class="toc-text">TableView, CollectionView, TextView, TextField, WebView 原生控件都支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#File-Manager"><span class="toc-number">2.</span> <span class="toc-text">File Manager</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UIDocumentBrowserViewController"><span class="toc-number">2.1.</span> <span class="toc-text">UIDocumentBrowserViewController</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新的-UINavigationBar"><span class="toc-number">3.</span> <span class="toc-text">新的 UINavigationBar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UIScrollView"><span class="toc-number">4.</span> <span class="toc-text">UIScrollView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TableView-的修改"><span class="toc-number">5.</span> <span class="toc-text">TableView 的修改</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#滑动操作"><span class="toc-number">5.1.</span> <span class="toc-text">滑动操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新的分界线"><span class="toc-number">5.2.</span> <span class="toc-text">新的分界线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#密码自动填写功能"><span class="toc-number">6.</span> <span class="toc-text">密码自动填写功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Asset-Catalogs-的调整"><span class="toc-number">7.</span> <span class="toc-text">Asset Catalogs 的调整</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#屏幕刷新率"><span class="toc-number">8.</span> <span class="toc-text">屏幕刷新率</span></a></li></ol>
         
     </div>
     <style>
@@ -414,7 +426,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"iOS应用剖析 ---- 设备目录　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Cocoa Touch 中的新特性　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -454,7 +466,7 @@ gitment.render('git')
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/19/35/" title="上一篇: 用Mac终端编写、编译C程序">
+            <a href="/2018/03/01/47/" title="上一篇: 使用UIDocumentPickerViewController从手机上选文件">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -462,7 +474,7 @@ gitment.render('git')
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/12/18/28/" title="下一篇: iOS应用剖析 ---- 对plist文件进行处理">
+            <a href="/2018/03/01/45/" title="下一篇: UIDocumentPickerViewController的documentTypes">
                 <i class="fa fa-angle-right"></i>
             </a>
         
