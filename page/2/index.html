@@ -33,7 +33,7 @@
 
 
 
-    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="shortcut icon" href="/img/small.png">
 
 
 
@@ -79,7 +79,9 @@
 </script>
 
 
-    <script> yiliaConfig.jquery_ui = [false]; </script>
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
 
 
 
@@ -196,7 +198,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPod/">CocoaPod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Xcode/">Xcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯子/">梯子</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件测试/">软件测试</a></li></ul>
                     </div>
                 </section>
                 
@@ -279,73 +281,6 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/08/1/" class="article-date">
-      <time datetime="2016-10-08T04:34:23.000Z" itemprop="datePublished">2016-10-08</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>在使用SourceTree的时候经常会遇见超前一个版本，落后N个版本的情况，遇见这种情况应该怎么办呢？</p>
-<p>首先打开终端，最好是从SourceTree里面打开，菜单栏有个终端按钮。<br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/其他/">其他</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/10/08/1/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
     <article id="post-7" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -375,7 +310,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p>很多地方都会用到获取当前App的版本号。<br>
+              <p>很多地方都会用到获取当前App的版本号。</p>
           
       
     </div>
@@ -423,7 +358,7 @@
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2016-2017 ParadiseDuo
+                2016-2018 ParadiseDuo
             </div>
             <div class="footer-right">
                 <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
@@ -463,7 +398,7 @@
                 $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
             }
             else {
-                var backgroundnum = 5;
+                var backgroundnum = 11;
                 var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
                 $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
             }
@@ -506,11 +441,11 @@
         var titleTime;
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
-                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                document.title = "(つェ⊂)我知道你全都知道~" + originTitle;
                 clearTimeout(titleTime);
             }
             else {
-                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                document.title = "(*´∇｀*)你知道我全都知道~" + originTitle;
                 titleTime = setTimeout(function() {
                     document.title = originTitle;
                 }, 2000);

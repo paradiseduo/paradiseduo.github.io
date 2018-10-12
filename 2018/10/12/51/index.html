@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="ParadiseDuo" />
+
+
+
+<meta name="description" content="本文主要解决openssl升级到1.1.0以上版本，导致shadowsocks2.8.2启动报undefined symbol: EVP_CIPHER_CTX_cleanup错误。">
+<meta name="keywords" content="梯子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup">
+<meta property="og:url" content="https://youshaoduo.github.io/2018/10/12/51/index.html">
+<meta property="og:site_name" content="ParadiseDuo的日记本">
+<meta property="og:description" content="本文主要解决openssl升级到1.1.0以上版本，导致shadowsocks2.8.2启动报undefined symbol: EVP_CIPHER_CTX_cleanup错误。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-12T09:51:06.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup">
+<meta name="twitter:description" content="本文主要解决openssl升级到1.1.0以上版本，导致shadowsocks2.8.2启动报undefined symbol: EVP_CIPHER_CTX_cleanup错误。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="ParadiseDuo的日记本" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/small.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup | ParadiseDuo的日记本</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/1.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">ParadiseDuo</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="https://www.126.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/youshaoduo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/u/585bdde35a65" title="简书"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/youshaoduo" title="CSDN"></a>
+                            
+                                <a class="fa QQ" href="https://user.qzone.qq.com/596309302" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPod/">CocoaPod</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Xcode/">Xcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/其他/">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/梯子/">梯子</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机视觉/">计算机视觉</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/软件测试/">软件测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">喜欢买鞋子的我</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">ParadiseDuo</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/1.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">ParadiseDuo</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="https://www.126.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/youshaoduo" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/u/585bdde35a65" title="简书"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/youshaoduo" title="CSDN"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="https://user.qzone.qq.com/596309302" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-51" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/12/51/" class="article-date">
+      <time datetime="2018-10-12T09:49:10.000Z" itemprop="datePublished">2018-10-12</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/梯子/">梯子</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>本文主要解决openssl升级到1.1.0以上版本，导致shadowsocks2.8.2启动报undefined symbol: EVP_CIPHER_CTX_cleanup错误。</p>
+<a id="more"></a>
+<p>如果在安装完ShadowSocks后，启动时报<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AttributeError: /usr/local/ssl/lib/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup</span><br><span class="line">shadowsocks start failed</span><br></pre></td></tr></table></figure></p>
+<p>的错误。</p>
+<p>在终端输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nautilus /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py</span><br></pre></td></tr></table></figure></p>
+<h3 id="具体路径不同，请根据报错路径而定，但目的只有一个，就是找到openssl-py文件。"><a href="#具体路径不同，请根据报错路径而定，但目的只有一个，就是找到openssl-py文件。" class="headerlink" title="具体路径不同，请根据报错路径而定，但目的只有一个，就是找到openssl.py文件。"></a>具体路径不同，请根据报错路径而定，但目的只有一个，就是找到openssl.py文件。</h3><p>如果nautilus指令报错，那就用cd命令到这个目录下，使用vim编辑修改openssl.py文件。</p>
+<p>如果是用文本文档打开，那搜索CIPHER_CTX_cleanup，应该有两处，替换为CIPHER_CTX_reset，然后保存文件。</p>
+<p>如果是用vim编辑，那么输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:%s/cleanup/reset/</span><br><span class="line">:x</span><br></pre></td></tr></table></figure></p>
+<p>然后重新运行Shadowsocks即可。</p>
+<p><a href="https://kionf.com/2016/12/15/errornote-ss/" target="_blank" rel="noopener">具体原因可以参考这篇文章</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/10/12/51/">ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">ParadiseDuo</a></p>
+        <p><span>发布时间:</span>2018-10-12, 17:49:10</p>
+        <p><span>最后更新:</span>2018-10-12, 17:51:06</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/10/12/51/" title="ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup">https://youshaoduo.github.io/2018/10/12/51/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/10/12/51/　　作者: ParadiseDuo" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/10/12/50/">
+                    kali Linux ShadowSocks
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#具体路径不同，请根据报错路径而定，但目的只有一个，就是找到openssl-py文件。"><span class="toc-number">1.</span> <span class="toc-text">具体路径不同，请根据报错路径而定，但目的只有一个，就是找到openssl.py文件。</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup　| ParadiseDuo的日记本　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+  
+  <div id="git"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "youshaoduo",
+  repo: "youshaoduo.github.io",
+  oauth: {
+    client_id: "51c898a9ed6ec2feb03c",
+    client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
+  },
+})
+gitment.render('git')
+</script>
+
+  
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/10/12/50/" title="下一篇: kali Linux ShadowSocks">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/10/12/51/">ShadowSocks启动报错undefined symbol EVP_CIPHER_CTX_cleanup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/12/50/">kali Linux ShadowSocks</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/12/49/">Mac 使用SSH连接VPS(搬瓦工)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/12/48/">搬瓦工 VPS 已关机但是无法修改root密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/01/47/">使用UIDocumentPickerViewController从手机上选文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/01/46/">Cocoa Touch 中的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/01/45/">UIDocumentPickerViewController的documentTypes</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/01/44/">修改UIDocumentPickerViewController navigation bar buttons color</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/26/43/">iOS CallKit与PushKit的集成</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/24/42/">iOS Xcode9中的Voice over IP选项</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/15/39/">UIApplication中文翻译</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/37/">pod install速度慢的终极解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/40/">iOS 应用程序挂起、复原与终止</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/05/41/">iOS 后台任务</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/01/38/">浅谈Xcode下的绝对路径和相对路径</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/36/">iOS应用剖析 ---- Data目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/35/">用Mac终端编写、编译C程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/34/">iOS应用剖析 ---- 设备目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/18/28/">iOS应用剖析 ---- 对plist文件进行处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/27/">iOS 11适配：contentInsetAdjustmentBehavior解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/23/">Swift中class func与static func的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/26/">影响导航控制器中页面布局的几个属性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/25/">iOS11 UITableView顶部多出一片空白区域</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/06/21/">Win7x64+VS2015Pro+Matlab2016b+OpenCV3.2配置运行TLD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/12/">Xcode8,Xcode9 查看模拟器沙盒目录的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/04/2/">Hexo中的Yelee主题，首页不显示文章摘要</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/01/22/">在Windows电脑上给Python配置OpenCV</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/13/3/">Mac 设置Launchpad 的列数和行数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/4/">加密和签名的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/02/29/">no rule to process file 'xxx.h' of type sourcecode.c.h for architecture armv7</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/01/32/">深度探索TLD的C++源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/26/24/">Swift4.0 strtoul、strtod、strtof、strtol等字符串函数的改变</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/04/30/">解决NSTimer在UITableView滑动中暂停问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/28/33/">MATLAB2016b 中运行color_tracker出错</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/20/">iOS 安全模型浅析(五) ---- 挑战AppStore审核</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/19/">iOS 安全模型浅析(四) ---- 防御代码漏洞和越狱检测</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/09/18/">iOS 安全模型浅析(三) ---- 数据保护和全盘加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/14/">你真的了解位运算？用了这个运算符，算法的时间复杂度竟然降了一个数量级！</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/31/">关于Xcode单元测试，你必须知道的18个知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/17/">iOS 安全模型浅析(二) ---- 沙盒机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/16/">iOS 安全模型浅析(一) ---- 安全启动</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/15/">关于数据结构和内存中堆和栈，你可能还不知道的几个区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/11/">iOS 一直弹出登录iCloud的解决方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/6/">Mac下如何查看Git的全局忽略列表</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/8/">Swift3 单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/5/">设置Git区分文件名大小写</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/10/">SourceTree(Git)不识别新添加的文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/02/9/">Swift 中的for循环，正序与逆序(倒序)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/08/1/">SourceTree超前一个版本，落后N个版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/13/">NSProcessInfo类方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/23/7/">iOS获取当前版本号 Bundle ID等信息的方法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 ParadiseDuo
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 11;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂)我知道你全都知道~" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*)你知道我全都知道~" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
