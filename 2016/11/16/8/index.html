@@ -19,7 +19,7 @@
 <meta name="keywords" content="Swift">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swift3 单例模式">
-<meta property="og:url" content="https://youshaoduo.github.io/2016/11/16/8/index.html">
+<meta property="og:url" content="https://paradiseduo.github.io/2016/11/16/8/index.html">
 <meta property="og:site_name" content="百度的日记本">
 <meta property="og:description" content="单例模式是开发中很常用的一种设计模式，一般几十行甚至十几行代码就可以搞定，Swift里面有这么几种单例的写法，供大家参考。">
 <meta property="og:locale" content="zh-Hans">
@@ -328,7 +328,7 @@
 </ol>
 <p>final关键字的作用是这个类或方法不希望被继承和重写</p>
 <ol>
-<li>第二种<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public extension DispatchQueue &#123;</span><br><span class="line">    private static var onceToken = [String]()</span><br><span class="line">    public class func once(_ token: String, _ block:@escaping () -&gt; Void) &#123;</span><br><span class="line">        objc_sync_enter(self)</span><br><span class="line">        defer &#123;</span><br><span class="line">            objc_sync_exit(self)</span><br><span class="line">        &#125;</span><br><span class="line">        if onceToken.contains(token) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        onceToken.append(token)</span><br><span class="line">        block()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Single2: NSObject &#123;</span><br><span class="line">    static func shared() -&gt; Single2 &#123;</span><br><span class="line">        struct Singleton &#123;</span><br><span class="line">            static var single = Single2()</span><br><span class="line">        &#125;</span><br><span class="line">        DispatchQueue.once(&quot;YouShaoduo&quot;) &#123;</span><br><span class="line">            Singleton.single = shared()</span><br><span class="line">        &#125;</span><br><span class="line">        return Singleton.single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>第二种<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public extension DispatchQueue &#123;</span><br><span class="line">    private static var onceToken = [String]()</span><br><span class="line">    public class func once(_ token: String, _ block:@escaping () -&gt; Void) &#123;</span><br><span class="line">        objc_sync_enter(self)</span><br><span class="line">        defer &#123;</span><br><span class="line">            objc_sync_exit(self)</span><br><span class="line">        &#125;</span><br><span class="line">        if onceToken.contains(token) &#123;</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        onceToken.append(token)</span><br><span class="line">        block()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final class Single2: NSObject &#123;</span><br><span class="line">    static func shared() -&gt; Single2 &#123;</span><br><span class="line">        struct Singleton &#123;</span><br><span class="line">            static var single = Single2()</span><br><span class="line">        &#125;</span><br><span class="line">        DispatchQueue.once(&quot;paradiseduo&quot;) &#123;</span><br><span class="line">            Singleton.single = shared()</span><br><span class="line">        &#125;</span><br><span class="line">        return Singleton.single</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private override init() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>第二种完全是OC风格的单例，但是由于Swift3中废弃了原来的dispatch_once_t，所以需要先给DispatchQueue添加一个extension，实现原先的dispatch_once_t效果</p>
@@ -354,8 +354,8 @@
         <p><span>发布时间:</span>2016-11-16, 12:51:50</p>
         <p><span>最后更新:</span>2018-01-24, 12:34:13</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/11/16/8/" title="Swift3 单例模式">https://youshaoduo.github.io/2016/11/16/8/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2016/11/16/8/　　作者: Google" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/16/8/" title="Swift3 单例模式">https://paradiseduo.github.io/2016/11/16/8/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://paradiseduo.github.io/2016/11/16/8/　　作者: Google" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -447,8 +447,8 @@
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  owner: "youshaoduo",
-  repo: "youshaoduo.github.io",
+  owner: "paradiseduo",
+  repo: "paradiseduo.github.io",
   oauth: {
     client_id: "51c898a9ed6ec2feb03c",
     client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
