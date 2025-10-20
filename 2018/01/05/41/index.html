@@ -19,7 +19,7 @@
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 后台任务">
-<meta property="og:url" content="https://youshaoduo.github.io/2018/01/05/41/index.html">
+<meta property="og:url" content="https://paradiseduo.github.io/2018/01/05/41/index.html">
 <meta property="og:site_name" content="百度的日记本">
 <meta property="og:description" content="iOS提供了以下多中方式处理后台任务  beginBackgroundTaskWithExpirationHandler 特定任务的后台处理 后台获取 推送唤醒 后台传输">
 <meta property="og:locale" content="zh-Hans">
@@ -339,7 +339,7 @@
 <li>实现application:performFetchWithCompletionHandler</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</span><br><span class="line">&#123;</span><br><span class="line">    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果不设置的话默认为UIApplicationBackgroundFetchIntervalNever，表示不获取，而且这个值代表”最小”后台获取时间间隔，这里所指定的时间间隔只是代表了“在上一次获取或者关闭应用之后，在这一段时间内一定不会去做后台获取”，IOS并不会为了每一个应用频频唤醒CPU，具体唤醒时间得看系统调度，设置为UIApplicationBackgroundFetchIntervalMinimum表示尽可能的对我们的应用进行后台唤醒，这样设置的缺点是耗电。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler &#123;</span><br><span class="line">    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;http://blog.csdn.net/youshaoduo/article/details/79063224&quot;]];</span><br><span class="line">    NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line">    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) &#123;</span><br><span class="line">        if (error) &#123;</span><br><span class="line">            NSLog(@&quot;%@&quot;,[error localizedDescription]);</span><br><span class="line">            completionHandler(UIBackgroundFetchResultFailed);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            ////更新UI</span><br><span class="line">            NSLog(@&quot;%@&quot;,[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);</span><br><span class="line">            completionHandler(UIBackgroundFetchResultNewData);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    [task resume];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果不设置的话默认为UIApplicationBackgroundFetchIntervalNever，表示不获取，而且这个值代表”最小”后台获取时间间隔，这里所指定的时间间隔只是代表了“在上一次获取或者关闭应用之后，在这一段时间内一定不会去做后台获取”，IOS并不会为了每一个应用频频唤醒CPU，具体唤醒时间得看系统调度，设置为UIApplicationBackgroundFetchIntervalMinimum表示尽可能的对我们的应用进行后台唤醒，这样设置的缺点是耗电。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler &#123;</span><br><span class="line">    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;http://blog.csdn.net/paradiseduo/article/details/79063224&quot;]];</span><br><span class="line">    NSURLSession *session = [NSURLSession sharedSession];</span><br><span class="line">    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) &#123;</span><br><span class="line">        if (error) &#123;</span><br><span class="line">            NSLog(@&quot;%@&quot;,[error localizedDescription]);</span><br><span class="line">            completionHandler(UIBackgroundFetchResultFailed);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            ////更新UI</span><br><span class="line">            NSLog(@&quot;%@&quot;,[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);</span><br><span class="line">            completionHandler(UIBackgroundFetchResultNewData);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    [task resume];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>与beginBackgroundTaskWithExpirationHandler相似，系统提供了回调completionHandler，用于通知系统任务执行完毕。</p>
 <h2 id="推送唤醒"><a href="#推送唤醒" class="headerlink" title="推送唤醒"></a>推送唤醒</h2><ol>
 <li>在UIBackgroundModes添加remote-notification</li>
@@ -361,8 +361,8 @@
         <p><span>发布时间:</span>2018-01-05, 12:14:38</p>
         <p><span>最后更新:</span>2018-01-24, 12:32:44</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2018/01/05/41/" title="iOS 后台任务">https://youshaoduo.github.io/2018/01/05/41/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://youshaoduo.github.io/2018/01/05/41/　　作者: Google" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/01/05/41/" title="iOS 后台任务">https://paradiseduo.github.io/2018/01/05/41/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://paradiseduo.github.io/2018/01/05/41/　　作者: Google" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -454,8 +454,8 @@
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  owner: "youshaoduo",
-  repo: "youshaoduo.github.io",
+  owner: "paradiseduo",
+  repo: "paradiseduo.github.io",
   oauth: {
     client_id: "51c898a9ed6ec2feb03c",
     client_secret:"13ba083a487be0f5a5b309e05637d5653bcdb9dd",
